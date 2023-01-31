@@ -15,7 +15,7 @@ function onYouTubeIframeAPIReady() {
         youTubePlayer.unMute();
     }
 
-    youTubePlayer = new YT.Player('YouTube-player',
+    youTubePlayer = new youTubePlayer.Player('YouTube-player',
         {
             videoId: videoId,
             height: 1,
@@ -132,9 +132,6 @@ function youTubePlayerDisplayInfos() {
         );
 
         document.getElementById('YouTube-player-errors').innerHTML = '<div>Errors: <strong>' + youTubePlayer.personalPlayer.errors + '</strong></div>';
-    }
-    else {
-        document.getElementById('YouTube-player-infos').innerHTML = indicatorDisplay;
     }
 }
 

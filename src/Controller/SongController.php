@@ -45,9 +45,8 @@ class SongController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $linkYoutube = $song->getLinkYoutube('link_youtube');
-            $linkReplace = str_replace(array('https://www.youtube.com/watch?v=', 'https://youtu.be/'), '', $linkYoutube);
+            $linkYoutube = $song->getLinkYoutube();
+            $linkReplace = str_replace(['https://www.youtube.com/watch?v=', 'https://youtu.be/'], '', $linkYoutube);
             $song->setLinkYoutube($linkReplace);
 
             $songRepository->save($song, true);

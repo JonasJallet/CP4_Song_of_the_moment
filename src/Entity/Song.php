@@ -23,10 +23,10 @@ class Song
     private ?string $album = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $link_youtube = null;
+    private ?string $linkYoutube = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $photo_album = null;
+    private ?string $photoAlbum = null;
 
     public function getId(): ?int
     {
@@ -71,24 +71,24 @@ class Song
 
     public function getLinkYoutube(): ?string
     {
-        return $this->link_youtube;
+        return $this->linkYoutube;
     }
 
-    public function setLinkYoutube(string $link_youtube): self
+    public function setLinkYoutube(string $linkYoutube): self
     {
-        $this->link_youtube = $link_youtube;
+        $this->linkYoutube = $linkYoutube;
 
         return $this;
     }
 
     public function getPhotoAlbum(): ?string
     {
-        return $this->photo_album;
+        return $this->photoAlbum;
     }
 
-    public function setPhotoAlbum(string $photo_album): self
+    public function setPhotoAlbum(string $photoAlbum): self
     {
-        $this->photo_album = $photo_album;
+        $this->photoAlbum = $photoAlbum;
 
         return $this;
     }
