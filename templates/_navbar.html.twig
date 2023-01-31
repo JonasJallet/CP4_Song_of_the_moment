@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light fixed-top px-4">
+	<div class="logo-sotm">
+		<a class="logo-sotm-text navbar-brand d-flex flex-row align-items-center" href="{{ path('app_home') }}">
+			<h3>Song</h3>
+			<div class="d-flex flex-column">
+				<p class="sotm-text-p">of</p>
+				<p class="sotm-text-p">the</p>
+			</div>
+			<h3>Moment</h3>
+		</a>
+	</div>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<svg xmlns="http://www.w3.org/2000/svg" class="menu-toggler-icon bi bi-list" viewbox="0 0 16 16">
+			<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+		</svg>
+	</button>
+
+	<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item active">
+				<a class="nav-link text-danger" href="{{ path('app_song_index') }}">Admin
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{{ path('app_song_list') }}">Tout les sons</a>
+			</li>
+			<li class="nav-item active">
+				<a class="nav-link" href="{{ path('app_song_random') }}">Son Aléatoire
+				</a>
+			</li>
+		</ul>
+	</div>
+</nav>

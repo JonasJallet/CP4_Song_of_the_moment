@@ -1,0 +1,38 @@
+nav.navbar {
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+}
+
+a.nav-link {
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+        color: white;
+    }
+}
+
+.menu-toggler-icon {
+    width: 40px;
+    height: 40px;
+    fill: white;
+}
+
+button.navbar-toggler {
+    border: 0px;
+    padding: 0px;
+
+    &:focus {
+        box-shadow: none !important;
+    }
+}
+
+a.logo-sotm-text.navbar-brand {
+    color: white;
+}
+
+.sotm-text-p {
+    margin: 0px 10px 0px 10px;
+    text-align: center;
+}

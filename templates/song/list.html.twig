@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Song index
+{% endblock %}
+
+{% block styleBody %}class="backlist"
+{% endblock %}
+
+{% block body %}
+	<section class="backblur">
+		<main class="song-list p-3">
+			<div class="row d-flex flex-row justify-content-center">
+				{% for song in songs %}
+					<div class="card-deck col-6 col-md-4 col-lg-3 col-xl-2">
+						<a href="{{ path('app_song_show', {'id': song.id}) }}">
+							<div class="list-album card">
+								<img src="{{ song.photoAlbum }}" class="card-img-top">
+								<div class="list-infos d-flex flex-column">
+									<p>{{ song.title }}</p>
+									<p class="list-infos-artist">{{ song.artist }}</p>
+								</div>
+							</div>
+						</a>
+					</div>
+				{% endfor %}
+			</div>
+		</main>
+	</section>
+
+
+{% endblock %}

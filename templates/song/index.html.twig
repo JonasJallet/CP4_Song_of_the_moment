@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Song index
+{% endblock %}
+
+{% block body %}
+	<main class="container">
+		<h1>Song index</h1>
+
+		<a href="{{ path('app_song_new') }}">Create new</a>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Artist</th>
+					<th>Album</th>
+					<th>Link_youtube</th>
+					<th>Photo_album</th>
+					<th>actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for song in songs %}
+					<tr>
+						<td>{{ song.title }}</td>
+						<td>{{ song.artist }}</td>
+						<td>{{ song.album }}</td>
+						<td>
+							{{ song.linkYoutube }}
+						</td>
+						<td><img width="100" height="100" src="{{ song.photoAlbum }}"/></td>
+						<td>
+							<a href="{{ path('app_song_show', {'id': song.id}) }}">show</a>
+							<a href="{{ path('app_song_edit', {'id': song.id}) }}">edit</a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="7">no records found</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</main>
+
+{% endblock %}

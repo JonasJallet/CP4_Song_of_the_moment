@@ -1,0 +1,54 @@
+.backsong {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 100%;
+    height: 100vh;
+}
+
+.backblur {
+    backdrop-filter: blur(10px) opacity(0.9);
+    background-size: cover;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#backover {
+    background: url(../../assets/images/backover.png) center no-repeat;
+    background-size: cover;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+}
+
+.show-song {
+    margin-top: 160px;
+}
+
+.photo-song-show {
+    width: 400px;
+    height: 400px;
+}
+
+.details-song-show {
+    padding: 20px;
+    min-width: 305px;
+    text-shadow: 0px 0px 4px rgb(38 38 38 / 60%);
+}
+
+svg.youtube-play,
+.youtube-pause,
+.youtube-stop {
+    fill: white;
+    stroke-linecap: butt;
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    margin: 5px;
+
+    &:hover {
+        fill: white;
+        opacity: 0.5;
+    }
+}
