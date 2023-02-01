@@ -9,11 +9,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route('/song')]
 class SongController extends AbstractController
 {
     #[Route('/', name: 'app_song_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function index(SongRepository $songRepository): Response
     {
         return $this->render('song/index.html.twig', [
@@ -70,6 +72,7 @@ class SongController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_song_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Song $song, SongRepository $songRepository): Response
     {
         $form = $this->createForm(SongType::class, $song);
@@ -88,6 +91,7 @@ class SongController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_song_delete', methods: ['POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Song $song, SongRepository $songRepository): Response
     {
         if ($this->isCsrfTokenValid('delete' . $song->getId(), $request->request->get('_token'))) {

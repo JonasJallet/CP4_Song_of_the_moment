@@ -9,7 +9,7 @@
 			<h3>Moment</h3>
 		</a>
 	</div>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<svg xmlns="http://www.w3.org/2000/svg" class="menu-toggler-icon bi bi-list" viewbox="0 0 16 16">
 			<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
 		</svg>
@@ -17,10 +17,12 @@
 
 	<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
-			<li class="nav-item active">
-				<a class="nav-link text-danger" href="{{ path('app_song_index') }}">Admin
-				</a>
-			</li>
+			{% if is_granted('ROLE_ADMIN') %}
+				<li class="nav-item active">
+					<a class="nav-link text-danger" href="{{ path('app_song_index') }}">Admin
+					</a>
+				</li>
+			{% endif %}
 			<li class="nav-item">
 				<a class="nav-link" href="{{ path('app_song_list') }}">Tout les sons</a>
 			</li>
@@ -28,6 +30,17 @@
 				<a class="nav-link" href="{{ path('app_song_random') }}">Son Aléatoire
 				</a>
 			</li>
+			{% if app.user %}
+				<li class="nav-item active">
+					<a class="nav-link" href="{{ path('app_logout') }}">Déconnexion
+					</a>
+				</li>
+			{% else %}
+				<li class="nav-item active">
+					<a class="nav-link" href="{{ path('app_login') }}">Connexion
+					</a>
+				</li>
+			{% endif %}
 		</ul>
 	</div>
 </nav>
