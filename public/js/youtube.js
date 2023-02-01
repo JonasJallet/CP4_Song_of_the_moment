@@ -1,5 +1,7 @@
 var youTubePlayer;
 
+var YT;
+
 function onYouTubeIframeAPIReady() {
     'use strict';
 
@@ -15,7 +17,7 @@ function onYouTubeIframeAPIReady() {
         youTubePlayer.unMute();
     }
 
-    youTubePlayer = new youTubePlayer.Player('YouTube-player',
+    youTubePlayer = new YT.Player('YouTube-player',
         {
             videoId: videoId,
             height: 1,

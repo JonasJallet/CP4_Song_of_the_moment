@@ -1,4 +1,6 @@
-{{ form_start(form) }}
-{{ form_widget(form) }}
-<button class="btn">{{ button_label|default('Enregister') }}</button>
-{{ form_end(form) }}
+<div class="d-flex flex-column align-items-center">
+	{{ form_start(form, {'attr': {'class': 'form-song d-flex flex-column'}}) }}
+	{{ form_widget(form) }}
+	<button class="btn">{{ button_label|default('Enregister') }}</button>
+	{{ form_end(form) }}
+</div>

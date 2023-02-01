@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SongRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
@@ -14,18 +15,43 @@ class Song
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le titre saisie {{ titre }} est trop longue, il ne doit pas dépasser {{ limit }} caractères',
+    )]
     private ?string $title = null;
 
     #[ORM\Column(length: 150)]
+    #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
+    #[Assert\Length(
+        max: 150,
+        maxMessage: 'L\' artiste saisie {{ artiste }} est trop long, il ne doit pas dépasser {{ limit }} caractères',
+    )]
     private ?string $artist = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'L\' album saisie {{ album }} est trop long, il ne doit pas dépasser {{ limit }} caractères',
+    )]
     private ?string $album = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le lien saisie {{ photo_album }} est trop long, il ne doit pas dépasser {{ limit }} caractères',
+    )]
     private ?string $linkYoutube = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'Le lien saisie {{ link_youtube }} est trop long, il ne doit pas dépasser {{ limit }} caractères',
+    )]
     private ?string $photoAlbum = null;
 
     public function getId(): ?int
