@@ -13,19 +13,8 @@
 				<div class="row justify-content-center">
 					<div
 						class="col-10 d-flex flex-column flex-md-row justify-content-center align-items-center">
-						{# <img class="photo-song-show shadow" src="{{ song.photoAlbum }}"/> #}
+						{#  #}
 						<div class="details-song-show d-flex flex-column align-items-center">
-
-							{% for favorite in app.user.favorites %}
-								<pre>
-								{{ dump(favorite.linkYoutube) }}
-							</pre>
-							{% endfor %}
-							{% for favorite in app.user.favorites %}
-								<span class="nowrap">
-									<button onclick="document.getElementById('YouTube-video-id').value='{{ favorite.linkYoutube }}'; youTubePlayerChangeVideoId();" title="In the summertime (Mungo Jerry)">1</button>
-								</span>
-							{% endfor %}
 							<div id="YouTube-player"></div>
 							<input id="YouTube-video-id" type="text" value="" size="12" pattern="[_\-0-9A-Za-z]{11}" onchange="youTubePlayerChangeVideoId();">
 							<div class="d-flex flex-row justify-content-center button-player">
@@ -48,10 +37,19 @@
 
 							<input id="YouTube-player-progress" type="range" value="0" min="0" max="100" onchange="youTubePlayerCurrentTimeChange(this.value);" oninput="youTubePlayerCurrentTimeSlide();">
 
-							<div class="framed">
+							<div class="framed d-none">
 								<div id="YouTube-player-infos"></div>
 								<div id="YouTube-player-errors"></div>
 							</div>
+						</div>
+
+						<div class="playlist">
+							{% for favorite in app.user.favorites %}
+								<div class="song-on-playlist d-flex flex-row" onclick="document.getElementById('YouTube-video-id').value='{{ favorite.linkYoutube }}'; youTubePlayerChangeVideoId();">
+									<img class="photo-song-playlist shadow" src="{{ favorite.photoAlbum }}"/>
+									<p>{{ favorite.title }}</p>
+								</div>
+							{% endfor %}
 						</div>
 					</div>
 				</div>

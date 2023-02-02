@@ -10,11 +10,32 @@ function onYouTubeIframeAPIReady() {
 
     function onError(event) {
         youTubePlayer.personalPlayer.errors.push(event.data);
+        youTubePlayer.playVideo();
+        youTubePlayer.unMute();
     }
 
     function onPlayerReady(event) {
         youTubePlayer.playVideo();
         youTubePlayer.unMute();
+    }
+
+    // function onStateChange(event) {
+    //     youTubePlayer.playVideo();
+    //     youTubePlayer.unMute();
+    // }
+
+    function onStateChange(event) {
+        switch (event.data) {
+        case YT.PlayerState.CUED:
+            youTubePlayer.playVideo();
+            youTubePlayer.unMute();
+            break;
+        case YT.PlayerState.ENDED:
+
+            break;
+        }
+
+
     }
 
     youTubePlayer = new YT.Player('YouTube-player',
@@ -35,6 +56,7 @@ function onYouTubeIframeAPIReady() {
             events: {
                 'onError': onError,
                 'onReady': onPlayerReady,
+                'onStateChange': onStateChange
             }
         });
 
@@ -67,6 +89,7 @@ function youTubePlayerChangeVideoId() {
     youTubePlayer.cueVideoById({
         videoId: videoId
     });
+
     youTubePlayer.playVideo();
     youTubePlayer.unMute();
 }
@@ -157,7 +180,7 @@ function youTubePlayerPause() {
 let play = document.getElementById('play');
 
 play.addEventListener("click", function () {
-    youTubePlayer.playVideo();
+    youTubePlayerPlay();
 });
 
 function youTubePlayerPlay() {
@@ -210,4 +233,8 @@ function youTubePlayerStop() {
         window.attachEvent('onload', init);
     }
 }());
+
+let element = document.getElementById('output');
+element.addEventListener('click', youTubePlayerChangeVideoId());
+element.addEventListener('click', youTubePlayerPlay());
 
