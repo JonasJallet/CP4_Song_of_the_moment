@@ -26,8 +26,8 @@
 				{% for song in songs %}
 					<div class="card-deck col-6 col-md-4 col-lg-3 col-xl-2">
 						<a href="{{ path('app_song_show', {'id': song.id}) }}">
-							<div class="list-album card">
-								<img src="{{ song.photoAlbum }}" class="card-img-top">
+							<div class="list-album card shadow">
+								<img src="{{ song.photoAlbum }}" class="list-photo-album card-img-top">
 								<div class="list-infos d-flex flex-column">
 									<p>{{ song.title }}</p>
 									<p class="list-infos-artist">{{ song.artist }}</p>

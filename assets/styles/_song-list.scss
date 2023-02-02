@@ -19,6 +19,7 @@
     border: 0px;
     border-radius: 0px;
     margin: 10px;
+    background-color: transparent;
 }
 
 .list-infos {
@@ -41,4 +42,8 @@
 
 .list-infos-artist {
     color: white;
+}
+
+.list-photo-album {
+    border-radius: 10px;
 }
