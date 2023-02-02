@@ -1,29 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello LoginController!
+{% block title %}Connexion
 {% endblock %}
 
 {% block body %}
-	{% if error %}
-		<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-	{% endif %}
+	<main class="form-main container">
 
-	<main class="container">
+		<h2 class="text-center">Connexion</h2>
 
-		<form action="{{ path('app_login') }}" method="post">
-			<label for="username">Pseudo :</label>
-			<input type="text" id="username" name="_username" value="{{ last_username }}">
+		{% if error %}
+			<div class="row d-flex justify-content-center">
+				<div class="col-11 col-md-7 col-lg-5 text-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+			</div>
+		{% endif %}
 
-			<label for="password">Mot de passe :</label>
-			<input
-			type="password" id="password" name="_password">
+		<div class="d-flex justify-content-center">
+			<form action="{{ path('app_login') }}" method="post" class="col-11 col-md-7 col-lg-5 form-login d-flex flex-column">
+				<label class="form-label" for="username">Pseudo</label>
+				<input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}">
 
-			{# <input type="hidden" name="_target_path" value="{{ path('app_home') }}"> #}
-			<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				<label class="form-label" for="password">Mot de passe</label>
+				<input
+				class="form-control" type="password" id="password" name="_password">
+
+				{# <input type="hidden" name="_target_path" value="{{ path('app_home') }}"> #}
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 
-			<button type="submit">login</button>
-		</form>
+				<button type="submit" class="button btn align-self-center">Connexion</button>
+			</form>
+		</div>
+
+		<h4 class="text-center">Vous n'avez pas encore de compte ?</h4>
+		<h4>
+			<a class="nav-link text-success text-center" href="{{ path('app_register') }}">
+				Inscrivez-vous ici !
+			</a>
+		</h4>
 
 	</main>
 {% endblock %}

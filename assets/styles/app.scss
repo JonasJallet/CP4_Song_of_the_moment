@@ -11,7 +11,7 @@
 
 
 body {
-    background-color: lightgray;
+    background-color: rgb(26, 31, 40);
     color: white;
     font: 400 20px Dosis;
 }
@@ -29,8 +29,8 @@ body {
 
 .heart-full,
 .heart-empty {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
     margin: 20px;
 }
 
@@ -48,4 +48,26 @@ body {
     &:hover {
         fill: #EA2027;
     }
+}
+
+
+.home-logo-h1 {
+    font-size: 80px;
+}
+
+.home-logo-p {
+    font-size: 30px;
+}
+
+.backome {
+    background: url(../../assets/images/backome.avif) no-repeat center center fixed;
+    background-size: cover;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+}
+
+li {
+    list-style-type: none;
+    color: #dc3545;
 }

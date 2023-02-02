@@ -16,7 +16,7 @@
 	</button>
 
 	<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-		<ul class="navbar-nav mr-auto">
+		<ul class="navbar-nav mr-auto align-items-end">
 			<li class="nav-item">
 				<a class="nav-link" href="{{ path('app_song_list') }}">Tout les sons</a>
 			</li>
@@ -28,6 +28,11 @@
 			{% if app.user %}
 				<li class="nav-item active">
 					<a class="nav-link" href="{{ path('app_user_favorites') }}">Mes Favoris
+					</a>
+				</li>
+			{% else %}
+				<li class="nav-item active">
+					<a class="nav-link" href="{{ path('app_login') }}">Mes Favoris
 					</a>
 				</li>
 			{% endif %}

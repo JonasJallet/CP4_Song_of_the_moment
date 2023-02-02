@@ -1,7 +1,27 @@
 {% extends 'base.html.twig' %}
 
+{% block navbar %}{% endblock %}
+
+{% block styleBody %}class="backome"
+{% endblock %}
+
 {% block body %}
 
-	<main class="container"></main>
+	<section>
+		<div id="backover">
+			<main class="container">
+				<div class="logo-sotm">
+					<a class="logo-sotm-text navbar-brand d-flex flex-row justify-content-center align-items-center" href="{{ path('app_song_list') }}">
+						<h1 class="home-logo-h1">Song</h1>
+						<div class="d-flex flex-column">
+							<p class="home-logo-p sotm-text-p">of</p>
+							<p class="home-logo-p sotm-text-p">the</p>
+						</div>
+						<h1 class="home-logo-h1">Moment</h1>
+					</a>
+				</div>
+			</main>
+		</div>
+	</section>
 
 {% endblock %}

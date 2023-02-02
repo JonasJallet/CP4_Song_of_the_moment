@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Song
+{% block title %}Modifier le son
 {% endblock %}
 
 {% block body %}
-	<main class="container">
-		<h2>Modifier le son</h2>
+	<main class="form-main container">
+		<h2 class="text-center">Modifier le son</h2>
 
-		{{ include('song/_form.html.twig', {'button_label': 'Update'}) }}
+		{{ include('song/_form.html.twig', {'button_label': 'Enregistrer'}) }}
 
 		<div class="fixed-bottom d-flex flex-row p-3">
 			<a href="{{ path('app_song_index') }}">
