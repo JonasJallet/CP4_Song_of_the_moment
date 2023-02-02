@@ -1,8 +1,29 @@
 .song-on-playlist {
     cursor: pointer;
+    margin: 0px 50px 0px 50px;
+
+    &:hover {
+        background-color: rgba(8, 7, 7, 0.384);
+    }
 }
 
 .photo-song-playlist {
     width: 80px;
     height: 80px;
+}
+
+#Album-photo-id {
+    width: 360px;
+    height: 360px;
+}
+
+.playlist {
+    padding: 15px;
+    width: 400px;
+    max-height: 540px;
+    overflow-y: scroll;
+}
+
+.text-song-playlist {
+    padding-left: 20px;
 }

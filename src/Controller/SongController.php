@@ -15,12 +15,18 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 #[Route('/song')]
 class SongController extends AbstractController
 {
-    #[Route('/', name: 'app_song_index', methods: ['GET'])]
+    #[Route('/', name: 'app_song_index', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(SongRepository $songRepository): Response
+    public function index(Request $request, SongRepository $songRepository): Response
     {
+        if ($request->isMethod('POST')) {
+            $title = $request->get('title');
+            $songs = $songRepository->findLikeTitle($title);
+        } else {
+            $songs = $songRepository->findBy([], ['id' => 'desc']);
+        }
         return $this->render('song/index.html.twig', [
-            'songs' => $songRepository->findBy([], ['id' => 'desc']),
+            'songs' => $songs,
         ]);
     }
 

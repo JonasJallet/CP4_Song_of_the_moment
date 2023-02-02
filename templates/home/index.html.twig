@@ -7,10 +7,10 @@
 
 {% block body %}
 
-	<section>
+	<section class="backblur">
 		<div id="backover">
-			<main class="container">
-				<div class="logo-sotm">
+			<main class="main-home container">
+				<div class="logo-sotm mt-5">
 					<a class="logo-sotm-text navbar-brand d-flex flex-row justify-content-center align-items-center" href="{{ path('app_song_list') }}">
 						<h1 class="home-logo-h1">Song</h1>
 						<div class="d-flex flex-column">
@@ -19,6 +19,27 @@
 						</div>
 						<h1 class="home-logo-h1">Moment</h1>
 					</a>
+				</div>
+
+				<div class="quote mb-3 mt-5">
+					<h3 class="text-center">« La musique est la langue des émotions. »</h3>
+					<h4 class="text-center font-italic">Emmanuel Kant</h4>
+				</div>
+
+				<div class="row d-flex flex-row justify-content-center mt-5">
+					{% for song in songs %}
+						<div class="card-deck col-6 col-md-4 col-lg-3 col-xl-2">
+							<a href="{{ path('app_song_show', {'id': song.id}) }}">
+								<div class="list-album card shadow">
+									<img src="{{ song.photoAlbum }}" class="list-photo-album card-img-top">
+									<div class="list-infos d-flex flex-column">
+										<p>{{ song.title }}</p>
+										<p class="list-infos-artist">{{ song.artist }}</p>
+									</div>
+								</div>
+							</a>
+						</div>
+					{% endfor %}
 				</div>
 			</main>
 		</div>

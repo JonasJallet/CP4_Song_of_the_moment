@@ -3,21 +3,20 @@
 {% block title %}Mes Favoris
 {% endblock %}
 
-{# {% block styleBody %}class="backsong" style="background-image: url('{{ song.photoAlbum }}')"
-{% endblock %} #}
+{% block styleBody %}class="backome"
+{% endblock %}
 
 {% block body %}
 	<section class="backblur">
 		<div id="backover">
 			<main class="show-song">
 				<div class="row justify-content-center">
-					<div
-						class="col-10 d-flex flex-column flex-md-row justify-content-center align-items-center">
-						{#  #}
+					<div class="col-10 d-flex flex-column flex-md-row justify-content-center align-items-center">
 						<div class="details-song-show d-flex flex-column align-items-center">
-							<div id="YouTube-player"></div>
-							<input id="YouTube-video-id" type="text" value="" size="12" pattern="[_\-0-9A-Za-z]{11}" onchange="youTubePlayerChangeVideoId();">
-							<div class="d-flex flex-row justify-content-center button-player">
+							<div id="YouTube-player" class="d-none"></div>
+							<img id="Album-photo-id" src="{{ asset('build/images/transparent.png') }}">
+							<input class="d-none" id="YouTube-video-id" type="text" value="" size="12" pattern="[_\-0-9A-Za-z]{11}" onchange="youTubePlayerChangeVideoId();">
+							<div class="d-flex flex-row justify-content-center button-player m-3">
 								<div id="play">
 									<svg xmlns="http://www.w3.org/2000/svg" class="youtube-play bi bi-play-fill" viewbox="0 0 16 16">
 										<path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
@@ -34,25 +33,28 @@
 									</svg>
 								</div>
 							</div>
-
 							<input id="YouTube-player-progress" type="range" value="0" min="0" max="100" onchange="youTubePlayerCurrentTimeChange(this.value);" oninput="youTubePlayerCurrentTimeSlide();">
-
 							<div class="framed d-none">
 								<div id="YouTube-player-infos"></div>
 								<div id="YouTube-player-errors"></div>
 							</div>
 						</div>
-
 						<div class="playlist">
 							{% for favorite in app.user.favorites %}
-								<div class="song-on-playlist d-flex flex-row" onclick="document.getElementById('YouTube-video-id').value='{{ favorite.linkYoutube }}'; youTubePlayerChangeVideoId();">
+								<div class="song-on-playlist d-flex flex-row align-items-center my-3" onclick="document.getElementById('YouTube-video-id').value='{{ favorite.linkYoutube }}'; document.getElementById('Album-photo-id').src='{{ favorite.photoAlbum }}'; youTubePlayerChangeVideoId();">
 									<img class="photo-song-playlist shadow" src="{{ favorite.photoAlbum }}"/>
-									<p>{{ favorite.title }}</p>
+									<div class="text-song-playlist d-flex flex-column">
+										<h5 class="my-1">{{ favorite.title }}</h5>
+										<p class="my-1">{{ favorite.artist }}</p>
+									</div>
 								</div>
+							{% else %}
+								<h2 class="text-center">Aucun favori</h2>
 							{% endfor %}
 						</div>
 					</div>
 				</div>
+
 			</main>
 		</div>
 	</section>

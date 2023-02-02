@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 var youTubePlayer;
 
 var YT;
@@ -19,23 +20,16 @@ function onYouTubeIframeAPIReady() {
         youTubePlayer.unMute();
     }
 
-    // function onStateChange(event) {
-    //     youTubePlayer.playVideo();
-    //     youTubePlayer.unMute();
-    // }
-
     function onStateChange(event) {
         switch (event.data) {
-        case YT.PlayerState.CUED:
-            youTubePlayer.playVideo();
-            youTubePlayer.unMute();
-            break;
-        case YT.PlayerState.ENDED:
+            case YT.PlayerState.CUED:
+                youTubePlayer.playVideo();
+                youTubePlayer.unMute();
+                break;
+            case YT.PlayerState.ENDED:
 
-            break;
+                break;
         }
-
-
     }
 
     youTubePlayer = new YT.Player('YouTube-player',
@@ -233,8 +227,3 @@ function youTubePlayerStop() {
         window.attachEvent('onload', init);
     }
 }());
-
-let element = document.getElementById('output');
-element.addEventListener('click', youTubePlayerChangeVideoId());
-element.addEventListener('click', youTubePlayerPlay());
-

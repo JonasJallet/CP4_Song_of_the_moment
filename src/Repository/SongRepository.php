@@ -48,6 +48,15 @@ class SongRepository extends ServiceEntityRepository
         return $queryBuilder->getResult();
     }
 
+    public function randomHomeSongs(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->setMaxResults(4)
+            ->orderBy('RAND()')
+            ->getQuery();
+        return $queryBuilder->getResult();
+    }
+
     public function findLikeTitle(string $title): array
     {
         $queryBuilder = $this->createQueryBuilder('s')

@@ -15,7 +15,9 @@
 }
 
 #backover {
-    background: url(../../assets/images/backover.png) center no-repeat;
+    background: url(../../assets/images/backover.png);
+    background-repeat: no-repeat;
+    background-position: center center;
     background-size: cover;
     position: absolute;
     width: 100%;
@@ -33,7 +35,7 @@
 
 .details-song-show {
     padding: 20px;
-    min-width: 305px;
+    min-width: 330px;
     text-shadow: 0px 0px 4px rgb(38 38 38 / 60%);
 }
 

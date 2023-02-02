@@ -181,7 +181,7 @@ class SongFixtures extends Fixture
             ]
         ];
 
-        foreach ($songs as $song) {
+        foreach ($songs as $key => $song) {
             $newSong = new Song();
             $newSong->setTitle($song['title']);
             $newSong->setArtist($song['artist']);
@@ -189,6 +189,7 @@ class SongFixtures extends Fixture
             $newSong->setPhotoAlbum($song['photo_album']);
             $newSong->setLinkYoutube($song['link_youtube']);
             $manager->persist($newSong);
+            $this->addReference('song_' . $key, $newSong);
         }
 
         $manager->flush();

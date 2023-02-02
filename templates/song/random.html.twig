@@ -43,6 +43,12 @@
 											</svg>
 										{% endif %}
 									</a>
+								{% else %}
+									<a href="{{ path('app_login') }}">
+										<svg xmlns="http://www.w3.org/2000/svg" class="heart-empty bi bi-heart" viewbox="0 0 16 16">
+											<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+										</svg>
+									</a>
 								{% endif %}
 
 								<div id="YouTube-player" class="d-none"></div>
@@ -67,7 +73,7 @@
 
 								<input class="d-none" id="YouTube-player-progress" type="range" value="0" min="0" max="100" onchange="youTubePlayerCurrentTimeChange(this.value);" oninput="youTubePlayerCurrentTimeSlide();">
 
-								<div class="framed">
+								<div class="framed d-none">
 									<div id="YouTube-player-infos"></div>
 									<div id="YouTube-player-errors"></div>
 								</div>
