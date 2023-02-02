@@ -39,6 +39,8 @@ a.logo-sotm-text.navbar-brand {
 
 .nav-link {
     font-size: 21px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .nav-link-admin {
@@ -47,4 +49,10 @@ a.logo-sotm-text.navbar-brand {
 
 li.nav-item {
     text-align: right;
+}
+
+.navbar-svg {
+    width: 24px;
+    height: 24px;
+    fill: white;
 }

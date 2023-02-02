@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light fixed-top px-4">
+<nav class="navbar navbar-light fixed-top px-2 px-md-4">
 	<div class="logo-sotm">
 		<a class="logo-sotm-text navbar-brand d-flex flex-row align-items-center" href="{{ path('app_home') }}">
 			<h3>Song</h3>
@@ -9,49 +9,75 @@
 			<h3>Moment</h3>
 		</a>
 	</div>
-	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		<svg xmlns="http://www.w3.org/2000/svg" class="menu-toggler-icon bi bi-list" viewbox="0 0 16 16">
-			<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
-		</svg>
-	</button>
 
-	<div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-		<ul class="navbar-nav mr-auto align-items-end">
+	<div class="justify-content-end">
+		<ul class="navbar-nav mr-auto d-flex flex-row align-items-end">
 			<li class="nav-item">
-				<a class="nav-link" href="{{ path('app_song_list') }}">Tout les sons</a>
+				<a class="nav-link" href="{{ path('app_song_list') }}">
+					<p class="d-none d-md-block">Rechercher</p>
+					<svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-search d-md-none" viewbox="0 0 16 16">
+						<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+					</svg>
+				</a>
 			</li>
 			<li class="nav-item active">
-				<a class="nav-link" href="{{ path('app_song_random') }}">Son Aléatoire
+				<a class="nav-link" href="{{ path('app_song_random') }}">
+					<p class="d-none d-md-block">Son Aléatoire</p>
+					<svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-dice-5-fill d-md-none" viewbox="0 0 16 16">
+						<path d="M3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3zm2.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM12 13.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM5.5 12a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM8 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
+					</svg>
 				</a>
 			</li>
 
 			{% if app.user %}
 				<li class="nav-item active">
-					<a class="nav-link" href="{{ path('app_user_favorites') }}">Mes Favoris
+					<a class="nav-link" href="{{ path('app_user_favorites') }}">
+						<p class="d-none d-md-block">Mes Favoris</p>
+						<svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-heart-fill d-md-none" viewbox="0 0 16 16">
+							<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+						</svg>
 					</a>
 				</li>
 			{% else %}
 				<li class="nav-item active">
-					<a class="nav-link" href="{{ path('app_login') }}">Mes Favoris
+					<a class="nav-link" href="{{ path('app_login') }}">
+						<p class="d-none d-md-block">Mes Favoris</p>
+						<svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-heart-fill d-md-none" viewbox="0 0 16 16">
+							<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+						</svg>
 					</a>
 				</li>
 			{% endif %}
 
 			{% if is_granted('ROLE_ADMIN') %}
 				<li class="nav-item active">
-					<a class="nav-link nav-link-admin text-danger" href="{{ path('app_song_index') }}">Panneau Admin
+					<a class="nav-link nav-link-admin text-danger" href="{{ path('app_song_index') }}">
+						<p class="d-none d-md-block">Panneau Admin</p>
+						<svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-gear-fill d-md-none" viewbox="0 0 16 16">
+							<path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+						</svg>
 					</a>
 				</li>
 			{% endif %}
 
 			{% if app.user %}
 				<li class="nav-item active">
-					<a class="nav-link" href="{{ path('app_logout') }}">Déconnexion
+					<a class="nav-link" href="{{ path('app_logout') }}">
+						<p class="d-none d-md-block">Déconnexion</p>
+						<svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-box-arrow-right d-md-none" viewbox="0 0 16 16">
+							<path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z"/>
+							<path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
+						</svg>
 					</a>
 				</li>
 			{% else %}
 				<li class="nav-item active">
-					<a class="nav-link" href="{{ path('app_login') }}">Connexion
+					<a class="nav-link" href="{{ path('app_login') }}">
+						<p class="d-none d-md-block">Connexion</p>
+						<svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-person-circle d-md-none" viewbox="0 0 16 16">
+							<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+							<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+						</svg>
 					</a>
 				</li>
 			{% endif %}

@@ -3,6 +3,9 @@
 {% block title %}Connexion
 {% endblock %}
 
+{% block styleBody %}class="backome"
+{% endblock %}
+
 {% block body %}
 	<main class="form-main container">
 
@@ -33,7 +36,7 @@
 
 		<h4 class="text-center">Vous n'avez pas encore de compte ?</h4>
 		<h4>
-			<a class="nav-link text-success text-center" href="{{ path('app_register') }}">
+			<a class="link-register nav-link text-success text-center" href="{{ path('app_register') }}">
 				Inscrivez-vous ici !
 			</a>
 		</h4>

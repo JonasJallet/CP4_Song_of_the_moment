@@ -65,10 +65,10 @@ function youTubePlayerChangeVideoId() {
     var videoId = inputVideoId.value;
 
     youTubePlayer.cueVideoById({
-        suggestedQuality: 'medium',
         videoId: videoId
     });
     youTubePlayer.playVideo();
+    youTubePlayer.unMute();
 }
 
 /**
