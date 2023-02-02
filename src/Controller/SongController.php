@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\Song;
 use App\Form\SongType;
 use App\Repository\SongRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/song')]
 class SongController extends AbstractController
@@ -71,6 +73,27 @@ class SongController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/favorite', name: 'app_song_add_favorite', methods: ['GET'])]
+    public function addToFavorite(
+        Song $song,
+        UserRepository $userRepository
+    ): Response {
+        $user = $this->getUser();
+        $user = $userRepository->findOneBy(
+            ['id' => $user]
+        );
+
+        if ($user->isInFavorite($song)) {
+            $user->removeFavorite($song);
+        } else {
+            $user->addFavorite($song);
+        }
+        $userRepository->save($user, true);
+
+        // $favorite = $user instanceof User ? $user->isInFavorite($song) : null;
+        return $this->redirectToRoute('app_song_show', ['id' => $song->getId()]);
+    }
+
     #[Route('/{id}/edit', name: 'app_song_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Song $song, SongRepository $songRepository): Response
@@ -79,6 +102,10 @@ class SongController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $linkYoutube = $song->getLinkYoutube();
+            $linkReplace = str_replace(['https://www.youtube.com/watch?v=', 'https://youtu.be/'], '', $linkYoutube);
+            $song->setLinkYoutube($linkReplace);
+
             $songRepository->save($song, true);
 
             return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);

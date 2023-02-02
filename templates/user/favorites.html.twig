@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Favoris
+{% endblock %}
+
+{% block body %}
+
+	<main class="container">
+		{% for favorite in app.user.favorites %}
+			<p>{{favorite.title }}</p>
+		{% endfor %}
+	</main>
+
+{% endblock %}

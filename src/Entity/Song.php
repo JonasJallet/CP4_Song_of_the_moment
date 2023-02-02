@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SongRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -53,6 +55,14 @@ class Song
         maxMessage: 'Le lien saisie {{ link_youtube }} est trop long, il ne doit pas dépasser {{ limit }} caractères',
     )]
     private ?string $photoAlbum = null;
+
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
+    private Collection $users;
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -115,6 +125,33 @@ class Song
     public function setPhotoAlbum(string $photoAlbum): self
     {
         $this->photoAlbum = $photoAlbum;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeFavorite($this);
+        }
 
         return $this;
     }

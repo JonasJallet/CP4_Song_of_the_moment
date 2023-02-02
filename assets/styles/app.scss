@@ -25,3 +25,26 @@ body {
     fill: white;
     margin: 10px;
 }
+
+.heart-full,
+.heart-empty {
+    width: 35px;
+    height: 35px;
+    margin: 20px;
+}
+
+.heart-full {
+    fill: #EA2027;
+
+    &:hover {
+        fill: rgb(35, 35, 35);
+    }
+}
+
+.heart-empty {
+    fill: white;
+
+    &:hover {
+        fill: #EA2027;
+    }
+}
