@@ -1,3 +1,14 @@
 form.form-song.d-flex.flex-column {
     width: 70%;
 }
+
+.button {
+    background-color: white;
+    font-size: 20px;
+    width: 220px;
+    margin: 30px;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.5);
+    }
+}

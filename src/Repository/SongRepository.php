@@ -39,12 +39,23 @@ class SongRepository extends ServiceEntityRepository
         }
     }
 
-    public function randomOffer(): array
+    public function randomSong(): array
     {
         $queryBuilder = $this->createQueryBuilder('s')
             ->setMaxResults(1)
             ->orderBy('RAND()')
             ->getQuery();
+        return $queryBuilder->getResult();
+    }
+
+    public function findLikeTitle(string $title): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->where('s.title LIKE :title')
+            ->setParameter('title', '%' . $title . '%')
+            ->orderBy('s.title', 'ASC')
+            ->getQuery();
+
         return $queryBuilder->getResult();
     }
 

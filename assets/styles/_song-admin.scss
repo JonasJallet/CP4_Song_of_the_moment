@@ -1,13 +1,16 @@
-.admin-song-infos {
+.logo-pannel-admin {
+    fill: black;
+    height: 24px;
+    width: 24px;
+}
+
+.logo-pannel-youtube {
+    fill: #FF0000;
+    height: 24px;
+    width: 24px;
+}
+
+.text-infos-admin {
     color: black;
-    padding: 20px;
-}
-
-.admin-song-infos>p {
-    margin-bottom: 6px;
-}
-
-.card-admin {
-    padding: 0px;
-    width: auto;
+    margin: 6px 0px 6px 20px;
 }

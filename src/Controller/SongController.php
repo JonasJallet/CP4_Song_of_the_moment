@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/song')]
 class SongController extends AbstractController
@@ -29,15 +28,21 @@ class SongController extends AbstractController
     public function random(SongRepository $songRepository): Response
     {
         return $this->render('song/random.html.twig', [
-            'songs' => $songRepository->randomOffer(),
+            'songs' => $songRepository->randomSong(),
         ]);
     }
 
-    #[Route('/list', name: 'app_song_list', methods: ['GET'])]
-    public function list(SongRepository $songRepository): Response
+    #[Route('/list', name: 'app_song_list', methods: ['GET', 'POST'])]
+    public function list(Request $request, SongRepository $songRepository): Response
     {
+        if ($request->isMethod('POST')) {
+            $title = $request->get('title');
+            $songs = $songRepository->findLikeTitle($title);
+        } else {
+            $songs = $songRepository->findBy([], ['id' => 'desc']);
+        }
         return $this->render('song/list.html.twig', [
-            'songs' => $songRepository->findBy([], ['id' => 'desc']),
+            'songs' => $songs,
         ]);
     }
 
