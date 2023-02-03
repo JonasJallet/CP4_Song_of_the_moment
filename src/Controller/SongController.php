@@ -53,6 +53,7 @@ class SongController extends AbstractController
     }
 
     #[Route('/new', name: 'app_song_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, SongRepository $songRepository): Response
     {
         $song = new Song();
