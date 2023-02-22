@@ -57,6 +57,7 @@ class Song
     private ?string $photoAlbum = null;
 
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
+    #[ORM\OrderBy(["id" => "DESC"])]
     private Collection $users;
 
     public function __construct()

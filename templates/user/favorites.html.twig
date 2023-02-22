@@ -42,7 +42,7 @@
 						</div>
 						<div class="playlist">
 							{% for favorite in app.user.favorites %}
-								<div class="song-on-playlist d-flex flex-row align-items-center my-3" onclick="document.getElementById('YouTube-video-id').value='{{ favorite.linkYoutube }}'; document.getElementById('Album-photo-id').src='{{ favorite.photoAlbum }}'; youTubePlayerChangeVideoId();">
+								<div class="card_id song-on-playlist d-flex flex-row align-items-center my-3" onclick="document.getElementById('YouTube-video-id').value='{{ favorite.linkYoutube }}'; document.getElementById('Album-photo-id').src='{{ favorite.photoAlbum }}'; youTubePlayerChangeVideoId();">
 									<img class="photo-song-playlist shadow" src="{{ favorite.photoAlbum }}"/>
 									<div class="text-song-playlist d-flex flex-column">
 										<h5 class="my-1">{{ favorite.title }}</h5>

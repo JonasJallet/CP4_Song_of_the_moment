@@ -31,23 +31,12 @@
 								</h5>
 
 								{% if app.user %}
-									<a href="{{ path('app_song_add_favorite', {id: song.id}) }}">
-										{% if app.user.isInFavorite(song) == true %}
-											<svg xmlns="http://www.w3.org/2000/svg" class="heart-full bi bi-heart-fill" viewbox="0 0 16 16">
-												<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-											</svg>
-										{% endif %}
-										{% if app.user.isInFavorite(song) == false %}
-											<svg xmlns="http://www.w3.org/2000/svg" class="heart-empty bi bi-heart" viewbox="0 0 16 16">
-												<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-											</svg>
-										{% endif %}
+									<a id="favorite" href="{{ path('app_song_add_favorite', {id: song.id})}}">
+										<i class="heart-favorite bi {{ app.user.isInFavorite(song) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
 									</a>
 								{% else %}
 									<a href="{{ path('app_login') }}">
-										<svg xmlns="http://www.w3.org/2000/svg" class="heart-empty bi bi-heart" viewbox="0 0 16 16">
-											<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-										</svg>
+										<i class="heart-favorite bi bi-heart"></i>
 									</a>
 								{% endif %}
 

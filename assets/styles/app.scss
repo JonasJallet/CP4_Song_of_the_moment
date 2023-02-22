@@ -31,30 +31,6 @@ body {
     margin: 10px;
 }
 
-.heart-full,
-.heart-empty {
-    width: 30px;
-    height: 30px;
-    margin: 20px;
-}
-
-.heart-full {
-    fill: #EA2027;
-
-    &:hover {
-        fill: rgb(35, 35, 35);
-    }
-}
-
-.heart-empty {
-    fill: white;
-
-    &:hover {
-        fill: #EA2027;
-    }
-}
-
-
 .home-logo-h1 {
     font-size: 62px;
 }

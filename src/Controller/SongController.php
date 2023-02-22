@@ -7,10 +7,10 @@ use App\Form\SongType;
 use App\Repository\SongRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 #[Route('/song')]
 class SongController extends AbstractController
@@ -85,7 +85,7 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/favorite', name: 'app_song_add_favorite', methods: ['GET'])]
+    #[Route('/{id}/favorite', name: 'app_song_add_favorite', methods: ['GET', 'POST'])]
     public function addToFavorite(
         Song $song,
         UserRepository $userRepository
@@ -102,8 +102,11 @@ class SongController extends AbstractController
         }
         $userRepository->save($user, true);
 
-        // $favorite = $user instanceof User ? $user->isInFavorite($song) : null;
-        return $this->redirectToRoute('app_song_show', ['id' => $song->getId()]);
+        $isInFavorite = $user->isInFavorite($song);
+
+        return $this->json([
+            'isInFavorite' => $isInFavorite
+        ]);
     }
 
     #[Route('/{id}/edit', name: 'app_song_edit', methods: ['GET', 'POST'])]
