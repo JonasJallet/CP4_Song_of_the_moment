@@ -33,6 +33,12 @@
 										<path d="M5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5A1.5 1.5 0 0 1 5 3.5z"/>
 									</svg>
 								</div>
+								<div id="next">
+									<svg xmlns="http://www.w3.org/2000/svg" class="youtube-next bi bi-chevron-double-right" viewbox="0 0 16 16">
+										<path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+										<path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+									</svg>
+								</div>
 							</div>
 							<input id="YouTube-player-progress" type="range" value="0" min="0" max="100" onchange="youTubePlayerCurrentTimeChange(this.value);" oninput="youTubePlayerCurrentTimeSlide();">
 							<div class="framed d-none">
@@ -42,8 +48,8 @@
 						</div>
 						<div class="playlist">
 							{% for favorite in app.user.favorites %}
-								<div class="card_id song-on-playlist d-flex flex-row align-items-center my-3" onclick="document.getElementById('YouTube-video-id').value='{{ favorite.linkYoutube }}'; document.getElementById('Album-photo-id').src='{{ favorite.photoAlbum }}'; youTubePlayerChangeVideoId();">
-									<img class="photo-song-playlist shadow" src="{{ favorite.photoAlbum }}"/>
+								<div id="link_{{ favorite.linkYoutube }}_{{ favorite.photoAlbum }}" class="link_id song-on-playlist d-flex flex-row align-items-center my-3">
+									<img class="photo_song_id photo-song-playlist shadow" src="{{ favorite.photoAlbum }}"/>
 									<div class="text-song-playlist d-flex flex-column">
 										<h5 class="my-1">{{ favorite.title }}</h5>
 										<p class="my-1">{{ favorite.artist }}</p>

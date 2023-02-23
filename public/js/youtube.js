@@ -27,7 +27,6 @@ function onYouTubeIframeAPIReady() {
                 youTubePlayer.unMute();
                 break;
             case YT.PlayerState.ENDED:
-
                 break;
         }
     }
@@ -74,6 +73,30 @@ function youTubePlayerActive() {
  * load this video, pause it
  * and show new infos.
  */
+// let classLinks = document.getElementsByClassName("link_id");
+// if (classLinks.length > 0) {
+//     let currentVideoIndex = 0;
+
+//     for (let i = 0; i < classLinks.length; i++) {
+//         classLinks[i].addEventListener("click", function ChangeVideo() {
+//             let youtubeId = this.id.substring(5, 16);
+//             let photoAlbum = this.id.substring(17);
+//             document.getElementById('YouTube-video-id').value = youtubeId;
+//             document.getElementById('Album-photo-id').src = photoAlbum;
+//             youTubePlayerChangeVideoId();
+//         })
+//     }
+
+//     document.getElementById("next").addEventListener("click", function youTubePlayerNext() {
+//         currentVideoIndex = (currentVideoIndex + 1) % classLinks.length;
+//         let nextYoutubeId = classLinks[currentVideoIndex].id.substring(5, 16);
+//         let nextPhotoAlbum = classLinks[currentVideoIndex].id.substring(17);
+//         document.getElementById('YouTube-video-id').value = nextYoutubeId;
+//         document.getElementById('Album-photo-id').src = nextPhotoAlbum;
+//         youTubePlayerChangeVideoId();
+//     })
+// }
+
 function youTubePlayerChangeVideoId() {
     'use strict';
 
