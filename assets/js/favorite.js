@@ -1,4 +1,8 @@
-document.getElementById("favorite").addEventListener("click", addToFavorite);
+let addFavorite = document.getElementById("favorite");
+
+if (addFavorite) {
+    addFavorite.addEventListener("click", addToFavorite);
+}
 
 function addToFavorite(e) {
     e.preventDefault();

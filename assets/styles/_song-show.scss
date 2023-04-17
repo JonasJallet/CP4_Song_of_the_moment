@@ -21,7 +21,7 @@
     background-size: cover;
     position: absolute;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 .show-song {
@@ -48,7 +48,7 @@ svg.youtube-play,
     cursor: pointer;
     height: 40px;
     width: 40px;
-    margin: 5px;
+    margin: 0 5px 0 5px;
 
     &:hover {
         fill: white;

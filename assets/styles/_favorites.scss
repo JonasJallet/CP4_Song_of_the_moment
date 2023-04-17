@@ -1,20 +1,19 @@
 .song-on-playlist {
     cursor: pointer;
-    margin: 0px 50px 0px 50px;
 
     &:hover {
-        background-color: rgba(8, 7, 7, 0.384);
+        background-color: rgba(80, 80, 80, 0.401);
     }
 }
 
 .photo-song-playlist {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
 }
 
 #Album-photo-id {
-    width: 360px;
-    height: 360px;
+    width: 40px;
+    height: 40px;
 }
 
 .playlist {
@@ -31,4 +30,23 @@
 i.heart-favorite {
     font-size: 30px;
     color: white;
+}
+
+.thead-playlist {
+    border-bottom: 1px solid rgb(72, 72, 72);
+}
+
+.infos-playing {
+    min-width: 400px;
+    height: 45px;
+}
+
+.list-song {
+    margin-bottom: 90px;
+}
+
+#Infos-id {
+    text-align: center;
+    padding: 0 0 2px 0;
+    height: 29px;
 }

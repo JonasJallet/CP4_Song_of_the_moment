@@ -5,5 +5,5 @@ require('bootstrap');
 // start the Stimulus application
 
 import './bootstrap';
-import 'bootstrap-icons/font/bootstrap-icons.css'; 
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import './js/favorite.js';

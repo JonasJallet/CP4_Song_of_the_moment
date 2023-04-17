@@ -27,6 +27,7 @@ function onYouTubeIframeAPIReady() {
                 youTubePlayer.unMute();
                 break;
             case YT.PlayerState.ENDED:
+                document.getElementById("next").click();
                 break;
         }
     }
@@ -61,11 +62,52 @@ function onYouTubeIframeAPIReady() {
 }
 
 /**
- * :return: true if the player is active, else false
+ * return true if the player is active, else false
  */
 function youTubePlayerActive() {
     'use strict';
     return youTubePlayer;
+}
+
+
+
+const songRows = document.querySelectorAll('.song-on-playlist');
+let currentRow = 0;
+
+if (songRows.length > 0) {
+    songRows.forEach((row, index) => {
+        let youtube = row.getAttribute('data-youtube');
+        let photo = row.getAttribute('data-photo');
+        let title = row.getAttribute('data-title');
+        let artist = row.getAttribute('data-artist');
+        row.addEventListener('click', () => {
+            document.getElementById('YouTube-video-id').value = youtube;
+            document.getElementById('Album-photo-id').src = photo;
+            document.getElementById('Infos-id').innerHTML = title + ' - ' + artist;
+            youTubePlayerChangeVideoId();
+            currentRow = index;
+        });
+    });
+
+    document.getElementById('next').addEventListener('click', () => {
+        currentRow = (currentRow + 1) % songRows.length;
+        if (currentRow >= songRows.length) {
+            currentRow = 0;
+        }
+        let nextRow = songRows[currentRow];
+        let youtube = nextRow.getAttribute('data-youtube');
+        let photo = nextRow.getAttribute('data-photo');
+        let title = nextRow.getAttribute('data-title');
+        let artist = nextRow.getAttribute('data-artist');
+        document.getElementById('YouTube-video-id').value = youtube;
+        document.getElementById('Album-photo-id').src = photo;
+        document.getElementById('Infos-id').innerHTML = title + ' - ' + artist;
+        youTubePlayerChangeVideoId();
+
+        if (currentRow === songRows.length - 1) {
+            document.getElementById("stop").click();
+        }
+    });
 }
 
 /**
@@ -73,29 +115,6 @@ function youTubePlayerActive() {
  * load this video, pause it
  * and show new infos.
  */
-// let classLinks = document.getElementsByClassName("link_id");
-// if (classLinks.length > 0) {
-//     let currentVideoIndex = 0;
-
-//     for (let i = 0; i < classLinks.length; i++) {
-//         classLinks[i].addEventListener("click", function ChangeVideo() {
-//             let youtubeId = this.id.substring(5, 16);
-//             let photoAlbum = this.id.substring(17);
-//             document.getElementById('YouTube-video-id').value = youtubeId;
-//             document.getElementById('Album-photo-id').src = photoAlbum;
-//             youTubePlayerChangeVideoId();
-//         })
-//     }
-
-//     document.getElementById("next").addEventListener("click", function youTubePlayerNext() {
-//         currentVideoIndex = (currentVideoIndex + 1) % classLinks.length;
-//         let nextYoutubeId = classLinks[currentVideoIndex].id.substring(5, 16);
-//         let nextPhotoAlbum = classLinks[currentVideoIndex].id.substring(17);
-//         document.getElementById('YouTube-video-id').value = nextYoutubeId;
-//         document.getElementById('Album-photo-id').src = nextPhotoAlbum;
-//         youTubePlayerChangeVideoId();
-//     })
-// }
 
 function youTubePlayerChangeVideoId() {
     'use strict';
