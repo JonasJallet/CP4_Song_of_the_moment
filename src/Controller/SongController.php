@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Song;
 use App\Form\SongType;
+use App\Manager\SongManager;
 use App\Repository\SongRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,13 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/song')]
 class SongController extends AbstractController
 {
+    private SongManager $songManager;
+
+    public function __construct(SongManager $songManager)
+    {
+        $this->songManager = $songManager;
+    }
+
     #[Route('/', name: 'app_song_index', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function index(Request $request, SongRepository $songRepository): Response
@@ -57,14 +65,10 @@ class SongController extends AbstractController
     public function new(Request $request, SongRepository $songRepository): Response
     {
         $song = new Song();
-        $form = $this->createForm(SongType::class, $song);
-        $form->handleRequest($request);
+        $form = $this->createForm(SongType::class, $song)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkYoutube = $song->getLinkYoutube();
-            $linkReplace = str_replace(['https://www.youtube.com/watch?v=', 'https://youtu.be/'], '', $linkYoutube);
-            $song->setLinkYoutube($linkReplace);
-
+            $this->songManager->formatLinkYoutube($song);
             $songRepository->save($song, true);
 
             return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
@@ -113,14 +117,10 @@ class SongController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Song $song, SongRepository $songRepository): Response
     {
-        $form = $this->createForm(SongType::class, $song);
-        $form->handleRequest($request);
+        $form = $this->createForm(SongType::class, $song)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkYoutube = $song->getLinkYoutube();
-            $linkReplace = str_replace(['https://www.youtube.com/watch?v=', 'https://youtu.be/'], '', $linkYoutube);
-            $song->setLinkYoutube($linkReplace);
-
+            $this->songManager->formatLinkYoutube($song);
             $songRepository->save($song, true);
 
             return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
