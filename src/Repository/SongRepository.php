@@ -42,6 +42,8 @@ class SongRepository extends ServiceEntityRepository
     public function randomSong(): array
     {
         $queryBuilder = $this->createQueryBuilder('s')
+            ->where('s.isApproved = :approved')
+            ->setParameter('approved', true)
             ->setMaxResults(1)
             ->orderBy('RAND()')
             ->getQuery();
@@ -51,9 +53,22 @@ class SongRepository extends ServiceEntityRepository
     public function randomHomeSongs(): array
     {
         $queryBuilder = $this->createQueryBuilder('s')
+            ->where('s.isApproved = :approved')
+            ->setParameter('approved', true)
             ->setMaxResults(4)
             ->orderBy('RAND()')
             ->getQuery();
+        return $queryBuilder->getResult();
+    }
+
+    public function allApprovedSong(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->where('s.isApproved = :approved')
+            ->setParameter('approved', true)
+            ->orderBy('s.id', 'DESC')
+            ->getQuery();
+
         return $queryBuilder->getResult();
     }
 
@@ -61,35 +76,29 @@ class SongRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('s')
             ->where('s.title LIKE :title')
+            ->andWhere('s.isApproved = :approved')
             ->setParameter('title', '%' . $title . '%')
+            ->setParameter('approved', true)
             ->orderBy('s.title', 'ASC')
             ->getQuery();
 
         return $queryBuilder->getResult();
     }
 
-    //    /**
-    //     * @return Song[] Returns an array of Song objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('s.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findLikeApproved(bool $isApproved): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
 
-    //    public function findOneBySomeField($value): ?Song
-    //    {
-    //        return $this->createQueryBuilder('s')
-    //            ->andWhere('s.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if ($isApproved === true) {
+            $queryBuilder->where('s.isApproved = :approved')
+                ->setParameter('approved', true);
+        } elseif ($isApproved === false) {
+            $queryBuilder->where('s.isApproved = :approved')
+                ->setParameter('approved', false);
+        }
+
+        $queryBuilder->orderBy('s.id', 'DESC');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

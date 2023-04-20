@@ -1,4 +1,4 @@
-.backsong {
+.back-song {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -6,7 +6,7 @@
     height: 100vh;
 }
 
-.backblur {
+.back-blur {
     backdrop-filter: blur(10px) opacity(0.9);
     background-size: cover;
     position: absolute;
@@ -14,7 +14,7 @@
     height: 100vh;
 }
 
-#backover {
+#back-hover {
     background: url(../../assets/images/backover.png);
     background-repeat: no-repeat;
     background-position: center center;

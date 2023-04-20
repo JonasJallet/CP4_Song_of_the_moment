@@ -53,7 +53,7 @@ class SongController extends AbstractController
             $title = $request->get('title');
             $songs = $songRepository->findLikeTitle($title);
         } else {
-            $songs = $songRepository->findBy([], ['id' => 'desc']);
+            $songs = $songRepository->allApprovedSong();
         }
         return $this->render('song/list.html.twig', [
             'songs' => $songs,
@@ -82,8 +82,10 @@ class SongController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_song_show', methods: ['GET'])]
-    public function show(Song $song): Response
+    public function show(int $id, SongRepository $songRepository): Response
     {
+        $song = $songRepository->findOneBy(['id' => $id, 'isApproved' => true]);
+
         return $this->render('song/show.html.twig', [
             'song' => $song,
         ]);
