@@ -12,5 +12,38 @@
 
 .text-infos-admin {
     color: black;
-    margin: 6px 0px 6px 20px;
+    margin: 6px 0 6px 20px;
 }
+
+.logo-approve {
+    background-color: #14A44D;
+    padding: 5px;
+    border-radius: 50px;
+    fill: #FFFFFF;
+    height: 32px;
+    width: 32px;
+}
+
+.button-approved, .button-unapproved, .button-addSong {
+    color: white;
+    font-size: 20px;
+    width: 220px;
+    margin: 10px;
+
+    &:hover {
+        background: rgba(0, 0, 0, 0.5);
+    }
+}
+
+.button-approved {
+    background-color: #14A44D;
+}
+
+.button-unapproved {
+    background-color: #E4A11B;
+}
+
+.button-addSong {
+    background-color: #3B71CA;
+}
+

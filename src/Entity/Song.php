@@ -60,6 +60,9 @@ class Song
     #[ORM\OrderBy(["id" => "DESC"])]
     private Collection $users;
 
+    #[ORM\Column]
+    private ?bool $isApproved = false;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -153,6 +156,26 @@ class Song
         if ($this->users->removeElement($user)) {
             $user->removeFavorite($this);
         }
+
+        return $this;
+    }
+
+    public function isIsApproved(): ?bool
+    {
+        return $this->isApproved;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsApproved(): ?bool
+    {
+        return $this->isApproved;
+    }
+
+    public function setIsApproved(bool $isApproved): self
+    {
+        $this->isApproved = $isApproved;
 
         return $this;
     }

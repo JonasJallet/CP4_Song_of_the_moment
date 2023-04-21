@@ -1,6 +1,7 @@
 document.getElementById("favorite").addEventListener("click", addToFavorite);
 
-function addToFavorite(e) {
+function addToFavorite(e)
+{
     e.preventDefault();
 
     const favoriteLink = e.currentTarget;

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Song;
 use App\Form\SongType;
+use App\Manager\SongManager;
 use App\Repository\SongRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,15 +16,25 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/song')]
 class SongController extends AbstractController
 {
+    private SongManager $songManager;
+
+    public function __construct(SongManager $songManager)
+    {
+        $this->songManager = $songManager;
+    }
+
     #[Route('/', name: 'app_song_index', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function index(Request $request, SongRepository $songRepository): Response
     {
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod('POST') && !empty($request->get('title'))) {
             $title = $request->get('title');
             $songs = $songRepository->findLikeTitle($title);
+        } elseif ($request->isMethod('POST') && !empty($request->get('isApproved'))) {
+            $isApproved = $request->get('isApproved');
+            $songs = $songRepository->findLikeApproved($isApproved);
         } else {
-            $songs = $songRepository->findBy([], ['id' => 'desc']);
+            $songs = $songRepository->findBy([], ['isApproved' => 'asc', 'id' => 'asc']);
         }
         return $this->render('song/index.html.twig', [
             'songs' => $songs,
@@ -43,9 +54,9 @@ class SongController extends AbstractController
     {
         if ($request->isMethod('POST')) {
             $title = $request->get('title');
-            $songs = $songRepository->findLikeTitle($title);
+            $songs = $songRepository->findLikeApprovedTitle($title);
         } else {
-            $songs = $songRepository->findBy([], ['id' => 'desc']);
+            $songs = $songRepository->allApprovedSong();
         }
         return $this->render('song/list.html.twig', [
             'songs' => $songs,
@@ -57,14 +68,10 @@ class SongController extends AbstractController
     public function new(Request $request, SongRepository $songRepository): Response
     {
         $song = new Song();
-        $form = $this->createForm(SongType::class, $song);
-        $form->handleRequest($request);
+        $form = $this->createForm(SongType::class, $song)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkYoutube = $song->getLinkYoutube();
-            $linkReplace = str_replace(['https://www.youtube.com/watch?v=', 'https://youtu.be/'], '', $linkYoutube);
-            $song->setLinkYoutube($linkReplace);
-
+            $this->songManager->formatLinkYoutube($song);
             $songRepository->save($song, true);
 
             return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
@@ -78,10 +85,35 @@ class SongController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_song_show', methods: ['GET'])]
-    public function show(Song $song): Response
+    public function show(int $id, SongRepository $songRepository): Response
     {
+        $song = $songRepository->findOneBy(['id' => $id, 'isApproved' => true]);
+
         return $this->render('song/show.html.twig', [
             'song' => $song,
+        ]);
+    }
+
+    #[Route('/{id}/isApproved', name: 'app_song_add_approved', methods: ['GET', 'POST'])]
+    public function addToApproved(
+        Song $song,
+        SongRepository $songRepository,
+        Request $request
+    ): Response {
+        $songs = $songRepository->allApprovedSong();
+
+        if ($request->isMethod('POST')) {
+            $id = $request->get('id');
+            $song = $songRepository->findOneBy(['id' => $id]);
+            $song->setIsApproved(true);
+            $songRepository->save($song, true);
+
+            return $this->json(data: [
+                'isApproved' => $song
+            ]);
+        }
+        return $this->render('song/list.html.twig', [
+            'songs' => $songs,
         ]);
     }
 
@@ -113,14 +145,10 @@ class SongController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Song $song, SongRepository $songRepository): Response
     {
-        $form = $this->createForm(SongType::class, $song);
-        $form->handleRequest($request);
+        $form = $this->createForm(SongType::class, $song)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $linkYoutube = $song->getLinkYoutube();
-            $linkReplace = str_replace(['https://www.youtube.com/watch?v=', 'https://youtu.be/'], '', $linkYoutube);
-            $song->setLinkYoutube($linkReplace);
-
+            $this->songManager->formatLinkYoutube($song);
             $songRepository->save($song, true);
 
             return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);

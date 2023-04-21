@@ -1,6 +1,6 @@
 .search-buttton {
     position: absolute;
-    border: 0px;
+    border: 0;
     padding: 8px;
     margin-right: 6px;
 }
@@ -16,7 +16,6 @@
     border-radius: 20px;
     border-width: 2px;
     font-size: 20px;
-    box-shadow: 0px;
 
 
     &::placeholder {
