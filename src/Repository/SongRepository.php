@@ -102,13 +102,15 @@ class SongRepository extends ServiceEntityRepository
 
         if ($isApproved === 'true') {
             $queryBuilder->where('s.isApproved = :approved')
-                ->setParameter('approved', true);
+                ->setParameter('approved', true)
+                ->orderBy('s.id', 'DESC');
         } elseif ($isApproved === 'false') {
             $queryBuilder->where('s.isApproved = :approved')
-                ->setParameter('approved', false);
+                ->setParameter('approved', false)
+                ->orderBy('s.id', 'ASC');
         }
 
-        $queryBuilder->orderBy('s.id', 'DESC');
+//        $queryBuilder->orderBy('s.id', 'DESC');
 
         return $queryBuilder->getQuery()->getResult();
     }

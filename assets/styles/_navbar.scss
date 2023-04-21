@@ -20,8 +20,8 @@ a.nav-link {
 }
 
 button.navbar-toggler {
-    border: 0px;
-    padding: 0px;
+    border: 0;
+    padding: 0;
 
     &:focus {
         box-shadow: none !important;
@@ -33,7 +33,7 @@ a.logo-sotm-text.navbar-brand {
 }
 
 .sotm-text-p {
-    margin: 0px 10px 0px 10px;
+    margin: 0 8px 0 8px;
     text-align: center;
 }
 

@@ -165,6 +165,14 @@ class Song
         return $this->isApproved;
     }
 
+    /**
+     * @return bool|null
+     */
+    public function getIsApproved(): ?bool
+    {
+        return $this->isApproved;
+    }
+
     public function setIsApproved(bool $isApproved): self
     {
         $this->isApproved = $isApproved;

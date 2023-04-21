@@ -34,7 +34,7 @@ class SongController extends AbstractController
             $isApproved = $request->get('isApproved');
             $songs = $songRepository->findLikeApproved($isApproved);
         } else {
-            $songs = $songRepository->findBy([], ['id' => 'desc']);
+            $songs = $songRepository->findBy([], ['isApproved' => 'asc', 'id' => 'asc']);
         }
         return $this->render('song/index.html.twig', [
             'songs' => $songs,
@@ -91,6 +91,29 @@ class SongController extends AbstractController
 
         return $this->render('song/show.html.twig', [
             'song' => $song,
+        ]);
+    }
+
+    #[Route('/{id}/isApproved', name: 'app_song_add_approved', methods: ['GET', 'POST'])]
+    public function addToApproved(
+        Song $song,
+        SongRepository $songRepository,
+        Request $request
+    ): Response {
+        $songs = $songRepository->allApprovedSong();
+
+        if ($request->isMethod('POST')) {
+            $id = $request->get('id');
+            $song = $songRepository->findOneBy(['id' => $id]);
+            $song->setIsApproved(true);
+            $songRepository->save($song, true);
+
+            return $this->json(data: [
+                'isApproved' => $song
+            ]);
+        }
+        return $this->render('song/list.html.twig', [
+            'songs' => $songs,
         ]);
     }
 
