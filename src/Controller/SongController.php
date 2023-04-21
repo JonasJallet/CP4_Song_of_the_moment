@@ -27,9 +27,12 @@ class SongController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function index(Request $request, SongRepository $songRepository): Response
     {
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod('POST') && !empty($request->get('title'))) {
             $title = $request->get('title');
             $songs = $songRepository->findLikeTitle($title);
+        } elseif ($request->isMethod('POST') && !empty($request->get('isApproved'))) {
+            $isApproved = $request->get('isApproved');
+            $songs = $songRepository->findLikeApproved($isApproved);
         } else {
             $songs = $songRepository->findBy([], ['id' => 'desc']);
         }
@@ -51,7 +54,7 @@ class SongController extends AbstractController
     {
         if ($request->isMethod('POST')) {
             $title = $request->get('title');
-            $songs = $songRepository->findLikeTitle($title);
+            $songs = $songRepository->findLikeApprovedTitle($title);
         } else {
             $songs = $songRepository->allApprovedSong();
         }

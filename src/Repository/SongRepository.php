@@ -76,6 +76,17 @@ class SongRepository extends ServiceEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('s')
             ->where('s.title LIKE :title')
+            ->setParameter('title', '%' . $title . '%')
+            ->orderBy('s.title', 'ASC')
+            ->getQuery();
+
+        return $queryBuilder->getResult();
+    }
+
+    public function findLikeApprovedTitle(string $title): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->where('s.title LIKE :title')
             ->andWhere('s.isApproved = :approved')
             ->setParameter('title', '%' . $title . '%')
             ->setParameter('approved', true)
@@ -85,14 +96,14 @@ class SongRepository extends ServiceEntityRepository
         return $queryBuilder->getResult();
     }
 
-    public function findLikeApproved(bool $isApproved): array
+    public function findLikeApproved(string $isApproved): array
     {
         $queryBuilder = $this->createQueryBuilder('s');
 
-        if ($isApproved === true) {
+        if ($isApproved === 'true') {
             $queryBuilder->where('s.isApproved = :approved')
                 ->setParameter('approved', true);
-        } elseif ($isApproved === false) {
+        } elseif ($isApproved === 'false') {
             $queryBuilder->where('s.isApproved = :approved')
                 ->setParameter('approved', false);
         }

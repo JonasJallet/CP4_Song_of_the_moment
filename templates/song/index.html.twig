@@ -20,10 +20,22 @@
                 </div>
             </div>
         </form>
-        <a class="button btn" href="{{ path('app_song_new') }}">Ajouter un nouveau son</a>
+
+        <div class="d-flex">
+            <form method="post" action="{{ path('app_song_index') }}">
+                <input type="hidden" name="isApproved" value="false" />
+                <button type="submit" class="button btn">Show Unapproved</button>
+            </form>
+
+            <form method="post" action="{{ path('app_song_index') }}">
+                <input type="hidden" name="isApproved" value="true" />
+                <button type="submit" class="button btn">Show Approved</button>
+            </form>
+
+            <a class="button btn" href="{{ path('app_song_new') }}">Ajouter un nouveau son</a>
+        </div>
 
         <div class="row d-flex flex-row justify-content-center">
-            {{ dump(songs) }}
             {% for song in songs %}
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6 col-xxl-4">
                     <div class="card-admin card mb-4 rounded-4 shadow-lg d-flex flex-row border-0 shadow-lg">
