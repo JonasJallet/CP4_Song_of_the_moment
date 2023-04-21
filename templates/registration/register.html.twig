@@ -3,33 +3,33 @@
 {% block title %}Inscription
 {% endblock %}
 
-{% block styleBody %}class="backome"
+{% block styleBody %}class="back-home"
 {% endblock %}
 
 {% block body %}
-	<section class="backblur">
-		<div id="backover">
-			<main class="form-main-login container">
-				<h2 class="text-center">Inscription</h2>
+    <section class="back-blur">
+        <div id="back-hover">
+            <main class="form-main-login container">
+                <h2 class="text-center">Inscription</h2>
 
-				<div class="d-flex justify-content-center">
-					{{ form_start(registrationForm, {'attr': {'class': 'col-11 col-md-7 col-lg-5 form-login d-flex flex-column'}}) }}
-					{{ form_row(registrationForm.username, {
-            label: 'Pseudo', 'label_attr': {'class': 'form-label'},
-            'attr': {'class': 'form-control'}
-        }) }}
-					{{ form_row(registrationForm.plainPassword, {
-            label: 'Mot de passe', 'label_attr': {'class': 'form-label'},
-            'attr': {'class': 'form-control'}
-        }) }}
-					{{ form_row(registrationForm.agreeTerms, {
-            label: "J\'accepte les conditions d\'utilisations", 'label_attr': {'class': 'form-label'}
-        }) }}
+                <div class="d-flex justify-content-center">
+                    {{ form_start(registrationForm, {'attr': {'class': 'col-11 col-md-7 col-lg-5 form-login d-flex flex-column'}}) }}
+                    {{ form_row(registrationForm.username, {
+                    label: 'Pseudo', 'label_attr': {'class': 'form-label'},
+                    'attr': {'class': 'form-control'}
+                    }) }}
+                    {{ form_row(registrationForm.plainPassword, {
+                    label: 'Mot de passe', 'label_attr': {'class': 'form-label'},
+                    'attr': {'class': 'form-control'}
+                    }) }}
+                    {{ form_row(registrationForm.agreeTerms, {
+                    label: "J\'accepte les conditions d\'utilisations", 'label_attr': {'class': 'form-label'}
+                    }) }}
 
-					<button type="submit" class="button btn align-self-center">Inscription</button>
-					{{ form_end(registrationForm) }}
-				</div>
-			</main>
-		</div>
-	</section>
+                    <button type="submit" class="button btn align-self-center">Inscription</button>
+                    {{ form_end(registrationForm) }}
+                </div>
+            </main>
+        </div>
+    </section>
 {% endblock %}
