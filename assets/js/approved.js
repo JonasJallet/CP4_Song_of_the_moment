@@ -27,6 +27,6 @@ function addToApproved(e)
             }
         })
         .catch(error => {
-            console.error(error);
+            alert(error);
         });
 }
