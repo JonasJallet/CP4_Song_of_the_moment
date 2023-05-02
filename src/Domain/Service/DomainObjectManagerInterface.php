@@ -2,8 +2,9 @@
 
 namespace App\Domain\Service\Manager;
 
+use App\Domain\Model\DomainObjectModelInterface;
+
 interface DomainObjectManagerInterface
 {
-
-    public function update($order, array $fields);
+    public function update(DomainObjectModelInterface $object, array $fields);
 }

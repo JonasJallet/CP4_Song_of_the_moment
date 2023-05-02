@@ -12,4 +12,6 @@ interface DomainObjectModelInterface
 
     public function setId(IdObjectValue $id);
 
+    public function getField():string;
+    public function setField(string $field);
 }
