@@ -2,11 +2,11 @@
 
 namespace App\Form;
 
-use App\Entity\Song;
+use App\Infrastructure\Persistence\Entity\Song;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 
 class SongType extends AbstractType

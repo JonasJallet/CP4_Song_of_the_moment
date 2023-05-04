@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace App\Infrastructure\Controller;
 
-use App\Repository\UserRepository;
+use App\Infrastructure\Persistence\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserController extends AbstractController

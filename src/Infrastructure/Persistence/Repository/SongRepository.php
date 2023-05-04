@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Repository;
+namespace App\Infrastructure\Persistence\Repository;
 
-use App\Entity\Song;
+use App\Domain\Repository\DomainSongRepositoryInterface;
+use App\Infrastructure\Persistence\Entity\Song;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,7 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Song[]    findAll()
  * @method Song[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SongRepository extends ServiceEntityRepository
+class SongRepository extends ServiceEntityRepository implements DomainSongRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -109,8 +110,6 @@ class SongRepository extends ServiceEntityRepository
                 ->setParameter('approved', false)
                 ->orderBy('s.id', 'ASC');
         }
-
-//        $queryBuilder->orderBy('s.id', 'DESC');
 
         return $queryBuilder->getQuery()->getResult();
     }

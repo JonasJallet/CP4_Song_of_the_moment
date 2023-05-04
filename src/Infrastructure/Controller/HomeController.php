@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace App\Infrastructure\Controller;
 
+use App\Infrastructure\Persistence\Repository\SongRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\SongRepository;
 
 class HomeController extends AbstractController
 {

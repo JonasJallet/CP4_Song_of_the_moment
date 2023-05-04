@@ -1,41 +1,42 @@
 <?php
 
-namespace App\Controller;
+namespace App\Infrastructure\Controller;
 
-use App\Entity\Song;
+use App\Application\Query\GetSongById\GetSongById;
 use App\Form\SongType;
-use App\Manager\SongManager;
-use App\Repository\SongRepository;
-use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Infrastructure\Manager\SongManager;
+use App\Infrastructure\Persistence\Entity\Song;
+use App\Infrastructure\Persistence\Repository\SongRepository;
+use App\Infrastructure\Persistence\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/song')]
 class SongController extends AbstractController
 {
-    private SongManager $songManager;
-
-    public function __construct(SongManager $songManager)
-    {
-        $this->songManager = $songManager;
+    public function __construct(
+        private MessageBusInterface $queryBus,
+        private MessageBusInterface $commandBus,
+    ) {
     }
 
     #[Route('/', name: 'app_song_index', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function index(Request $request, SongRepository $songRepository): Response
+    public function index(Request $request): Response
     {
-        if ($request->isMethod('POST') && !empty($request->get('title'))) {
-            $title = $request->get('title');
-            $songs = $songRepository->findLikeTitle($title);
-        } elseif ($request->isMethod('POST') && !empty($request->get('isApproved'))) {
-            $isApproved = $request->get('isApproved');
-            $songs = $songRepository->findLikeApproved($isApproved);
+
+
+        if ($request->isMethod('POST')) {
+            $getSongs = new GetSongsByTitle();
+            $songs = $this->queryBus->dispatch($getSongs);
         } else {
-            $songs = $songRepository->findBy([], ['isApproved' => 'asc', 'id' => 'asc']);
+            $songs = $songRepository->findBy([], ['id' => 'desc']);
         }
+
         return $this->render('song/index.html.twig', [
             'songs' => $songs,
         ]);
@@ -84,10 +85,12 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_song_show', methods: ['GET'])]
-    public function show(int $id, SongRepository $songRepository): Response
+    #[Route('/{songId}', name: 'app_song_show', methods: ['GET'])]
+    public function show(int $songId): Response
     {
-        $song = $songRepository->findOneBy(['id' => $id, 'isApproved' => true]);
+        $getSong = new GetSongById();
+        $getSong->songId = $songId;
+        $song = $this->queryBus->dispatch($getSong);
 
         return $this->render('song/show.html.twig', [
             'song' => $song,

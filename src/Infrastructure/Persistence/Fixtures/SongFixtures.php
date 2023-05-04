@@ -1,8 +1,8 @@
 <?php
 
-namespace App\DataFixtures;
+namespace App\Infrastructure\Persistence\Fixtures;
 
-use App\Entity\Song;
+use App\Infrastructure\Persistence\Entity\Song;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 

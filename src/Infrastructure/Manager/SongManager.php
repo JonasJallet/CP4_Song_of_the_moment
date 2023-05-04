@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Manager;
+namespace App\Infrastructure\Manager;
 
-use App\Entity\Song;
+use App\Infrastructure\Persistence\Entity\Song;
 
 class SongManager
 {
