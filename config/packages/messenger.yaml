@@ -11,22 +11,23 @@ framework:
                 middleware:
                     - doctrine_transaction
             accounting.bus:
-    # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
-    # failure_transport: failed
+        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
+        # failure_transport: failed
 
-    transports:
-        command: 'sync://'
-        query: 'sync://'
-        # https://symfony.com/doc/current/messenger.html#transport-configuration
-        async:
-            dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-            retry_strategy:
-                max_retries: 0
-        accounting:
-            dsn: '%env(MESSENGER_TRANSPORT_DSN_ACCOUNTING)%'
-            retry_strategy:
-                max_retries: 0
+        transports:
+            command: 'sync://'
+            query: 'sync://'
+            # https://symfony.com/doc/current/messenger.html#transport-configuration
+            async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                retry_strategy:
+                    max_retries: 0
+            accounting:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN_ACCOUNTING)%'
+                retry_strategy:
+                    max_retries: 0
 
-        # failed: 'doctrine://default?queue_name=failed'
-        # sync: 'sync://'
-        # async: 'sync://'
+            # failed: 'doctrine://default?queue_name=failed'
+            # sync: 'sync://'
+            # async: 'sync://'
+            failed: 'doctrine://default?queue_name=failed'

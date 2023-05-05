@@ -2,9 +2,9 @@
 
 namespace App\Domain\Service\Manager;
 
-use App\Domain\Model\DomainObjectModelInterface;
+use App\Domain\Model\DomainSongModelInterface;
 
-interface DomainObjectManagerInterface
+interface DomainSongManagerInterface
 {
-    public function update(DomainObjectModelInterface $object, array $fields);
+    public function update(DomainSongModelInterface $object, array $fields);
 }

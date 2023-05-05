@@ -35,10 +35,6 @@ services:
         resource: '../src/Infrastructure/Controller'
         tags: [ controller.service_arguments ]
 
-    App\Application\Query\QueryHandler:
+    App\Application\Query\GetSongById\GetSongByIdHandler:
         tags: [ { name: messenger.message_handler, bus: query.bus } ]
-        autoconfigure: false
-
-    App\Application\Query\CommandHandler:
-        tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
