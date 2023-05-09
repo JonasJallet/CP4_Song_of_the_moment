@@ -17,7 +17,6 @@ class InfrastructureObjectManager implements DomainObjectManagerInterface
     {
         if (isset($fields['field'])) {
             $object->setField($fields['field']);
-
         }
         $this->entityManager->persist($object);
         $this->entityManager->flush();
