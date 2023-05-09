@@ -42,3 +42,7 @@ services:
     App\Application\Query\GetSongById\GetSongByIdHandler:
         tags: [ { name: messenger.message_handler, bus: query.bus } ]
         autoconfigure: false
+
+    App\Application\Command\DeleteDomainSong\DeleteDomainSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false

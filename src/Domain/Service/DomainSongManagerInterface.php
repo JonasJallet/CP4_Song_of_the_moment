@@ -6,5 +6,5 @@ use App\Domain\Model\DomainSongModelInterface;
 
 interface DomainSongManagerInterface
 {
-    public function update(DomainSongModelInterface $object, array $fields);
+    public function formatLinkYoutube(string $linkYoutube);
 }

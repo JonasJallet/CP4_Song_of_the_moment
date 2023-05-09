@@ -2,9 +2,10 @@
 
 namespace App\Infrastructure\Controller;
 
+use App\Application\Command\DeleteDomainSong\DeleteDomainSong;
 use App\Application\Query\GetAllApprovedSongs\GetAllApprovedSongs;
 use App\Application\Query\GetSongById\GetSongById;
-use App\Form\SongType;
+use App\Infrastructure\Form\SongType;
 use App\Infrastructure\Manager\SongManager;
 use App\Infrastructure\Persistence\Entity\Song;
 use App\Infrastructure\Persistence\Repository\SongRepository;
@@ -22,9 +23,14 @@ class SongController extends AbstractController
 {
     private SongManager $songManager;
     private MessageBusInterface $queryBus;
-    public function __construct(MessageBusInterface $queryBus, SongManager $songManager)
-    {
+    private MessageBusInterface $commandBus;
+    public function __construct(
+        MessageBusInterface $queryBus,
+        MessageBusInterface $commandBus,
+        SongManager $songManager
+    ) {
         $this->queryBus = $queryBus;
+        $this->commandBus = $commandBus;
         $this->songManager = $songManager;
     }
 
@@ -125,7 +131,7 @@ class SongController extends AbstractController
             ]);
         }
         return $this->render('song/list.html.twig', [
-            'songs' => $songs,
+            'song' => $song,
         ]);
     }
 
@@ -153,7 +159,7 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_song_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/update', name: 'app_song_update', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Song $song, SongRepository $songRepository): Response
     {
@@ -166,18 +172,20 @@ class SongController extends AbstractController
             return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('song/edit.html.twig', [
+        return $this->renderForm('song/update.html.twig', [
             'song' => $song,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_song_delete', methods: ['POST'])]
+    #[Route('/delete/{songId}', name: 'app_song_delete', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(Request $request, Song $song, SongRepository $songRepository): Response
+    public function delete(int $songId, Request $request): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $song->getId(), $request->request->get('_token'))) {
-            $songRepository->remove($song, true);
+        if ($this->isCsrfTokenValid('delete' . $songId, $request->request->get('_token'))) {
+            $deleteSong = new DeleteDomainSong();
+            $deleteSong->songId = $songId;
+            $this->commandBus->dispatch($deleteSong);
         }
 
         return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);

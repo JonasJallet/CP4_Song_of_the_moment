@@ -16,5 +16,4 @@ class SongManager
         );
         $song->setLinkYoutube($linkReplace);
     }
-
 }
