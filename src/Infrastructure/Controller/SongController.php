@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Controller;
 
 use App\Application\Command\DeleteDomainSong\DeleteDomainSong;
+use App\Application\Command\NewDomainSong\NewDomainSong;
 use App\Application\Query\GetAllApprovedSongs\GetAllApprovedSongs;
 use App\Application\Query\GetSongById\GetSongById;
 use App\Infrastructure\Form\SongType;
@@ -21,17 +22,15 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/song')]
 class SongController extends AbstractController
 {
-    private SongManager $songManager;
     private MessageBusInterface $queryBus;
     private MessageBusInterface $commandBus;
+
     public function __construct(
         MessageBusInterface $queryBus,
         MessageBusInterface $commandBus,
-        SongManager $songManager
     ) {
         $this->queryBus = $queryBus;
         $this->commandBus = $commandBus;
-        $this->songManager = $songManager;
     }
 
     #[Route('/', name: 'app_song_index', methods: ['GET', 'POST'])]
@@ -86,8 +85,9 @@ class SongController extends AbstractController
         $form = $this->createForm(SongType::class, $song)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->songManager->formatLinkYoutube($song);
-            $songRepository->save($song, true);
+            $newSong = new NewDomainSong();
+            $newSong->song = $song;
+            $this->commandBus->dispatch($newSong);
 
             return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -159,13 +159,20 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/update', name: 'app_song_update', methods: ['GET', 'POST'])]
+    #[Route('/{songId}/update', name: 'app_song_update', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Song $song, SongRepository $songRepository): Response
     {
         $form = $this->createForm(SongType::class, $song)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $newSong = new NewDomainSong();
+            $newSong->song = $song;
+            $this->commandBus->dispatch($newSong);
+
+
+
             $this->songManager->formatLinkYoutube($song);
             $songRepository->save($song, true);
 

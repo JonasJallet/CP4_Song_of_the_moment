@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Domain\Service\Manager;
-
-use App\Domain\Model\DomainSongModelInterface;
+namespace App\Domain\Service;
 
 interface DomainSongManagerInterface
 {
