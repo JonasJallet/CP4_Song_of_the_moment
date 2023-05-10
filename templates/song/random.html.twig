@@ -31,7 +31,7 @@
                                 </h5>
 
                                 {% if app.user %}
-                                    <a id="favorite" href="{{ path('app_song_add_favorite', {id: song.id})}}">
+                                    <a id="favorite" href="{{ path('app_song_add_favorite', {songId: song.id})}}">
                                         <i class="heart-favorite bi {{ app.user.isInFavorite(song) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
                                     </a>
                                 {% else %}

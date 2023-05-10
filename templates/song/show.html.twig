@@ -25,7 +25,7 @@
                             </h5>
 
                             {% if app.user %}
-                                <a id="favorite" href="{{ path('app_song_add_favorite', {id: song.id})}}">
+                                <a id="favorite" href="{{ path('app_song_add_favorite', {songId: song.id})}}">
                                     <i class="heart-favorite bi {{ app.user.isInFavorite(song) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
                                 </a>
                             {% else %}
@@ -87,6 +87,6 @@
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
-{#    {{ encore_entry_script_tags('favorite') }}#}
+    {{ encore_entry_script_tags('favorite') }}
     <script src="{{ asset('js/youtube.js') }}"></script>
 {% endblock %}

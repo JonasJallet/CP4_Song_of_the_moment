@@ -2,8 +2,10 @@
 
 namespace App\Infrastructure\Controller;
 
+use App\Application\Command\AddToFavoriteUser\AddToFavoriteUser;
 use App\Application\Command\DeleteDomainSong\DeleteDomainSong;
 use App\Application\Command\NewDomainSong\NewDomainSong;
+use App\Application\Command\UpdateDomainSong\UpdateDomainSong;
 use App\Application\Query\GetAllApprovedSongs\GetAllApprovedSongs;
 use App\Application\Query\GetSongById\GetSongById;
 use App\Infrastructure\Form\SongType;
@@ -79,7 +81,7 @@ class SongController extends AbstractController
 
     #[Route('/new', name: 'app_song_new', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function new(Request $request, SongRepository $songRepository): Response
+    public function new(Request $request): Response
     {
         $song = new Song();
         $form = $this->createForm(SongType::class, $song)->handleRequest($request);
@@ -135,46 +137,34 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/favorite', name: 'app_song_add_favorite', methods: ['GET', 'POST'])]
-    public function addToFavorite(
-        Song $song,
-        UserRepository $userRepository
-    ): Response {
-        $user = $this->getUser();
-        $user = $userRepository->findOneBy(
-            ['id' => $user]
-        );
+    #[Route('/{songId}/favorite', name: 'app_song_add_favorite', methods: ['GET', 'POST'])]
+    public function addToFavorite(int $songId): Response
+    {
+        $userId = $this->getUser()->getId();
+        $addToFavoriteUser = new AddToFavoriteUser();
+        $addToFavoriteUser->userId = $userId;
+        $addToFavoriteUser->songId = $songId;
+        $result = $this->commandBus->dispatch($addToFavoriteUser);
 
-        if ($user->isInFavorite($song)) {
-            $user->removeFavorite($song);
-        } else {
-            $user->addFavorite($song);
-        }
-        $userRepository->save($user, true);
-
-        $isInFavorite = $user->isInFavorite($song);
+        $handledStamp = $result->last(HandledStamp::class);
+        $isInFavorite = $handledStamp->getResult();
 
         return $this->json([
             'isInFavorite' => $isInFavorite
         ]);
     }
 
-    #[Route('/{songId}/update', name: 'app_song_update', methods: ['GET', 'POST'])]
+    #[Route('/{id}/update', name: 'app_song_update', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function edit(Request $request, Song $song, SongRepository $songRepository): Response
+    public function update(int $id, Request $request, Song $song): Response
     {
-        $form = $this->createForm(SongType::class, $song)->handleRequest($request);
+        $form = $this->createForm(SongType::class, $song);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $newSong = new NewDomainSong();
-            $newSong->song = $song;
-            $this->commandBus->dispatch($newSong);
-
-
-
-            $this->songManager->formatLinkYoutube($song);
-            $songRepository->save($song, true);
+            $updateSong = new UpdateDomainSong();
+            $updateSong->id = $id;
+            $this->commandBus->dispatch($updateSong);
 
             return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -185,7 +175,7 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/{songId}', name: 'app_song_delete', methods: ['POST'])]
+    #[Route('/{songId}/delete', name: 'app_song_delete', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function delete(int $songId, Request $request): Response
     {

@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Persistence\Repository;
 
+use App\Domain\Repository\DomainUserRepositoryInterface;
 use App\Infrastructure\Persistence\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,7 +18,7 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  * @method User[]    findAll()
  * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, DomainUserRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
     {

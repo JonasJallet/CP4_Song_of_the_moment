@@ -47,6 +47,15 @@ services:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
 
+    App\Application\Command\UpdateDomainSong\UpdateDomainSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
     App\Application\Command\DeleteDomainSong\DeleteDomainSongHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
+
+    App\Application\Command\AddToFavoriteUser\AddToFavoriteUserHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
