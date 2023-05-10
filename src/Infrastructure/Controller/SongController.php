@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Controller;
 
-use App\Application\Command\AddToFavoriteUser\AddToFavoriteUser;
+use App\Application\Command\AddToFavoriteSong\AddToFavoriteSong;
 use App\Application\Command\DeleteDomainSong\DeleteDomainSong;
 use App\Application\Command\NewDomainSong\NewDomainSong;
 use App\Application\Command\UpdateDomainSong\UpdateDomainSong;
@@ -141,7 +141,7 @@ class SongController extends AbstractController
     public function addToFavorite(int $songId): Response
     {
         $userId = $this->getUser()->getId();
-        $addToFavoriteUser = new AddToFavoriteUser();
+        $addToFavoriteUser = new AddToFavoriteSong();
         $addToFavoriteUser->userId = $userId;
         $addToFavoriteUser->songId = $songId;
         $result = $this->commandBus->dispatch($addToFavoriteUser);

@@ -55,7 +55,7 @@ services:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
 
-    App\Application\Command\AddToFavoriteUser\AddToFavoriteUserHandler:
+    App\Application\Command\AddToFavoriteSong\AddToFavoriteSongHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
 

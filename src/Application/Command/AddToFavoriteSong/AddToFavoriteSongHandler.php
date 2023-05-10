@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Application\Command\AddToFavoriteUser;
+namespace App\Application\Command\AddToFavoriteSong;
 
 use App\Domain\Model\DomainSongModelInterface;
 use App\Domain\Repository\DomainSongRepositoryInterface;
 use App\Domain\Repository\DomainUserRepositoryInterface;
 
-class AddToFavoriteUserHandler
+class AddToFavoriteSongHandler
 {
     public function __construct(
         public DomainUserRepositoryInterface $domainUserRepository,
@@ -14,7 +14,7 @@ class AddToFavoriteUserHandler
         public DomainSongModelInterface $domainSongModel,
     ) {
     }
-    public function __invoke(AddToFavoriteUser $addToFavoriteUser): bool
+    public function __invoke(AddToFavoriteSong $addToFavoriteUser): bool
     {
         $userId = $addToFavoriteUser->userId;
         $songId = $addToFavoriteUser->songId;
