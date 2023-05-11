@@ -81,11 +81,11 @@ class SongController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request): Response
     {
-        $song = new Song();
-        $form = $this->createForm(SongType::class, $song)->handleRequest($request);
+        $form = $this->createForm(SongType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $newSong = new NewDomainSong();
+            $song = $form->getData();
             $newSong->song = $song;
             $this->commandBus->dispatch($newSong);
 
@@ -93,7 +93,6 @@ class SongController extends AbstractController
         }
 
         return $this->renderForm('song/new.html.twig', [
-            'song' => $song,
             'form' => $form,
         ]);
     }

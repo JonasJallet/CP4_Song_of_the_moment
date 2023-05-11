@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Form;
 
+use App\Domain\Model\DomainSongModelInterface;
 use App\Infrastructure\Persistence\Entity\Song;
 use App\Infrastructure\Service\InfrastructureSongManager;
 use Symfony\Component\Form\AbstractType;

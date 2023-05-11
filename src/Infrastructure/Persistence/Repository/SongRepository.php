@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Persistence\Repository;
 
+use App\Domain\Model\DomainSongModelInterface;
 use App\Domain\Repository\DomainSongRepositoryInterface;
 use App\Infrastructure\Persistence\Entity\Song;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -20,7 +21,7 @@ class SongRepository extends ServiceEntityRepository implements DomainSongReposi
         parent::__construct($registry, Song::class);
     }
 
-    public function save(Song $entity, bool $flush = false): void
+    public function save(DomainSongModelInterface $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 

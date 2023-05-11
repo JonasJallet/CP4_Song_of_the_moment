@@ -7,10 +7,10 @@ use App\Infrastructure\Persistence\Entity\Song;
 interface DomainUserModelInterface
 {
     public function getId(): ?int;
-    public function getEmail(): ?string;
+    public function getUsername(): ?string;
     public function getPassword(): string;
 
-    public function setEmail(string $email): self;
+    public function setUsername(string $username): self;
 
     public function addFavorite(Song $favorites): self;
     public function removeFavorite(Song $favorites): self;

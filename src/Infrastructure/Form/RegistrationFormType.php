@@ -18,7 +18,7 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('email', EmailType::class)
+            ->add('username', EmailType::class)
             ->add('password', PasswordType::class, [
                 'help' =>
                     'Le mot de passe doit avoir 12 caractères dont une lettre majuscule, une minuscule et un chiffre',

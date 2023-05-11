@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this email')]
 class User implements DomainUserModelInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -32,7 +32,7 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
         maxMessage: 'L\'email saisi est trop long,
         il ne doit pas dépasser {{ limit }} caractères',
     )]
-    private ?string $email = null;
+    private ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -46,6 +46,9 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
 
     #[ORM\ManyToMany(targetEntity: Song::class, inversedBy: 'users')]
     private Collection $favorites;
+
+    #[ORM\Column(type: 'boolean')]
+    private $isVerified = false;
 
     public function __construct()
     {
@@ -63,14 +66,14 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
         return $this->id;
     }
 
-    public function getEmail(): ?string
+    public function getUsername(): ?string
     {
-        return $this->email;
+        return $this->username;
     }
 
-    public function setEmail(string $email): self
+    public function setUsername(string $username): self
     {
-        $this->email = $email;
+        $this->username = $username;
 
         return $this;
     }
@@ -82,7 +85,7 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
@@ -185,5 +188,17 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
                 ->atPath('password')
                 ->addViolation();
         }
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
     }
 }

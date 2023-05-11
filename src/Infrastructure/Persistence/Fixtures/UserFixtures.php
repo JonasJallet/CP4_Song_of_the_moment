@@ -33,7 +33,7 @@ class UserFixtures extends Fixture
 
         foreach ($users as $key => $user) {
             $newUser = new User();
-            $newUser->setEmail($user['email']);
+            $newUser->setUsername($user['email']);
             $hash = $this->passwordHasher->hashPassword($newUser, $user['password']);
             $newUser->setPassword($hash);
             $newUser->setRoles([$user['role']]);
