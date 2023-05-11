@@ -20,12 +20,12 @@ class UserFixtures extends Fixture
     {
         $users = [
             [
-                'username' => 'admin',
+                'email' => 'admin@mail.com',
                 'password' => 'admin',
                 'role' => 'ROLE_ADMIN',
             ],
             [
-                'username' => 'spirit',
+                'email' => 'spirit@mail.com',
                 'password' => 'spirit',
                 'role' => 'ROLE_USER',
             ]
@@ -33,7 +33,7 @@ class UserFixtures extends Fixture
 
         foreach ($users as $key => $user) {
             $newUser = new User();
-            $newUser->setUsername($user['username']);
+            $newUser->setEmail($user['email']);
             $hash = $this->passwordHasher->hashPassword($newUser, $user['password']);
             $newUser->setPassword($hash);
             $newUser->setRoles([$user['role']]);

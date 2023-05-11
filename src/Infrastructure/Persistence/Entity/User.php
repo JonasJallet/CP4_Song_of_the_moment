@@ -10,9 +10,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements DomainUserModelInterface, UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -21,7 +23,16 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $username = null;
+    #[Assert\Email(
+        message: 'l\'email {{ value }} n\'est pas valide.',
+    )]
+    #[Assert\NotBlank(message: 'L\'email ne peut pas être vide.')]
+    #[Assert\Length(
+        max: 255,
+        maxMessage: 'L\'email saisi est trop long,
+        il ne doit pas dépasser {{ limit }} caractères',
+    )]
+    private ?string $email = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -30,6 +41,7 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
      * @var string|null The hashed password
      */
     #[ORM\Column]
+    #[Assert\NotNull(message: 'Le mot de passe est obligatoire')]
     private ?string $password = null;
 
     #[ORM\ManyToMany(targetEntity: Song::class, inversedBy: 'users')]
@@ -40,19 +52,25 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
         $this->favorites = new ArrayCollection();
     }
 
+    #[Assert\Callback]
+    public function validate(ExecutionContextInterface $context, $payload): void
+    {
+        $this->validatePassword($context);
+    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUsername(): ?string
+    public function getEmail(): ?string
     {
-        return $this->username;
+        return $this->email;
     }
 
-    public function setUsername(string $username): self
+    public function setEmail(string $email): self
     {
-        $this->username = $username;
+        $this->email = $email;
 
         return $this;
     }
@@ -64,7 +82,7 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string) $this->email;
     }
 
     /**
@@ -137,5 +155,35 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
     public function isInFavorite(Song $song): bool
     {
         return $this->favorites->contains($song);
+    }
+
+    public function validatePassword(ExecutionContextInterface $context): void
+    {
+        $password = $this->getPassword();
+        $errors = [];
+
+        if (isset($this->password)) {
+            if (strlen($password) < 12) {
+                $errors[] = 'Au moins 12 caractères';
+            }
+
+            if (!preg_match('/[A-Z]/', $password)) {
+                $errors[] = 'Au moins une majuscule';
+            }
+
+            if (!preg_match('/[a-z]/', $password)) {
+                $errors[] = 'Au moins une minuscule';
+            }
+
+            if (!preg_match('/[0-9]/', $password)) {
+                $errors[] = 'Au moins un chiffre';
+            }
+        }
+
+        foreach ($errors as $error) {
+            $context->buildViolation($error)
+                ->atPath('password')
+                ->addViolation();
+        }
     }
 }

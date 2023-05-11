@@ -14,11 +14,11 @@
 
                 <div class="d-flex justify-content-center">
                     {{ form_start(registrationForm, {'attr': {'class': 'col-11 col-md-7 col-lg-5 form-login d-flex flex-column'}}) }}
-                    {{ form_row(registrationForm.username, {
-                    label: 'Pseudo', 'label_attr': {'class': 'form-label'},
+                    {{ form_row(registrationForm.email, {
+                    label: 'Email', 'label_attr': {'class': 'form-label'},
                     'attr': {'class': 'form-control'}
                     }) }}
-                    {{ form_row(registrationForm.plainPassword, {
+                    {{ form_row(registrationForm.password, {
                     label: 'Mot de passe', 'label_attr': {'class': 'form-label'},
                     'attr': {'class': 'form-control'}
                     }) }}
