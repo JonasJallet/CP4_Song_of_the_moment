@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Query\GetSongById;
+namespace App\Application\Query\Song\GetSongById;
 
 class GetSongById
 {

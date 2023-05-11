@@ -57,17 +57,8 @@ class Song implements DomainSongModelInterface
     )]
     private ?string $photoAlbum = null;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
-    #[ORM\OrderBy(["id" => "DESC"])]
-    private Collection $users;
-
     #[ORM\Column]
     private ?bool $isApproved = false;
-
-    public function __construct()
-    {
-        $this->users = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -133,33 +124,6 @@ class Song implements DomainSongModelInterface
 
         return $this;
     }
-
-//    /**
-//     * @return Collection<int, User>
-//     */
-//    public function getUsers(): Collection
-//    {
-//        return $this->users;
-//    }
-//
-//    public function addUser(User $user): self
-//    {
-//        if (!$this->users->contains($user)) {
-//            $this->users->add($user);
-//            $user->addFavorite($this);
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function removeUser(User $user): self
-//    {
-//        if ($this->users->removeElement($user)) {
-//            $user->removeFavorite($this);
-//        }
-//
-//        return $this;
-//    }
 
     public function isIsApproved(): ?bool
     {

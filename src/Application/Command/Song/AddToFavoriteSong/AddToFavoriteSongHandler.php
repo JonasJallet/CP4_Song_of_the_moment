@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Command\AddToFavoriteSong;
+namespace App\Application\Command\Song\AddToFavoriteSong;
 
 use App\Domain\Model\DomainSongModelInterface;
 use App\Domain\Repository\DomainSongRepositoryInterface;

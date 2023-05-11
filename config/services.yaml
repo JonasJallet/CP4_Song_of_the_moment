@@ -35,27 +35,27 @@ services:
         resource: '../src/Infrastructure/Controller'
         tags: [ controller.service_arguments ]
 
-    App\Application\Query\GetAllApprovedSongs\GetAllApprovedSongsHandler:
+    App\Application\Query\Song\GetAllApprovedSongs\GetAllApprovedSongsHandler:
         tags: [ { name: messenger.message_handler, bus: query.bus } ]
         autoconfigure: false
 
-    App\Application\Query\GetSongById\GetSongByIdHandler:
+    App\Application\Query\Song\GetSongById\GetSongByIdHandler:
         tags: [ { name: messenger.message_handler, bus: query.bus } ]
         autoconfigure: false
 
-    App\Application\Command\NewDomainSong\NewDomainSongHandler:
+    App\Application\Command\Song\NewDomainSong\NewDomainSongHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
 
-    App\Application\Command\UpdateDomainSong\UpdateDomainSongHandler:
+    App\Application\Command\Song\UpdateDomainSong\UpdateDomainSongHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
 
-    App\Application\Command\DeleteDomainSong\DeleteDomainSongHandler:
+    App\Application\Command\Song\DeleteDomainSong\DeleteDomainSongHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
 
-    App\Application\Command\AddToFavoriteSong\AddToFavoriteSongHandler:
+    App\Application\Command\Song\AddToFavoriteSong\AddToFavoriteSongHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
 

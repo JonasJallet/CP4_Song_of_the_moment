@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Command\DeleteDomainSong;
+namespace App\Application\Command\Song\DeleteDomainSong;
 
 class DeleteDomainSong
 {

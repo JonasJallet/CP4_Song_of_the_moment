@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Application\Query\GetAllApprovedSongs;
+namespace App\Application\Query\Song\GetAllApprovedSongs;
 
-use App\Domain\Model\DomainSongModelInterface;
 use App\Domain\Repository\DomainSongRepositoryInterface;
 
 class GetAllApprovedSongsHandler

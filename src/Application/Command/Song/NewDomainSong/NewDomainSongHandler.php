@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Command\NewDomainSong;
+namespace App\Application\Command\Song\NewDomainSong;
 
 use App\Domain\Repository\DomainSongRepositoryInterface;
 use App\Domain\Service\DomainSongManagerInterface;

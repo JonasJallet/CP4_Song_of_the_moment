@@ -2,17 +2,15 @@
 
 namespace App\Infrastructure\Controller;
 
-use App\Application\Command\AddToFavoriteSong\AddToFavoriteSong;
-use App\Application\Command\DeleteDomainSong\DeleteDomainSong;
-use App\Application\Command\NewDomainSong\NewDomainSong;
-use App\Application\Command\UpdateDomainSong\UpdateDomainSong;
-use App\Application\Query\GetAllApprovedSongs\GetAllApprovedSongs;
-use App\Application\Query\GetSongById\GetSongById;
+use App\Application\Command\Song\AddToFavoriteSong\AddToFavoriteSong;
+use App\Application\Command\Song\DeleteDomainSong\DeleteDomainSong;
+use App\Application\Command\Song\NewDomainSong\NewDomainSong;
+use App\Application\Command\Song\UpdateDomainSong\UpdateDomainSong;
+use App\Application\Query\Song\GetAllApprovedSongs\GetAllApprovedSongs;
+use App\Application\Query\Song\GetSongById\GetSongById;
 use App\Infrastructure\Form\SongType;
-use App\Infrastructure\Manager\SongManager;
 use App\Infrastructure\Persistence\Entity\Song;
 use App\Infrastructure\Persistence\Repository\SongRepository;
-use App\Infrastructure\Persistence\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
