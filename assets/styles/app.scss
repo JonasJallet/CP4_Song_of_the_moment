@@ -40,7 +40,7 @@ body {
 }
 
 .back-home {
-    background: url(../../assets/images/backome.avif) no-repeat center center fixed;
+    background: url(../../assets/images/back-home.avif) no-repeat center center fixed;
     background-size: cover;
     position: absolute;
     width: 100%;
@@ -58,4 +58,18 @@ li {
 
 .main-favorite {
     margin-top: 140px;
+}
+
+#flash {
+    opacity: 1;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    transform: translateX(0%);
+}
+
+#flash.slide-in {
+    transform: translateX(-100%);
+}
+
+#flash.fade-out {
+    opacity: 0;
 }
