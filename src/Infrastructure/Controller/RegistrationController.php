@@ -51,13 +51,13 @@ class RegistrationController extends AbstractController
                 'app_verify_email',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address('test@mail.com', 'Test Bot'))
+                    ->from(new Address('sotm@mail.com', 'Song of the Moment MailBot'))
                     ->to($user->getUsername())
-                    ->subject('Please Confirm your Email')
+                    ->subject('Confirmation Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 
-            $this->addFlash('success', 'Votre compte sera actif après validation de votre mail');
+            $this->addFlash('info', 'Votre');
 
             return $this->redirectToRoute('app_login');
         }
