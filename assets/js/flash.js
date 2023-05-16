@@ -4,12 +4,12 @@ if (flashElement) {
     setTimeout(() => {
         flashElement.classList.add('slide-in');
     }, 100);
-    //
-    // setTimeout(() => {
-    //     flashElement.classList.add('fade-out');
-    // }, 3000);
-    //
-    // setTimeout(() => {
-    //     flashElement.remove();
-    // }, 4000);
+
+    setTimeout(() => {
+        flashElement.classList.add('fade-out');
+    }, 6000);
+
+    setTimeout(() => {
+        flashElement.remove();
+    }, 7000);
 }
