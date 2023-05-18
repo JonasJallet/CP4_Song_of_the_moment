@@ -60,6 +60,14 @@ class Song implements DomainSongModelInterface
     #[ORM\Column]
     private ?bool $isApproved = false;
 
+    #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'songs')]
+    private Collection $playlists;
+
+    public function __construct()
+    {
+        $this->playlists = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -141,6 +149,33 @@ class Song implements DomainSongModelInterface
     public function setIsApproved(bool $isApproved): self
     {
         $this->isApproved = $isApproved;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Playlist>
+     */
+    public function getPlaylists(): Collection
+    {
+        return $this->playlists;
+    }
+
+    public function addPlaylist(Playlist $playlist): self
+    {
+        if (!$this->playlists->contains($playlist)) {
+            $this->playlists->add($playlist);
+            $playlist->addSong($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylist(Playlist $playlist): self
+    {
+        if ($this->playlists->removeElement($playlist)) {
+            $playlist->removeSong($this);
+        }
 
         return $this;
     }

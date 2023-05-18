@@ -5,11 +5,14 @@ namespace App\Infrastructure\Persistence\Fixtures;
 use App\Infrastructure\Persistence\Entity\Song;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
 class SongFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        $faker = Factory::create();
+
         $songs = [
             [
                 'title' => 'Je fume pu d\'shit',
@@ -188,6 +191,7 @@ class SongFixtures extends Fixture
             $newSong->setAlbum($song['album']);
             $newSong->setPhotoAlbum($song['photo_album']);
             $newSong->setLinkYoutube($song['link_youtube']);
+            $newSong->setIsApproved($faker->boolean());
             $manager->persist($newSong);
             $this->addReference('song_' . $key, $newSong);
         }

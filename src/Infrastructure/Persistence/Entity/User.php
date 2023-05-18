@@ -50,9 +50,13 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Playlist::class)]
+    private Collection $playlists;
+
     public function __construct()
     {
         $this->favorites = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
     }
 
     #[Assert\Callback]
@@ -198,6 +202,36 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Playlist>
+     */
+    public function getPlaylists(): Collection
+    {
+        return $this->playlists;
+    }
+
+    public function addPlaylist(Playlist $playlist): self
+    {
+        if (!$this->playlists->contains($playlist)) {
+            $this->playlists->add($playlist);
+            $playlist->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylist(Playlist $playlist): self
+    {
+        if ($this->playlists->removeElement($playlist)) {
+            // set the owning side to null (unless already changed)
+            if ($playlist->getUser() === $this) {
+                $playlist->setUser(null);
+            }
+        }
 
         return $this;
     }
