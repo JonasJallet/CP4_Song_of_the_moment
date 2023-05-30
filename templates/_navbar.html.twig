@@ -32,8 +32,8 @@
             {% if app.user %}
                 {% if not is_granted('ROLE_ADMIN') %}
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{ path('app_user_favorites') }}">
-                            <p class="d-none d-md-block">Mes Favoris</p>
+                        <a class="nav-link" href="{{ path('app_user_song') }}">
+                            <p class="d-none d-md-block">Mes Sons</p>
                             <svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-heart-fill d-md-none" viewbox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                             </svg>

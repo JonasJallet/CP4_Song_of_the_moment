@@ -16,7 +16,7 @@ class PlaylistFixtures extends Fixture implements DependentFixtureInterface
 
         for ($i = 0; $i < 5; $i++) {
             $playlist = new Playlist();
-            $playlist->setName($faker->words(2));
+            $playlist->setName($faker->word());
             $userReference = 'user_' . $faker->numberBetween(0, 1);
             $user = $this->getReference($userReference);
             $playlist->setUser($user);

@@ -1,0 +1,12 @@
+
+<div id="playlistContent">
+    {{ dump(app.user.playlists) }}
+{% for playlist in app.user.playlists %}
+    <div class="d-flex flex-column">
+        <a id="playlist" href="{{ path('app_user_playlist_show', {'name': playlist.name}) }}">
+            {{ dump(playlist) }}
+            {{ playlist.name }}
+        </a>
+    </div>
+{% endfor %}
+</div>

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mes Favoris
+{% block title %}Mes Sons
 {% endblock %}
 
 {% block styleBody %}class="back-home"
@@ -9,34 +9,28 @@
 {% block body %}
     <div id="back-hover">
         <main class="main-favorite">
-            <h2>Mes Favoris</h2>
-            <div class="list-song row col-12 m-0 d-flex justify-content-center">
-                <table class="col-9">
-                    <thead class="thead-playlist">
-                        <tr>
-                            <th class="p-2">Titre</th>
-                            <th class="p-2">Artist</th>
-                            <th class="d-none d-md-block p-2">Album</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for favorite in app.user.favorites %}
-                            <tr id="link_{{ favorite.linkYoutube }}_" class="link_id song-on-playlist" data-photo="{{ favorite.photoAlbum }}" data-youtube="{{ favorite.linkYoutube }}" data-title="{{ favorite.title }}" data-artist="{{ favorite.artist }}">
-                                <td><img class="photo_song_id photo-song-playlist shadow p-1" src="{{ favorite.photoAlbum }}"/>
-                                    {{ favorite.title }}</td>
-                                <td>{{ favorite.artist }}</td>
-                                <td class="d-none d-md-block">{{ favorite.album }}</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+
+            <div class="d-flex justify-content-around">
+
+                <a id="favorites" href="{{ path('app_user_favorite') }}">
+                    <h2>Coup de coeur</h2>
+                </a>
+
+                <a id="playlists" href="{{ path('app_user_playlist') }}">
+                    <h2>Playlists</h2>
+                </a>
+
+            </div>
+
+            <div class="list-song row col-12 m-0 d-flex justify-content-center" id="favoriteContent">
+                {% include '/user/_favorite.html.twig' %}
             </div>
 
             <div class="row">
                 <div class="d-flex justify-content-around align-items-center fixed-bottom bg-dark">
                     <div class="col-12 details-song-show d-flex flex-column flex-md-row justify-content-around align-items-center p-2">
                         <div id="YouTube-player" class="d-none"></div>
-                        <input class="d-none" id="YouTube-video-id" type="text" value="" size="12" pattern="[_\-0-9A-Za-z]{11}" onchange="youTubePlayerChangeVideoId();">
+                        <input id="YouTube-video-id" type="hidden" value="" size="12" pattern="[_\-0-9A-Za-z]{11}" onchange="youTubePlayerChangeVideoId();">
                         <div class="d-flex flex-row justify-content-center button-player">
                             <div id="play">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="youtube-play bi bi-play-fill" viewbox="0 0 16 16">
@@ -61,10 +55,11 @@
                         </div>
                         <div class="infos-playing d-flex flex-column justify-content-center">
                             <div id="Infos-id"></div>
+                            <label for="YouTube-player-progress"></label>
                             <input id="YouTube-player-progress" type="range" value="0" min="0" max="100" onchange="youTubePlayerCurrentTimeChange(this.value);" oninput="youTubePlayerCurrentTimeSlide();">
                         </div>
-                        <img id="Album-photo-id" class="d-none d-md-block" src="{{ asset('build/images/transparent.png') }}">
-                        <div class="framed d-none">
+                        <img id="Album-photo-id" class="d-none d-md-block" src="{{ asset('build/images/default_cover.png') }}" alt="Photo Album">
+                        <div class="framed">
                             <div id="YouTube-player-infos"></div>
                             <div id="YouTube-player-errors"></div>
                         </div>
@@ -74,6 +69,7 @@
         </main>
     </div>
 {% endblock %}
+
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/youtube.js') }}"></script>

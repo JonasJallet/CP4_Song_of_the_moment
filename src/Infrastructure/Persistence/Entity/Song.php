@@ -63,9 +63,14 @@ class Song implements DomainSongModelInterface
     #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'songs')]
     private Collection $playlists;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
+    #[ORM\OrderBy(["id" => "DESC"])]
+    private Collection $users;
+
     public function __construct()
     {
         $this->playlists = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -175,6 +180,33 @@ class Song implements DomainSongModelInterface
     {
         if ($this->playlists->removeElement($playlist)) {
             $playlist->removeSong($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+            $user->addFavorite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeFavorite($this);
         }
 
         return $this;

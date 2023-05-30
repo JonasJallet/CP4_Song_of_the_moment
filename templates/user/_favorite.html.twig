@@ -1,0 +1,19 @@
+<table class="col-10">
+    <thead class="thead-playlist">
+    <tr>
+        <th class="lead p-2">TITRE</th>
+        <th class="lead p-2">ARTISTE</th>
+        <th class="lead p-2">ALBUM</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for favorite in app.user.favorites %}
+            <tr class="link_id song-on-playlist" data-photo="{{ favorite.photoAlbum }}" data-youtube="{{ favorite.linkYoutube }}" data-title="{{ favorite.title }}" data-artist="{{ favorite.artist }}">
+                <td><img class="photo_song_id photo-song-playlist shadow p-2" src="{{ favorite.photoAlbum }}" alt="Photo album"/>
+                    {{ favorite.title }}</td>
+                <td>{{ favorite.artist }}</td>
+                <td>{{ favorite.album }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

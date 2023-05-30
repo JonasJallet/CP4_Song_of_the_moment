@@ -1,0 +1,19 @@
+<table class="col-10">
+    <thead class="thead-playlist">
+    <tr>
+        <th class="lead p-2">TITRE</th>
+        <th class="lead p-2">ARTISTE</th>
+        <th class="lead p-2">ALBUM</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for playlist in playlist.songs %}
+            <tr id="link_{{ playlist.linkYoutube }}_" class="link_id song-on-playlist" data-photo="{{ playlist.photoAlbum }}" data-youtube="{{ playlist.linkYoutube }}" data-title="{{ playlist.title }}" data-artist="{{ playlist.artist }}">
+                <td><img class="photo_song_id photo-song-playlist shadow p-2" src="{{ playlist.photoAlbum }}" alt="Photo album"/>
+                    {{ playlist.title }}</td>
+                <td>{{ playlist.artist }}</td>
+                <td>{{ playlist.album }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
