@@ -3,13 +3,13 @@
 namespace App\Application\Command\Song\NewDomainSong;
 
 use App\Domain\Repository\DomainSongRepositoryInterface;
-use App\Domain\Service\DomainSongManagerInterface;
+use App\Domain\Service\SongManagerInterface;
 
 class NewDomainSongHandler
 {
     public function __construct(
         public DomainSongRepositoryInterface $domainSongRepository,
-        public DomainSongManagerInterface $domainSongManager,
+        public SongManagerInterface $songManager,
     ) {
     }
     public function __invoke(NewDomainSong $newDomainSong): void
@@ -17,7 +17,7 @@ class NewDomainSongHandler
         $song = $newDomainSong->song;
 
         $linkYoutube = $song->getLinkYoutube();
-        $linkFormat = $this->domainSongManager->formatLinkYoutube($linkYoutube);
+        $linkFormat = $this->songManager->formatLinkYoutube($linkYoutube);
         $song->setLinkYoutube($linkFormat);
 
         $this->domainSongRepository->save($song, true);

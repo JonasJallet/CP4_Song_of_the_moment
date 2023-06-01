@@ -15,4 +15,6 @@ interface DomainSongRepositoryInterface
     public function allApprovedSong();
 
     public function save(DomainSongModelInterface $entity, bool $flush = false): void;
+
+    public function remove(DomainSongModelInterface $entity, bool $flush = false): void;
 }

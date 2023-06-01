@@ -4,7 +4,7 @@ namespace App\Infrastructure\Form;
 
 use App\Domain\Model\DomainSongModelInterface;
 use App\Infrastructure\Persistence\Entity\Song;
-use App\Infrastructure\Service\InfrastructureSongManager;
+use App\Infrastructure\Service\SongManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -13,9 +13,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SongType extends AbstractType
 {
-    private InfrastructureSongManager $songManager;
+    private SongManager $songManager;
 
-    public function __construct(InfrastructureSongManager $songManager)
+    public function __construct(SongManager $songManager)
     {
         $this->songManager = $songManager;
     }

@@ -30,7 +30,7 @@ class SongRepository extends ServiceEntityRepository implements DomainSongReposi
         }
     }
 
-    public function remove(Song $entity, bool $flush = false): void
+    public function remove(DomainSongModelInterface $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
