@@ -6,17 +6,16 @@ use App\Infrastructure\Persistence\Repository\PlaylistRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
 class Playlist
 {
     #[ORM\Id]
-    #[ORM\Column(type: UuidType::class, unique: true)]
+    #[ORM\Column(type: 'uuid', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    private ?int $id = null;
+    #[ORM\CustomIdGenerator(class: CustomUuidGenerator::class)]
+    private ?Uuid $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'playlists')]
     private ?User $user = null;
