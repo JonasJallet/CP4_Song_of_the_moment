@@ -3,20 +3,22 @@
 namespace App\Infrastructure\Persistence\Entity;
 
 use App\Infrastructure\Persistence\Repository\PlaylistRepository;
+use App\Infrastructure\Service\CustomUuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
 class Playlist
 {
     #[ORM\Id]
-    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\Column(type: 'string', unique: true)]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: CustomUuidGenerator::class)]
-    private ?Uuid $id = null;
+    private ?string $id = null;
 
+    #[MaxDepth(2)]
     #[ORM\ManyToOne(inversedBy: 'playlists')]
     private ?User $user = null;
 
@@ -31,7 +33,7 @@ class Playlist
         $this->songs = new ArrayCollection();
     }
 
-    public function getId(): ?Uuid
+    public function getId(): string
     {
         return $this->id;
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Persistence\Entity;
+namespace App\Infrastructure\Service;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Id\AbstractIdGenerator;

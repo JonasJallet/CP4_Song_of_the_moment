@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -50,6 +51,7 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[MaxDepth(2)]
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Playlist::class)]
     private Collection $playlists;
 

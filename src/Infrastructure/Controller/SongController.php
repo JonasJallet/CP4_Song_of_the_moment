@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/song')]
 class SongController extends AbstractController
@@ -116,7 +117,8 @@ class SongController extends AbstractController
     public function addToApproved(
         Song $song,
         SongRepository $songRepository,
-        Request $request
+        Request $request,
+        SerializerInterface $serializer
     ): Response {
 
         if ($request->isMethod('POST')) {
@@ -125,8 +127,14 @@ class SongController extends AbstractController
             $song->setIsApproved(true);
             $songRepository->save($song, true);
 
-            return $this->json(data: [
-                'isApproved' => $song
+            $serializedSong = $serializer->serialize(
+                $song,
+                'json',
+                ['groups' => ['default'], 'enable_max_depth' => true]
+            );
+
+            return $this->json([
+                'isApproved' => $serializedSong
             ]);
         }
         return $this->render('song/list.html.twig', [

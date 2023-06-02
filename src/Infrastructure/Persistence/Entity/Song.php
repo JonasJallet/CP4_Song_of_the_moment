@@ -7,6 +7,7 @@ use App\Infrastructure\Persistence\Repository\SongRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
@@ -60,9 +61,11 @@ class Song implements DomainSongModelInterface
     #[ORM\Column]
     private ?bool $isApproved = false;
 
+    #[MaxDepth(2)]
     #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'songs')]
     private Collection $playlists;
 
+    #[MaxDepth(2)]
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
     #[ORM\OrderBy(["id" => "DESC"])]
     private Collection $users;
