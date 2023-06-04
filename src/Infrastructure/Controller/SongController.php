@@ -9,14 +9,10 @@ use App\Application\Command\Song\UpdateDomainSong\UpdateDomainSong;
 use App\Application\Query\Song\GetAllApprovedSongs\GetAllApprovedSongs;
 use App\Application\Query\Song\GetSongById\GetSongById;
 use App\Infrastructure\Form\AddSongToPlaylistType;
-use App\Infrastructure\Form\PlaylistType;
 use App\Infrastructure\Form\SongType;
-use App\Infrastructure\Persistence\Entity\Playlist;
 use App\Infrastructure\Persistence\Entity\Song;
-use App\Infrastructure\Persistence\Entity\User;
 use App\Infrastructure\Persistence\Repository\PlaylistRepository;
 use App\Infrastructure\Persistence\Repository\SongRepository;
-use App\Infrastructure\Persistence\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,11 +31,9 @@ class SongController extends AbstractController
     public function __construct(
         MessageBusInterface $queryBus,
         MessageBusInterface $commandBus,
-        User $user
     ) {
         $this->queryBus = $queryBus;
         $this->commandBus = $commandBus;
-        $this->user = $user;
     }
 
     #[Route('/', name: 'app_song_index', methods: ['GET', 'POST'])]
@@ -122,6 +116,7 @@ class SongController extends AbstractController
     }
 
     #[Route('/{id}/isApproved', name: 'app_song_add_approved', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function addToApproved(
         Song $song,
         SongRepository $songRepository,

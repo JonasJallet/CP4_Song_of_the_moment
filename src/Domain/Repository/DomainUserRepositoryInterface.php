@@ -12,5 +12,5 @@ use App\Domain\Model\DomainUserModelInterface;
  */
 interface DomainUserRepositoryInterface
 {
-
+    public function save(DomainUserModelInterface $entity, bool $flush = false): void;
 }

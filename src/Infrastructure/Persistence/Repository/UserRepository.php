@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Persistence\Repository;
 
+use App\Domain\Model\DomainUserModelInterface;
 use App\Domain\Repository\DomainUserRepositoryInterface;
 use App\Infrastructure\Persistence\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -23,7 +24,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         parent::__construct($registry, User::class);
     }
 
-    public function save(User $entity, bool $flush = false): void
+    public function save(DomainUserModelInterface $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
