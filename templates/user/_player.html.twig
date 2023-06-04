@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-around align-items-center fixed-bottom bg-dark">
+    <div class="col-12 details-song-show d-flex flex-column flex-md-row justify-content-around align-items-center p-2">
+        <div id="YouTube-player" class="d-none"></div>
+        <input id="YouTube-video-id" type="hidden" value="" size="12" pattern="[_\-0-9A-Za-z]{11}" onchange="youTubePlayerChangeVideoId();">
+        <div class="d-flex flex-row justify-content-center button-player">
+            <div id="play">
+                <svg xmlns="http://www.w3.org/2000/svg" class="youtube-play bi bi-play-fill" viewbox="0 0 16 16">
+                    <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                </svg>
+            </div>
+            <div id="pause">
+                <svg xmlns="http://www.w3.org/2000/svg" class="youtube-pause bi bi-pause-fill" viewbox="0 0 16 16">
+                    <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/>
+                </svg>
+            </div>
+            <div id="stop">
+                <svg xmlns="http://www.w3.org/2000/svg" class="youtube-stop bi bi-stop-fill" viewbox="0 0 16 16">
+                    <path d="M5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5A1.5 1.5 0 0 1 5 3.5z"/>
+                </svg>
+            </div>
+            <div id="next">
+                <svg xmlns="http://www.w3.org/2000/svg" class="youtube-next bi bi-skip-end-fill" viewbox="0 0 16 16">
+                    <path d="M12.5 4a.5.5 0 0 0-1 0v3.248L5.233 3.612C4.693 3.3 4 3.678 4 4.308v7.384c0 .63.692 1.01 1.233.697L11.5 8.753V12a.5.5 0 0 0 1 0V4z"/>
+                </svg>
+            </div>
+        </div>
+        <div class="infos-playing d-flex flex-column justify-content-center">
+            <div id="Infos-id"></div>
+            <label for="YouTube-player-progress"></label>
+            <input id="YouTube-player-progress" type="range" value="0" min="0" max="100" onchange="youTubePlayerCurrentTimeChange(this.value);" oninput="youTubePlayerCurrentTimeSlide();">
+        </div>
+        <img id="Album-photo-id" class="d-none d-md-block" src="{{ asset('build/images/default_cover.png') }}" alt="Photo Album">
+        <div class="framed d-none">
+            <div id="YouTube-player-infos"></div>
+            <div id="YouTube-player-errors"></div>
+        </div>
+    </div>
+</div>

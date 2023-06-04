@@ -81,43 +81,40 @@ function youTubePlayerActive()
     return youTubePlayer;
 }
 
-function setupSongRows()
-{
-    const songRows = document.querySelectorAll('.song-on-playlist');
-    let currentRow = 0;
+const songRows = document.querySelectorAll('.song-on-playlist');
+let currentRow = 0;
 
-    if (songRows.length > 0) {
-        songRows.forEach((row, index) => {
-            let youtube = row.getAttribute('data-youtube');
-            let photo = row.getAttribute('data-photo');
-            let title = row.getAttribute('data-title');
-            let artist = row.getAttribute('data-artist');
-            row.addEventListener('click', () => {
-                document.getElementById('YouTube-video-id').value = youtube;
-                document.getElementById('Album-photo-id').src = photo;
-                document.getElementById('Infos-id').innerHTML = title + ' - ' + artist;
-                youTubePlayerChangeVideoId();
-                currentRow = index;
-            });
-        });
-
-        document.getElementById('next').addEventListener('click', () => {
-            currentRow = (currentRow + 1) % songRows.length;
-            let nextRow = songRows[currentRow];
-            let youtube = nextRow.getAttribute('data-youtube');
-            let photo = nextRow.getAttribute('data-photo');
-            let title = nextRow.getAttribute('data-title');
-            let artist = nextRow.getAttribute('data-artist');
+if (songRows.length > 0) {
+    songRows.forEach((row, index) => {
+        let youtube = row.getAttribute('data-youtube');
+        let photo = row.getAttribute('data-photo');
+        let title = row.getAttribute('data-title');
+        let artist = row.getAttribute('data-artist');
+        row.addEventListener('click', () => {
             document.getElementById('YouTube-video-id').value = youtube;
             document.getElementById('Album-photo-id').src = photo;
             document.getElementById('Infos-id').innerHTML = title + ' - ' + artist;
             youTubePlayerChangeVideoId();
-
-            if (currentRow === songRows.length - 1) {
-                document.getElementById("stop").click();
-            }
+            currentRow = index;
         });
-    }
+    });
+
+    document.getElementById('next').addEventListener('click', () => {
+        currentRow = (currentRow + 1) % songRows.length;
+        let nextRow = songRows[currentRow];
+        let youtube = nextRow.getAttribute('data-youtube');
+        let photo = nextRow.getAttribute('data-photo');
+        let title = nextRow.getAttribute('data-title');
+        let artist = nextRow.getAttribute('data-artist');
+        document.getElementById('YouTube-video-id').value = youtube;
+        document.getElementById('Album-photo-id').src = photo;
+        document.getElementById('Infos-id').innerHTML = title + ' - ' + artist;
+        youTubePlayerChangeVideoId();
+
+        if (currentRow === songRows.length - 1) {
+            document.getElementById("stop").click();
+        }
+    });
 }
 
 /**

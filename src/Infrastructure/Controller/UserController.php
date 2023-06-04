@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Controller;
 
 use App\Infrastructure\Persistence\Repository\PlaylistRepository;
+use App\Infrastructure\Persistence\Repository\SongRepository;
 use App\Infrastructure\Persistence\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,9 +15,30 @@ class UserController extends AbstractController
 {
     #[Route('/my-song', name: 'app_user_song', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function mySong(): Response
-    {
-        return $this->render('user/my_song.html.twig');
+    public function showPlaylists(
+        UserInterface $user,
+        UserRepository $userRepository,
+        SongRepository $songRepository
+    ): Response {
+        $user = $userRepository->findOneBy(
+            ['id' => $user]
+        );
+
+        $playlistsByUser = $user->getPlaylists();
+
+        $collection = [];
+
+        foreach ($playlistsByUser as $playlist) {
+            $randomSongs = $songRepository->fourRandomSongs();
+            $collection[$playlist->getId()] = [
+                'playlist' => $playlist,
+                'songs' => $randomSongs,
+            ];
+        }
+
+        return $this->render('user/my_song.html.twig', [
+            'collection' => $collection,
+        ]);
     }
 
     #[Route('/favorite', name: 'app_user_favorite', methods: ['GET'])]
@@ -31,46 +53,22 @@ class UserController extends AbstractController
 
         $favorites = $userFavorite->getFavorites();
 
-        return $this->render('user/_favorite.html.twig', [
+        return $this->render('user/favorite.html.twig', [
             'favorites' => $favorites,
         ]);
     }
 
-    #[Route('/playlist', name: 'app_user_playlist', methods: ['GET'])]
+    #[Route('/playlist/{id}', name: 'app_user_playlist_show', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function showPlaylists(
-        UserInterface $user,
-        UserRepository $userRepository
-    ): Response {
-        $userFavorite = $userRepository->findOneBy(
-            ['id' => $user]
-        );
-
-        $playlists = $userFavorite->getPlaylists();
-
-        return $this->render('user/_playlist_list.html.twig', [
-            'playlists' => $playlists,
-        ]);
-    }
-
-    #[Route('/playlist/{name}', name: 'app_user_playlist_show', methods: ['GET'])]
-    #[IsGranted('ROLE_USER')]
-    public function showOnePlaylistByName(
-        UserInterface $user,
-        UserRepository $userRepository,
+    public function showOnePlaylistById(
         PlaylistRepository $playlistRepository,
-        string $name,
+        string $id,
     ): Response {
-        $userFavorite = $userRepository->findOneBy(
-            ['id' => $user]
-        );
-
         $playlist = $playlistRepository->findOneBy([
-            'user' => $userFavorite,
-            'name' => $name
+            'id' => $id
         ]);
 
-        return $this->render('user/_playlist_show.html.twig', [
+        return $this->render('user/playlist.html.twig', [
             'playlist' => $playlist,
         ]);
     }

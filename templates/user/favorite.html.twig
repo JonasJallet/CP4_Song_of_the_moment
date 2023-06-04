@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Coup de coeur
+{% endblock %}
+
+{% block styleBody %}class="back-home"
+{% endblock %}
+
+{% block body %}
+    <div id="back-hover">
+        <main class="main-favorite">
+
+            <div class="list-song row col-12 m-0 d-flex justify-content-center" id="favoriteContent">
+                <div class="d-flex align-items-center">
+                    <i class="text-danger heart-favorite bi bi-heart-fill m-2"></i>
+                    <h3 class="m-0">Coup de coeur</h3>
+
+                </div>
+                <p class="m-0">{{ app.user.favorites|length }} Titres</p>
+
+                <table class="col-11">
+                    <thead class="thead-playlist">
+                    <tr>
+                        <th class="lead p-2">TITRE</th>
+                        <th class="lead p-2">ARTISTE</th>
+                        <th class="lead p-2">ALBUM</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for favorite in app.user.favorites %}
+                        <tr class="link_id song-on-playlist" data-photo="{{ favorite.photoAlbum }}" data-youtube="{{ favorite.linkYoutube }}" data-title="{{ favorite.title }}" data-artist="{{ favorite.artist }}">
+                            <td><img class="photo_song_id photo-song-playlist shadow p-2" src="{{ favorite.photoAlbum }}" alt="Photo album"/>
+                                {{ favorite.title }}</td>
+                            <td>{{ favorite.artist }}</td>
+                            <td>{{ favorite.album }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row">
+                {% include 'user/_player.html.twig' %}
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/youtube.js') }}"></script>
+{% endblock %}

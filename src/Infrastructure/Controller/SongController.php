@@ -8,9 +8,15 @@ use App\Application\Command\Song\NewDomainSong\NewDomainSong;
 use App\Application\Command\Song\UpdateDomainSong\UpdateDomainSong;
 use App\Application\Query\Song\GetAllApprovedSongs\GetAllApprovedSongs;
 use App\Application\Query\Song\GetSongById\GetSongById;
+use App\Infrastructure\Form\AddSongToPlaylistType;
+use App\Infrastructure\Form\PlaylistType;
 use App\Infrastructure\Form\SongType;
+use App\Infrastructure\Persistence\Entity\Playlist;
 use App\Infrastructure\Persistence\Entity\Song;
+use App\Infrastructure\Persistence\Entity\User;
+use App\Infrastructure\Persistence\Repository\PlaylistRepository;
 use App\Infrastructure\Persistence\Repository\SongRepository;
+use App\Infrastructure\Persistence\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,9 +35,11 @@ class SongController extends AbstractController
     public function __construct(
         MessageBusInterface $queryBus,
         MessageBusInterface $commandBus,
+        User $user
     ) {
         $this->queryBus = $queryBus;
         $this->commandBus = $commandBus;
+        $this->user = $user;
     }
 
     #[Route('/', name: 'app_song_index', methods: ['GET', 'POST'])]
@@ -47,7 +55,7 @@ class SongController extends AbstractController
         } else {
             $songs = $songRepository->findBy([], ['isApproved' => 'asc', 'id' => 'asc']);
         }
-        return $this->render('song/index.html.twig', [
+        return $this->render('admin/index.html.twig', [
             'songs' => $songs,
         ]);
     }
@@ -159,12 +167,32 @@ class SongController extends AbstractController
         ]);
     }
 
+    #[Route('/{songId}/playlist', name: 'app_song_add_playlist', methods: ['GET', 'POST'])]
+    public function addToPlaylist(
+        int $songId,
+        Request $request,
+        SongRepository $songRepository,
+        PlaylistRepository $playlistRepository
+    ): Response {
+        $song = $songRepository->findOneBy(['id' => $songId]);
+        $formPlaylist = $this->createForm(AddSongToPlaylistType::class)->handleRequest($request);
+
+        if ($formPlaylist->isSubmitted() && $formPlaylist->isValid()) {
+            $playlist = $formPlaylist->get('playlist')->getData();
+            $playlist->addSong($song);
+            $playlistRepository->save($playlist, true);
+        }
+
+        return $this->renderForm('song/_add_to_playlist.html.twig', [
+            'formPlaylist' => $formPlaylist,
+        ]);
+    }
+
     #[Route('/{id}/update', name: 'app_song_update', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function update(int $id, Request $request, Song $song): Response
     {
-        $form = $this->createForm(SongType::class, $song);
-        $form->handleRequest($request);
+        $form = $this->createForm(SongType::class, $song)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $updateSong = new UpdateDomainSong();
