@@ -17,7 +17,7 @@
                                 <a id="favorite" href="{{ path('app_song_add_favorite', {songId: song.id})}}">
                                     <i class="heart-favorite bi {{ app.user.isInFavorite(song) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
                                 </a>
-                                <a id="addToPlaylist" data-playlist-url="{{ path('app_playlist', {'songId': song.id}) }}">
+                                <a class="playlist-popup" data-playlist-url="{{ path('playlist_popup', {'songId': song.id}) }}">
                                     <i class="icon-playlist bi bi-music-note-list"></i>
                                 </a>
                             </div>

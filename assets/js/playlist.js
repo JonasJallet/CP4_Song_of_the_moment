@@ -1,17 +1,21 @@
-const playlistButton = document.getElementById('addToPlaylist');
-let url = document.querySelector('#addToPlaylist').dataset.playlistUrl;
+const playlistButtons = document.getElementsByClassName('playlist-popup');
+Array.from(playlistButtons).forEach(function (element) {
+    element.addEventListener('click', openPlaylistPopup);
+});
+
 let popup;
 
-function openPlaylistPopup()
-{
+function openPlaylistPopup(e) {
+    e.preventDefault();
+
+    let url = this.dataset.playlistUrl;
+
     fetch(url)
         .then(response => response.text())
         .then(data => {
-
             popup = document.createElement('div');
             popup.classList.add('popup');
             popup.innerHTML = data;
-
 
             popup.addEventListener('click', function (event) {
                 event.stopPropagation();
@@ -19,42 +23,34 @@ function openPlaylistPopup()
 
             document.body.appendChild(popup);
 
-            initializeAddToPlaylistId();
+            AddToPlaylistId();
         })
         .catch(error => {
-            console.error('Une erreur s\'est produite :', error);
+            console.error('An error occurred:', error);
         });
 }
 
-function closePlaylistPopup()
-{
+function closePlaylistPopup() {
     if (popup) {
         popup.remove();
     }
 }
 
-playlistButton.addEventListener('click', openPlaylistPopup);
 document.addEventListener('click', closePlaylistPopup);
 
-
-function initializeAddToPlaylistId()
-{
-    let addToPlaylistElements = document.querySelectorAll('.addToPlaylistClass');
-    addToPlaylistElements.forEach(function (element) {
+function AddToPlaylistId() {
+    let addToPlaylistElements = document.getElementsByClassName('playlist-collection');
+    Array.from(addToPlaylistElements).forEach(function (element) {
         if (element.dataset.playlistIdUrl) {
             element.addEventListener("click", addToPlaylist);
         }
     });
 
-    function addToPlaylist(e)
-    {
+    function addToPlaylist(e) {
         e.preventDefault();
-
         let url = this.dataset.playlistIdUrl;
-
         try {
             fetch(url)
-                // Extract the JSON from the response
                 .then(res => res.json())
                 .then(data => {
                     closePlaylistPopup();
@@ -64,4 +60,3 @@ function initializeAddToPlaylistId()
         }
     }
 }
-
