@@ -57,7 +57,7 @@ function initializeAddToPlaylistId()
                 // Extract the JSON from the response
                 .then(res => res.json())
                 .then(data => {
-
+                    closePlaylistPopup();
                 });
         } catch (error) {
             alert(error);
