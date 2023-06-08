@@ -1,14 +1,17 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}
-Plop
-{% endblock %}
-
-{% block body %}
-    <main class="form-main container">
-        {{ form_start(formPlaylist, {'attr': {'class': 'form-song d-flex flex-column'}}) }}
-        {{ form_widget(formPlaylist) }}
-        {{ form_end(formPlaylist) }}
-    </main>
-{% endblock %}
-
+<div class="row">
+    <div class="d-flex flex-column">
+        {% for element in collection %}
+            <div class="d-flex col-12 p-1">
+                <div class="d-flex flex-row flex-wrap rounded" style="width: 60px">
+                    {% for song in element.songs %}
+                        <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid" width="30px" height="30px">
+                    {% endfor %}
+                </div>
+                <a class="addToPlaylistClass p-3" data-playlist-id-url="{{ path('app_playlist_id', {'playlistId': element.playlist.id, 'songId': song.id, }) }}">
+                    {{ element.playlist.name }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>

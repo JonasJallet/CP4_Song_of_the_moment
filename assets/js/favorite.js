@@ -10,12 +10,11 @@ function addToFavorite(e)
 
     const favoriteLink = e.currentTarget;
     const link = favoriteLink.href;
-    // Send an HTTP request with fetch to the URI defined in the href
+
     try {
         fetch(link)
             // Extract the JSON from the response
             .then(res => res.json())
-            // Then update the icon
             .then(data => {
                 const favoriteIcon = favoriteLink.firstElementChild;
                 if (data.isInFavorite) {

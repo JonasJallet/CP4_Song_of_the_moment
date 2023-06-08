@@ -13,9 +13,14 @@
                         </h5>
 
                         {% if app.user %}
-                            <a id="favorite" href="{{ path('app_song_add_favorite', {songId: song.id})}}">
-                                <i class="heart-favorite bi {{ app.user.isInFavorite(song) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
-                            </a>
+                            <div class="col-4 d-flex justify-content-around">
+                                <a id="favorite" href="{{ path('app_song_add_favorite', {songId: song.id})}}">
+                                    <i class="heart-favorite bi {{ app.user.isInFavorite(song) ? 'bi-heart-fill' : 'bi-heart' }}"></i>
+                                </a>
+                                <a id="addToPlaylist" data-playlist-url="{{ path('app_playlist', {'songId': song.id}) }}">
+                                    <i class="icon-playlist bi bi-music-note-list"></i>
+                                </a>
+                            </div>
                         {% else %}
                             <a href="{{ path('app_login') }}">
                                 <i class="heart-favorite bi bi-heart"></i>

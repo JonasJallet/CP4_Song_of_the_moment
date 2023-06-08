@@ -15,5 +15,8 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('favorite') }}
+    {{ encore_entry_script_tags('playlist') }}
     <script src="{{ asset('js/youtube.js') }}"></script>
 {% endblock %}
+
+

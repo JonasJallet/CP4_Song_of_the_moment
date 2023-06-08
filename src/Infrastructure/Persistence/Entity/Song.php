@@ -22,7 +22,7 @@ class Song implements DomainSongModelInterface
     #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
     #[Assert\Length(
         max: 255,
-        maxMessage: 'Le titre saisie {{ titre }} est trop longue, il ne doit pas dépasser {{ limit }} caractères',
+        maxMessage: 'Le titre saisie {{ titre }} est trop long, il ne doit pas dépasser {{ limit }} caractères',
     )]
     private ?string $title = null;
 

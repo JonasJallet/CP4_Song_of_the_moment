@@ -1,0 +1,26 @@
+i.icon-playlist {
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+}
+
+.popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    background-color: #2c2a2a;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    /* Add additional styling as needed */
+}
+
+.addToPlaylistClass {
+    min-width: 200px;
+    cursor: pointer;
+    &:hover {
+        background-color: #151d36;
+    }
+}

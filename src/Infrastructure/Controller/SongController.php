@@ -9,17 +9,23 @@ use App\Application\Command\Song\UpdateDomainSong\UpdateDomainSong;
 use App\Application\Query\Song\GetAllApprovedSongs\GetAllApprovedSongs;
 use App\Application\Query\Song\GetSongById\GetSongById;
 use App\Infrastructure\Form\AddSongToPlaylistType;
+use App\Infrastructure\Form\PlaylistType;
 use App\Infrastructure\Form\SongType;
+use App\Infrastructure\Persistence\Entity\Playlist;
 use App\Infrastructure\Persistence\Entity\Song;
 use App\Infrastructure\Persistence\Repository\PlaylistRepository;
 use App\Infrastructure\Persistence\Repository\SongRepository;
+use App\Infrastructure\Persistence\Repository\UserRepository;
+use http\Exception\UnexpectedValueException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/song')]
@@ -162,23 +168,81 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/{songId}/playlist', name: 'app_song_add_playlist', methods: ['GET', 'POST'])]
+    #[Route('/{songId}/playlist', name: 'app_playlist', methods: ['GET', 'POST'])]
     public function addToPlaylist(
+        int $songId,
+        UserInterface $user,
+        UserRepository $userRepository,
+        SongRepository $songRepository,
+    ): Response {
+        $song = $songRepository->findOneBy(['id' => $songId]);
+        $user = $userRepository->findOneBy(
+            ['id' => $user]
+        );
+
+        $playlistsByUser = $user->getPlaylists();
+
+        $collection = [];
+
+        foreach ($playlistsByUser as $playlist) {
+            $randomSongs = $songRepository->fourRandomSongs();
+            $collection[$playlist->getId()] = [
+                'playlist' => $playlist,
+                'songs' => $randomSongs,
+            ];
+        }
+
+        return $this->renderForm('song/_add_to_playlist.html.twig', [
+            'collection' => $collection,
+            'song' => $song,
+        ]);
+    }
+
+    #[Route('/{songId}/playlist/{playlistId}', name: 'app_playlist_id', methods: ['GET', 'POST'])]
+    public function addToPlaylistId(
+        int $songId,
+        string $playlistId,
+        SongRepository $songRepository,
+        PlaylistRepository $playlistRepository,
+        SerializerInterface $serializer
+    ): Response
+    {
+        $song = $songRepository->findOneBy(['id' => $songId]);
+        $playlist = $playlistRepository->findOneBy(['id' => $playlistId]);
+        $playlist->addSong($song);
+        $playlistRepository->save($playlist, true);
+
+        $serializedPlaylist = $serializer->serialize(
+            $playlist,
+            'json',
+            ['groups' => ['default'], 'enable_max_depth' => true]
+        );
+
+        return $this->json([
+            'isApproved' => $serializedPlaylist
+        ]);
+    }
+
+    #[Route('/{songId}/new-playlist', name: 'app_song_add_to_new_playlist', methods: ['GET', 'POST'])]
+    public function addToNewPlaylist(
         int $songId,
         Request $request,
         SongRepository $songRepository,
         PlaylistRepository $playlistRepository
     ): Response {
         $song = $songRepository->findOneBy(['id' => $songId]);
-        $formPlaylist = $this->createForm(AddSongToPlaylistType::class)->handleRequest($request);
+        $playlist = new Playlist();
+        $formPlaylist = $this->createForm(PlaylistType::class)->handleRequest($request);
 
         if ($formPlaylist->isSubmitted() && $formPlaylist->isValid()) {
-            $playlist = $formPlaylist->get('playlist')->getData();
+            $playlist->setName($formPlaylist->getData()->getName());
+            $playlist->setUser($this->getUser());
             $playlist->addSong($song);
+
             $playlistRepository->save($playlist, true);
         }
 
-        return $this->renderForm('song/_add_to_playlist.html.twig', [
+        return $this->renderForm('song/_add_to_new_playlist.html.twig', [
             'formPlaylist' => $formPlaylist,
         ]);
     }
