@@ -16,14 +16,13 @@ function openPlaylistPopup(e) {
             popup = document.createElement('div');
             popup.classList.add('popup');
             popup.innerHTML = data;
-
-            popup.addEventListener('click', function (event) {
-                event.stopPropagation();
-            });
+            // popup.addEventListener('click', function (event) {
+            //     event.stopPropagation();
+            // });
 
             document.body.appendChild(popup);
-
             AddToPlaylistId();
+            newPlaylist();
         })
         .catch(error => {
             console.error('An error occurred:', error);
@@ -58,5 +57,45 @@ function AddToPlaylistId() {
         } catch (error) {
             alert(error);
         }
+    }
+}
+
+function newPlaylist() {
+    const playlistNewButton = document.getElementById('playlist-popup-new');
+    playlistNewButton.addEventListener('click', newPlaylistPopup);
+
+    function newPlaylistPopup(e) {
+        e.preventDefault();
+
+        let url = this.dataset.playlistNewUrl;
+
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                popup.innerHTML = data;
+                newPlaylistAdd()
+            })
+            .catch(error => {
+                console.error('An error occurred:', error);
+            });
+    }
+}
+
+function newPlaylistAdd() {
+    const playlistNewAddButton = document.getElementById('playlist-new-add');
+    playlistNewAddButton.addEventListener('click', addSong);
+
+    function addSong(e) {
+        e.preventDefault();
+
+        let url = this.dataset.playlistNewAddUrl;
+
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+            })
+            .catch(error => {
+                console.error('An error occurred:', error);
+            });
     }
 }

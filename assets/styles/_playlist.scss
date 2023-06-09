@@ -4,8 +4,19 @@ i.icon-playlist {
     cursor: pointer;
 }
 
+i.icon-validate {
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+
+    &:hover {
+        color: #1db954;
+    }
+}
+
 .popup {
     position: absolute;
+    padding: 10px;
     top: 50%;
     left: 50%;
     width: auto;
@@ -23,4 +34,40 @@ i.icon-playlist {
     &:hover {
         background-color: #151d36;
     }
+}
+
+.test {
+    border-width: 0 0 1px 0;
+    border-color: white;
+    background: none;
+    color: white;
+
+    &:active {
+        background-color: transparent;
+        outline: none !important;
+        box-shadow: none;
+        //border-color: white;
+    }
+
+    &:focus {
+        background-color: transparent;
+        color: white;
+        outline: none !important;
+        box-shadow: none;
+        //border-color: white;
+    }
+}
+
+input.autofill.test,
+input.autofill.test:hover,
+input.autofill.test:focus,
+textarea.autofill.test,
+textarea.autofill.test:hover,
+textarea.autofill.test:focus,
+select.autofill.test,
+select.autofill.test:hover,
+select.autofill.test:focus {
+    border: 0;
+    -webkit-text-fill-color: white;
+    transition: background-color 5000s ease-in-out 0s;
 }
