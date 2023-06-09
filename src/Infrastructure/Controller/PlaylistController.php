@@ -17,6 +17,48 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[Route('/playlist')]
 class PlaylistController extends AbstractController
 {
+    #[Route('/new/{songId}', name: 'playlist_popup_new', methods: ['GET', 'POST'])]
+    public function playlistPopupNew(
+        int $songId,
+        Request $request,
+        SongRepository $songRepository,
+    ): Response {
+        $song = $songRepository->findOneBy(['id' => $songId]);
+        $createPlaylistForm = $this->createForm(PlaylistType::class)->handleRequest($request);
+
+        return $this->renderForm('playlist/_playlist_new_popup.html.twig', [
+            'song' => $song,
+            'createPlaylistForm' => $createPlaylistForm,
+        ]);
+    }
+
+    #[Route('/new/add/{songId}', name: 'playlist_new_add', methods: ['GET', 'POST'])]
+    public function playlistNewAdd(
+        int $songId,
+        Request $request,
+        SongRepository $songRepository,
+        PlaylistRepository $playlistRepository,
+        SerializerInterface $serializer
+    ): Response {
+        $song = $songRepository->findOneBy(['id' => $songId]);
+        $newPlaylist = new Playlist();
+        $formPlaylist = $this->createForm(PlaylistType::class)->handleRequest($request);
+        $newPlaylist->setName($formPlaylist->getData()->getName());
+        $newPlaylist->setUser($this->getUser());
+        $newPlaylist->addSong($song);
+        $playlistRepository->save($newPlaylist, true);
+
+        $serializedPlaylist = $serializer->serialize(
+            $newPlaylist,
+            'json',
+            ['groups' => ['default'], 'enable_max_depth' => true]
+        );
+
+        return $this->json([
+            'newPlaylist' => $serializedPlaylist
+        ]);
+    }
+
     #[Route('/{songId}', name: 'playlist_popup', methods: ['GET', 'POST'])]
     public function playlistPopup(
         int $songId,
@@ -67,51 +109,6 @@ class PlaylistController extends AbstractController
 
         return $this->json([
             'playlist' => $serializedPlaylist
-        ]);
-    }
-
-    #[Route('/new/{songId}', name: 'playlist_popup_new', methods: ['GET', 'POST'])]
-    public function playlistPopupNew(
-        int $songId,
-        Request $request,
-        SongRepository $songRepository,
-    ): Response {
-        $song = $songRepository->findOneBy(['id' => $songId]);
-        $createPlaylistForm = $this->createForm(PlaylistType::class)->handleRequest($request);
-
-        return $this->renderForm('playlist/_playlist_new_popup.html.twig', [
-            'song' => $song,
-            'createPlaylistForm' => $createPlaylistForm,
-        ]);
-    }
-
-    #[Route('/new/add/{songId}', name: 'playlist_new_add', methods: ['GET', 'POST'])]
-    public function playlistNewAdd(
-        int $songId,
-        Request $request,
-        SongRepository $songRepository,
-        PlaylistRepository $playlistRepository,
-        SerializerInterface $serializer
-    ): Response {
-        $song = $songRepository->findOneBy(['id' => $songId]);
-        $newPlaylist = new Playlist();
-        $formPlaylist = $this->createForm(PlaylistType::class)->handleRequest($request);
-
-        if ($formPlaylist->isValid()) {
-            $newPlaylist->setName($formPlaylist->getData()->getName());
-            $newPlaylist->setUser($this->getUser());
-            $newPlaylist->addSong($song);
-            $playlistRepository->save($newPlaylist, true);
-        }
-
-        $serializedPlaylist = $serializer->serialize(
-            $newPlaylist,
-            'json',
-            ['groups' => ['default'], 'enable_max_depth' => true]
-        );
-
-        return $this->json([
-            'newPlaylist' => $serializedPlaylist
         ]);
     }
 }

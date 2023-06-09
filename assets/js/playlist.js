@@ -16,9 +16,10 @@ function openPlaylistPopup(e) {
             popup = document.createElement('div');
             popup.classList.add('popup');
             popup.innerHTML = data;
-            // popup.addEventListener('click', function (event) {
-            //     event.stopPropagation();
-            // });
+
+            popup.addEventListener('click', function (event) {
+                event.stopPropagation();
+            });
 
             document.body.appendChild(popup);
             AddToPlaylistId();
@@ -83,16 +84,22 @@ function newPlaylist() {
 
 function newPlaylistAdd() {
     const playlistNewAddButton = document.getElementById('playlist-new-add');
-    playlistNewAddButton.addEventListener('click', addSong);
+    playlistNewAddButton.addEventListener('click', newAddSong);
 
-    function addSong(e) {
+    function newAddSong(e) {
         e.preventDefault();
 
+        let form = document.getElementById('createPlaylistForm');
+        let formData = new FormData(form);
         let url = this.dataset.playlistNewAddUrl;
 
-        fetch(url)
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
             .then(res => res.json())
             .then(data => {
+                closePlaylistPopup();
             })
             .catch(error => {
                 console.error('An error occurred:', error);
