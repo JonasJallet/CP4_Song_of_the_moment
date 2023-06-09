@@ -3,8 +3,9 @@
     {{ form_label(createPlaylistForm.name) }}
     {{ form_widget(createPlaylistForm.name, {'attr': {'class': 'test'}}) }}
 </div>
-{{ form_errors(createPlaylistForm) }}
 {{ form_end(createPlaylistForm) }}
+
+<p id="playlist-error-message" style="display: none;"></p>
 
 <a id="playlist-new-add" data-playlist-new-add-url="{{ path('playlist_new_add', {'songId': song.id}) }}">
     <i class="icon-validate bi bi-check-circle"></i>

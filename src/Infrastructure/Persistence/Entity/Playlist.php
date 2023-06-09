@@ -11,7 +11,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
-#[UniqueEntity(fields: ['name'], message: 'Il existe déjà une playlist avec ce nom')]
 class Playlist
 {
     #[ORM\Id]

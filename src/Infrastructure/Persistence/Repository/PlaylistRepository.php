@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Persistence\Repository;
 
 use App\Infrastructure\Persistence\Entity\Playlist;
+use App\Infrastructure\Persistence\Entity\Song;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -39,28 +40,17 @@ class PlaylistRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Playlist[] Returns an array of Playlist objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function randomSongsByPlaylistId(string $playlistId): array
+    {
+        $queryBuilder = $this->getEntityManager()->createQueryBuilder()
+            ->select('s')
+            ->from(Song::class, 's')
+            ->join('s.playlists', 'p')
+            ->where('p.id = :playlistId')
+            ->setParameter('playlistId', $playlistId)
+            ->orderBy('RAND()')
+            ->setMaxResults(4);
 
-//    public function findOneBySomeField($value): ?Playlist
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

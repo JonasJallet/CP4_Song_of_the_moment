@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/playlist')]
 class PlaylistController extends AbstractController
@@ -38,7 +39,8 @@ class PlaylistController extends AbstractController
         Request $request,
         SongRepository $songRepository,
         PlaylistRepository $playlistRepository,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        ValidatorInterface $validator
     ): Response {
         $song = $songRepository->findOneBy(['id' => $songId]);
         $newPlaylist = new Playlist();
@@ -46,6 +48,19 @@ class PlaylistController extends AbstractController
         $newPlaylist->setName($formPlaylist->getData()->getName());
         $newPlaylist->setUser($this->getUser());
         $newPlaylist->addSong($song);
+
+        $errors = $validator->validate($newPlaylist);
+        if (count($errors) > 0) {
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->getMessage();
+            }
+
+            return $this->json([
+                'errors' => $errorMessages
+            ], 400); // Code de statut 400 pour une requête incorrecte
+        }
+
         $playlistRepository->save($newPlaylist, true);
 
         $serializedPlaylist = $serializer->serialize(
@@ -65,21 +80,25 @@ class PlaylistController extends AbstractController
         UserInterface $user,
         UserRepository $userRepository,
         SongRepository $songRepository,
+        PlaylistRepository $playlistRepository
     ): Response {
         $song = $songRepository->findOneBy(['id' => $songId]);
         $user = $userRepository->findOneBy(
             ['id' => $user]
         );
-
         $playlistsByUser = $user->getPlaylists();
         $collection = [];
+
         foreach ($playlistsByUser as $playlist) {
-            $randomSongs = $songRepository->fourRandomSongs();
+            $randomSongs = $playlistRepository->randomSongsByPlaylistId($playlist->getId());
+
             $collection[$playlist->getId()] = [
                 'playlist' => $playlist,
                 'songs' => $randomSongs,
             ];
         }
+
+        $this->addFlash('info', 'Test');
 
         return $this->renderForm('playlist/_playlist_popup.html.twig', [
             'collection' => $collection,

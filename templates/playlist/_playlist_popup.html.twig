@@ -4,9 +4,19 @@
         {% for element in collection %}
             <div class="d-flex col-12 p-1">
                 <div class="d-flex flex-row flex-wrap rounded" style="width: 60px">
-                    {% for song in element.songs %}
-                        <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid" width="30px" height="30px">
-                    {% endfor %}
+                    {% if element.songs|length == 0 %}
+                        <img src="" style="background-color: red" alt="song image" class="img-fluid" width="60px" height="60px">
+                    {% elseif element.songs|length < 4 %}
+                        {% for song in element.songs %}
+                            {% if loop.index == 1 %}
+                                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid" width="60px" height="60px">
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {% for song in element.songs %}
+                            <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid" width="30px" height="30px">
+                        {% endfor %}
+                    {% endif %}
                 </div>
                 <a class="playlist-collection p-3" data-playlist-id-url="{{ path('playlist_add', {'playlistId': element.playlist.id, 'songId': song.id, }) }}">
                     {{ element.playlist.name }}

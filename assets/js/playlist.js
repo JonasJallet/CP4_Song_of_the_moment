@@ -98,7 +98,7 @@ function newPlaylistAdd() {
             body: formData
         })
             .then(res => res.json())
-            .then(data => {
+            .then(() => {
                 closePlaylistPopup();
             })
             .catch(error => {
