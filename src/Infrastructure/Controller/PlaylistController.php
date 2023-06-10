@@ -40,7 +40,7 @@ class PlaylistController extends AbstractController
         SongRepository $songRepository,
         PlaylistRepository $playlistRepository,
         SerializerInterface $serializer,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
     ): Response {
         $song = $songRepository->findOneBy(['id' => $songId]);
         $newPlaylist = new Playlist();
@@ -58,7 +58,7 @@ class PlaylistController extends AbstractController
 
             return $this->json([
                 'errors' => $errorMessages
-            ], 400); // Code de statut 400 pour une requête incorrecte
+            ], 400);
         }
 
         $playlistRepository->save($newPlaylist, true);
@@ -80,7 +80,7 @@ class PlaylistController extends AbstractController
         UserInterface $user,
         UserRepository $userRepository,
         SongRepository $songRepository,
-        PlaylistRepository $playlistRepository
+        PlaylistRepository $playlistRepository,
     ): Response {
         $song = $songRepository->findOneBy(['id' => $songId]);
         $user = $userRepository->findOneBy(
@@ -97,8 +97,6 @@ class PlaylistController extends AbstractController
                 'songs' => $randomSongs,
             ];
         }
-
-        $this->addFlash('info', 'Test');
 
         return $this->renderForm('playlist/_playlist_popup.html.twig', [
             'collection' => $collection,

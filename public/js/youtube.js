@@ -36,7 +36,10 @@ function onYouTubeIframeAPIReady()
                 youTubePlayer.unMute();
                 break;
             case YT.PlayerState.ENDED:
-                document.getElementById("next").click();
+                let nextButton = document.getElementById("next");
+                if (nextButton) {
+                    nextButton.click();
+                }
                 break;
         }
     }

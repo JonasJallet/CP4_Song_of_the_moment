@@ -1,3 +1,5 @@
+import {flashMessages} from "./flash.js";
+
 const playlistButtons = document.getElementsByClassName('playlist-popup');
 Array.from(playlistButtons).forEach(function (element) {
     element.addEventListener('click', openPlaylistPopup);
@@ -54,6 +56,7 @@ function AddToPlaylistId() {
                 .then(res => res.json())
                 .then(data => {
                     closePlaylistPopup();
+                    flashMessages('success', 'Ajouté à la playlist !');
                 });
         } catch (error) {
             alert(error);
@@ -98,11 +101,13 @@ function newPlaylistAdd() {
             body: formData
         })
             .then(res => res.json())
-            .then(() => {
+            .then(data => {
                 closePlaylistPopup();
+                flashMessages('success', 'Ajouté à la playlist !');
             })
             .catch(error => {
                 console.error('An error occurred:', error);
             });
     }
 }
+
