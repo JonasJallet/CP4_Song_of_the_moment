@@ -23,7 +23,7 @@
         <div id="flash-messages" class="d-flex justify-content-center">
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
-                    <div id="flash" class="alert border border-start-0 border-end-0 border-bottom-0 border-5 border-{{ label }} position-absolute bottom-0 mb-5 mx-2" role="alert">
+                    <div id="flash" class="alert border border-start-0 border-end-0 border-bottom-0 border-5 border-{{ label }} position-absolute mb-4 mx-2" role="alert">
                         <div class="d-flex flex-row align-items-center">
                             <img id="flash-logo" src="{{ asset('build/images/icons/' ~ label ~ '.gif') }}" alt="Flash Logo">
                             <h5 class="text-white lead m-2">{{ message|trans|raw }}</h5>

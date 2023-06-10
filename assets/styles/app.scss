@@ -62,20 +62,20 @@ li {
 }
 
 #flash {
-    opacity: 1;
-    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-    transform: translateY(150%);
+    opacity: 0;
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
     background-color: #212121;
+    bottom: 10px;
 }
 
 #flash-logo {
     width: 45px;
 }
 
-#flash.slide-in {
-    transform: translateY(-40%);
-}
-
 #flash.fade-out {
     opacity: 0;
+}
+
+#flash.fade-in {
+    opacity: 1;
 }

@@ -2,26 +2,26 @@ const flashElement = document.getElementById('flash');
 
 if (flashElement) {
     setTimeout(() => {
-        flashElement.classList.add('slide-in');
+        flashElement.classList.add('fade-in');
     }, 100);
 
     setTimeout(() => {
+        flashElement.classList.remove('fade-in');
         flashElement.classList.add('fade-out');
+        setTimeout(() => {
+            flashElement.remove();
+        }, 500);
     }, 6000);
 
-    setTimeout(() => {
-        flashElement.remove();
-    }, 7000);
 }
 
 export function flashMessages(label, message) {
     const flashDiv = document.createElement('div');
     flashDiv.id = 'flash';
-    flashDiv.className = `alert border border-start-0 border-end-0 border-bottom-0 border-5 border-${label} position-absolute mb-5 mx-auto`;
+    flashDiv.className = `alert border border-start-0 border-end-0 border-bottom-0 border-5 border-${label} position-absolute mb-4 mx-auto`;
     flashDiv.style.width = '300px';
     flashDiv.style.left = '0';
     flashDiv.style.right = '0';
-    flashDiv.style.bottom = '200px';
     flashDiv.style.textAlign = 'center';
     flashDiv.style.opacity = '0';
     flashDiv.style.transition = 'opacity 0.5s ease-in-out';
@@ -42,5 +42,5 @@ export function flashMessages(label, message) {
         setTimeout(() => {
             flashDiv.remove();
         }, 500);
-    }, 4000);
+    }, 6000);
 }
