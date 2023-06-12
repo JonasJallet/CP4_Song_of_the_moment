@@ -1,7 +1,9 @@
-let addFavorite = document.getElementById("favorite");
+let favoritesButtons = document.getElementsByClassName("favorite");
 
-if (addFavorite) {
-    addFavorite.addEventListener("click", addToFavorite);
+if (favoritesButtons) {
+    Array.from(favoritesButtons).forEach(function (element) {
+        element.addEventListener('click', addToFavorite);
+    });
 }
 
 function addToFavorite(e)

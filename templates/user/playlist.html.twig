@@ -42,4 +42,5 @@
 {% block javascripts %}
     {{ parent() }}
     <script src="{{ asset('js/youtube.js') }}"></script>
+    {{ encore_entry_script_tags('playlist') }}
 {% endblock %}
