@@ -91,7 +91,6 @@ class PlaylistController extends AbstractController
 
         foreach ($playlistsByUser as $playlist) {
             $randomSongs = $playlistRepository->randomSongsByPlaylistId($playlist->getId());
-
             $collection[$playlist->getId()] = [
                 'playlist' => $playlist,
                 'songs' => $randomSongs,
@@ -110,12 +109,26 @@ class PlaylistController extends AbstractController
         string $playlistId,
         SongRepository $songRepository,
         PlaylistRepository $playlistRepository,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        ValidatorInterface $validator,
     ): Response
     {
         $song = $songRepository->findOneBy(['id' => $songId]);
         $playlist = $playlistRepository->findOneBy(['id' => $playlistId]);
         $playlist->addSong($song);
+
+        $errors = $validator->validate($playlist);
+        if (count($errors) > 0) {
+            $errorMessages = [];
+            foreach ($errors as $error) {
+                $errorMessages[] = $error->getMessage();
+            }
+
+            return $this->json([
+                'errors' => $errorMessages
+            ], 400);
+        }
+
         $playlistRepository->save($playlist, true);
 
         $serializedPlaylist = $serializer->serialize(

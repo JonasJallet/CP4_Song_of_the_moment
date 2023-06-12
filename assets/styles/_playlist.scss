@@ -4,6 +4,10 @@ i.icon-playlist {
     cursor: pointer;
 }
 
+i.icon-new-popup {
+    font-size: 20px;
+}
+
 i.icon-validate {
     font-size: 30px;
     color: white;
@@ -16,29 +20,50 @@ i.icon-validate {
 
 .popup {
     position: absolute;
-    padding: 10px;
-    top: 50%;
+    padding: 0 10px 10px 10px;
+    border-radius: 15px;
+    top: 40%;
     left: 50%;
-    width: auto;
-    height: auto;
+    width: 380px;
+    max-height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
     transform: translate(-50%, -50%);
     background-color: #2c2a2a;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-    z-index: 9999;
+    z-index: 2;
     /* Add additional styling as needed */
 }
 
-.playlist-collection {
-    min-width: 200px;
+.playlist-collection, #playlist-popup-new {
+    color: white;
     cursor: pointer;
+    text-decoration: none;
+}
+
+.playlist-collection {
+    min-width: 290px;
+    padding: 17px 0 17px 10px;
     &:hover {
-        background-color: #151d36;
+        background-color: rgba(8, 8, 10, 0.5);
+        color: white;
     }
 }
 
-.test {
+.sticky-popup-new {
+    background-color: #2c2a2a;
+}
+
+#playlist-popup-new {
+    &:hover {
+        color: #a9064e;
+    }
+}
+
+.playlist-name-input {
+    width: 270px;
     border-width: 0 0 1px 0;
-    border-color: white;
+    border-color: #838383;
     background: none;
     color: white;
 
@@ -58,15 +83,15 @@ i.icon-validate {
     }
 }
 
-input.autofill.test,
-input.autofill.test:hover,
-input.autofill.test:focus,
-textarea.autofill.test,
-textarea.autofill.test:hover,
-textarea.autofill.test:focus,
-select.autofill.test,
-select.autofill.test:hover,
-select.autofill.test:focus {
+input.autofill.playlist-name-input,
+input.autofill.playlist-name-input:hover,
+input.autofill.playlist-name-input:focus,
+textarea.autofill.playlist-name-input,
+textarea.autofill.playlist-name-input:hover,
+textarea.autofill.playlist-name-input:focus,
+select.autofill.playlist-name-input,
+select.autofill.playlist-name-input:hover,
+select.autofill.playlist-name-input:focus {
     border: 0;
     -webkit-text-fill-color: white;
     transition: background-color 5000s ease-in-out 0s;

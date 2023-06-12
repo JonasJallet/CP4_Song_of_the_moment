@@ -26,7 +26,7 @@ class Playlist
     #[ORM\ManyToMany(targetEntity: Song::class, inversedBy: 'playlists')]
     private Collection $songs;
 
-    #[ORM\Column(length: 180)]
+    #[ORM\Column(length: 30)]
     private ?string $name = null;
 
     public function __construct()
