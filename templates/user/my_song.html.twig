@@ -9,17 +9,44 @@
 {% block body %}
     <div id="back-hover">
         <main class="main-favorite">
+            <div class="row col-12 d-flex flex-row justify-content-center align-items-center m-0">
+                <div class="favorites-card card d-flex flex-row col-4 border-0 shadow-lg m-4 p-0">
+                    <a class="text-decoration-none" id="favorites" href="{{ path('app_user_favorite') }}">
+                        <div class="d-flex flex-row">
+                            <div class="d-flex flex-row flex-wrap justify-content-center align-items-center" style="width: 80px; height: 80px">
+                                <i class="favorites-icon bi bi-heart-fill"></i>
+                            </div>
+                            <p class="favorites-link m-0">Coup de coeur</p>
+                        </div>
+                    </a>
+                </div>
 
-            <div class="d-flex justify-content-around">
-
-                <a id="favorites" href="{{ path('app_user_favorite') }}">
-                    <h2>Coup de coeur</h2>
-                </a>
-
-            </div>
-
-            <div class="list-song row col-12 m-0 d-flex justify-content-center" id="favoriteContent">
-                {{ dump() }}
+                {% for element in collection %}
+                    <div class="favorites-card card col-4 border-0 shadow-lg m-4 p-0">
+                        <a class="text-decoration-none" href="{{ path('playlist_show', {'playlistId': element.playlist.id}) }}">
+                            <div class="d-flex flex-row">
+                                <div class="d-flex flex-row flex-wrap" style="width: 80px">
+                                    {% if element.songs|length == 0 %}
+{#                                        <img src="" alt="song image" class="img-fluid img-full-size">#}
+                                    {% elseif element.songs|length < 4 %}
+                                        {% for song in element.songs %}
+                                            {% if loop.index == 1 %}
+                                                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-full-size">
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for song in element.songs %}
+                                            <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid" style="width: 40px; height: 40px">
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <p class="favorites-link m-0">{{ element.playlist.name }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
             </div>
         </main>
     </div>

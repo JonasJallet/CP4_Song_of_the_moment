@@ -7,6 +7,7 @@ use App\Infrastructure\Persistence\Entity\Playlist;
 use App\Infrastructure\Persistence\Repository\PlaylistRepository;
 use App\Infrastructure\Persistence\Repository\SongRepository;
 use App\Infrastructure\Persistence\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/playlist')]
 class PlaylistController extends AbstractController
 {
+    #[Route('/{playlistId}', name: 'playlist_show', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function showOnePlaylistById(
+        PlaylistRepository $playlistRepository,
+        string $playlistId,
+    ): Response {
+        $playlist = $playlistRepository->findOneBy([
+            'id' => $playlistId
+        ]);
+
+        return $this->render('user/playlist.html.twig', [
+            'playlist' => $playlist,
+        ]);
+    }
+
     #[Route('/new/{songId}', name: 'playlist_popup_new', methods: ['GET', 'POST'])]
     public function playlistPopupNew(
         int $songId,
@@ -74,7 +90,7 @@ class PlaylistController extends AbstractController
         ]);
     }
 
-    #[Route('/{songId}', name: 'playlist_popup', methods: ['GET', 'POST'])]
+    #[Route('/popup/{songId}/', name: 'playlist_popup', methods: ['GET', 'POST'])]
     public function playlistPopup(
         int $songId,
         UserInterface $user,
