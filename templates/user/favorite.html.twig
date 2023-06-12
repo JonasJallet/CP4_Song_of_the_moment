@@ -9,52 +9,68 @@
 {% block body %}
     <div id="back-hover">
         <main class="main-favorite">
-
             <div class="list-song row col-12 m-0 d-flex justify-content-center" id="favoriteContent">
                 <div class="d-flex align-items-center">
                     <i class="text-danger heart-favorite bi bi-heart-fill m-2"></i>
                     <h3 class="m-0">Coup de coeur</h3>
-
                 </div>
                 <p class="m-0">{{ app.user.favorites|length }} Titres</p>
 
                 <table class="col-11">
                     <thead class="thead-playlist">
-                    <tr>
-                        <th class="lead p-2">TITRE</th>
-                        <th class="lead p-2">ARTISTE</th>
-                        <th class="lead p-2">ALBUM</th>
-                    </tr>
+                        <tr>
+                            <th class="lead p-2">TITRE</th>
+                            <th class="lead p-2">ARTISTE</th>
+                            <th class="lead p-2">ALBUM</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {% for favorite in app.user.favorites %}
-                        <tr class="playlist-line">
-                            <td class="link_id song-on-playlist" data-photo="{{ favorite.photoAlbum }}" data-youtube="{{ favorite.linkYoutube }}" data-title="{{ favorite.title }}" data-artist="{{ favorite.artist }}"><img class="photo_song_id photo-song-playlist shadow p-2" src="{{ favorite.photoAlbum }}" alt="Photo album"/>
-                                {{ favorite.title }}</td>
-                            <td class="link_id song-on-playlist" data-photo="{{ favorite.photoAlbum }}" data-youtube="{{ favorite.linkYoutube }}" data-title="{{ favorite.title }}" data-artist="{{ favorite.artist }}">
-                                {{ favorite.artist }}
-                            </td>
-                            <td class="link_id song-on-playlist" data-photo="{{ favorite.photoAlbum }}" data-youtube="{{ favorite.linkYoutube }}" data-title="{{ favorite.title }}" data-artist="{{ favorite.artist }}">
-                                {{ favorite.album }}
-                            </td>
-                            <td style="width: 40px">
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary bg-transparent border-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="playlist-line-icon bi bi-three-dots"></i>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#">Ajouter aux favoris</a></li>
-                                        <li>
-                                            <a class="playlist-popup" data-playlist-url="{{ path('playlist_popup', {'songId': favorite.id}) }}">
-                                                Ajouter à une playlist
-                                            </a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="#">Supprimer</a></li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
+                        {% for song in app.user.favorites %}
+                            <tr class="playlist-line">
+                                <td class="link_id song-on-playlist"
+                                    data-photo="{{ song.photoAlbum }}"
+                                    data-youtube="{{ song.linkYoutube }}"
+                                    data-title="{{ song.title }}"
+                                    data-artist="{{ song.artist }}"
+                                >
+                                    <img class="photo_song_id photo-song-playlist shadow p-2" src="{{ song.photoAlbum }}" alt="Photo album"/>
+                                    {{ song.title }}
+                                </td>
+                                <td class="link_id song-on-playlist" data-photo="{{ song.photoAlbum }}"
+                                    data-youtube="{{ song.linkYoutube }}"
+                                    data-title="{{ song.title }}"
+                                    data-artist="{{ song.artist }}">
+                                    {{ song.artist }}
+                                </td>
+                                <td class="link_id song-on-playlist"
+                                    data-photo="{{ song.photoAlbum }}"
+                                    data-youtube="{{ song.linkYoutube }}"
+                                    data-title="{{ song.title }}"
+                                    data-artist="{{ song.artist }}"
+                                >
+                                    {{ song.album }}
+                                </td>
+                                <td class="dropdown-icon">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary bg-transparent border-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="playlist-line-icon bi bi-three-dots"></i>
+                                        </button>
+                                        <ul class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <a class="favorite dropdown-item text-white link-dark" href="{{ path('app_song_add_favorite', {songId: song.id})}}">
+                                                    Retirer des favoris
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="playlist-popup dropdown-item text-white link-dark" data-playlist-url="{{ path('playlist_popup', {'songId': song.id}) }}">
+                                                    Ajouter à une playlist
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -68,6 +84,7 @@
 
 {% block javascripts %}
     {{ parent() }}
+    {{ encore_entry_script_tags('favorite') }}
     {{ encore_entry_script_tags('playlist') }}
     <script src="{{ asset('js/youtube.js') }}"></script>
 {% endblock %}

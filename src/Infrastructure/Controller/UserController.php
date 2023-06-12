@@ -57,19 +57,4 @@ class UserController extends AbstractController
             'favorites' => $favorites,
         ]);
     }
-
-    #[Route('/playlist/{playlistId}', name: 'app_user_playlist_show', methods: ['GET'])]
-    #[IsGranted('ROLE_USER')]
-    public function showOnePlaylistById(
-        PlaylistRepository $playlistRepository,
-        string $playlistId,
-    ): Response {
-        $playlist = $playlistRepository->findOneBy([
-            'id' => $playlistId
-        ]);
-
-        return $this->render('user/playlist.html.twig', [
-            'playlist' => $playlist,
-        ]);
-    }
 }

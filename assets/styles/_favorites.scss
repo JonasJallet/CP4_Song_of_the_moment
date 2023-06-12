@@ -12,7 +12,7 @@
     padding: 2px 5px 2px 5px;
     border: 1px solid transparent;
     &:hover {
-        color: black;
+        color: #212529;
         background-color: white;
         border: 1px solid white;
         border-radius: 50px;
@@ -62,7 +62,7 @@ i.heart-favorite {
 }
 
 .favorites-card {
-    background: #1c1a1a;
+    background: #212529;
     width: 385px;
 }
 
@@ -78,5 +78,9 @@ i.heart-favorite {
     &:hover {
         color: #ad0505;
     }
+}
+
+.dropdown-icon {
+    width: 40px;
 }
 
