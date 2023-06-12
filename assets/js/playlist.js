@@ -55,11 +55,11 @@ function AddToPlaylistId() {
             fetch(url)
                 .then(res => res.json())
                 .then(res => {
-                    if (res.ok) {
+                    if (res.errors) {
+                        flashMessages('danger', 'Erreur lors de l\'ajout à la playlist !');
+                    } else {
                         closePlaylistPopup();
                         flashMessages('success', 'Ajouté à la playlist !');
-                    } else if (res.errors) {
-                        flashMessages('danger', 'Erreur lors de l\'ajout à la playlist !');
                     }
                 });
         } catch (error) {
@@ -106,11 +106,11 @@ function newPlaylistAdd() {
         })
             .then(res => res.json())
             .then(res => {
-                if (res.ok) {
+                if (res.errors) {
+                    flashMessages('danger', 'Erreur lors de l\'ajout à la playlist !');
+                } else {
                     closePlaylistPopup();
                     flashMessages('success', 'Ajouté à la playlist !');
-                } else if (res.error) {
-                    flashMessages('danger', 'Erreur lors de l\'ajout à la playlist !');
                 }
             })
             .catch(error => {

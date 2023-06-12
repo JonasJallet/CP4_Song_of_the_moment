@@ -24,15 +24,14 @@ i.icon-validate {
     border-radius: 15px;
     top: 40%;
     left: 50%;
-    width: 380px;
+    width: 400px;
     max-height: 400px;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     transform: translate(-50%, -50%);
     background-color: #2c2a2a;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     z-index: 2;
-    /* Add additional styling as needed */
 }
 
 .playlist-collection, #playlist-popup-new {
@@ -42,7 +41,7 @@ i.icon-validate {
 }
 
 .playlist-collection {
-    min-width: 290px;
+    min-width: 300px;
     padding: 17px 0 17px 10px;
     &:hover {
         background-color: rgba(8, 8, 10, 0.5);
@@ -81,6 +80,16 @@ i.icon-validate {
         box-shadow: none;
         //border-color: white;
     }
+}
+
+.img-full-size {
+    width: 60px;
+    height: 60px;
+}
+
+.img-little-size {
+    width: 30px;
+    height: 30px;
 }
 
 input.autofill.playlist-name-input,

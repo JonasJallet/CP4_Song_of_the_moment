@@ -79,3 +79,15 @@ li {
 #flash.fade-in {
     opacity: 1;
 }
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #494949;
+}
+
+::-webkit-scrollbar-track {
+    background: none;
+}

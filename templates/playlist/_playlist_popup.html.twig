@@ -10,18 +10,18 @@
     <div class="d-flex flex-column">
         {% for element in collection %}
             <div class="d-flex col-12 p-1">
-                <div class="d-flex flex-row flex-wrap rounded" style="width: 60px">
+                <div class="d-flex flex-row flex-wrap rounded img-full-size">
                     {% if element.songs|length == 0 %}
-                        <img src="" style="background-color: red" alt="song image" class="img-fluid" width="60px" height="60px">
+                        <img src="" style="background-color: red" alt="song image" class="img-fluid img-full-size">
                     {% elseif element.songs|length < 4 %}
                         {% for song in element.songs %}
                             {% if loop.index == 1 %}
-                                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid" width="60px" height="60px">
+                                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-full-size">
                             {% endif %}
                         {% endfor %}
                     {% else %}
                         {% for song in element.songs %}
-                            <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid" width="30px" height="30px">
+                            <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-little-size">
                         {% endfor %}
                     {% endif %}
                 </div>
