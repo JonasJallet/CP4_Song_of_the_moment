@@ -119,3 +119,33 @@ function newPlaylistAdd() {
     }
 }
 
+let deleteButtons = document.getElementsByClassName('song-delete');
+let playlistLengthElement = document.getElementById('playlist-length');
+let playlistLength = playlistLengthElement ? parseInt(playlistLengthElement.innerText) : 0;
+
+Array.from(deleteButtons).forEach(function (element) {
+        element.addEventListener("click", removeToPlaylist);
+});
+
+function removeToPlaylist(e) {
+    e.preventDefault();
+    const songLink = e.currentTarget;
+    const trParent = songLink.closest('tr');
+    let url = this.dataset.removeSongUrl;
+
+    try {
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                trParent.classList.add('delete-fade-out');
+                setTimeout(() => {
+                    trParent.remove();
+                    playlistLength--;
+                    playlistLengthElement.innerText = playlistLength.toString();
+                }, 500);
+            });
+    } catch (error) {
+        alert(error);
+    }
+}
+

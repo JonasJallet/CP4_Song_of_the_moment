@@ -157,4 +157,28 @@ class PlaylistController extends AbstractController
             'playlist' => $serializedPlaylist
         ]);
     }
+
+    #[Route('/{playlistId}/remove/{songId}', name: 'playlist_remove', methods: ['GET', 'POST'])]
+    public function playlistRemove(
+        int $songId,
+        string $playlistId,
+        SongRepository $songRepository,
+        PlaylistRepository $playlistRepository,
+        SerializerInterface $serializer,
+    ): Response
+    {
+        $song = $songRepository->findOneBy(['id' => $songId]);
+        $playlist = $playlistRepository->findOneBy(['id' => $playlistId]);
+        $playlist->removeSong($song);
+        $playlistRepository->save($playlist, true);
+        $serializedPlaylist = $serializer->serialize(
+            $playlist,
+            'json',
+            ['groups' => ['default'], 'enable_max_depth' => true]
+        );
+
+        return $this->json([
+            'playlist' => $serializedPlaylist
+        ]);
+    }
 }

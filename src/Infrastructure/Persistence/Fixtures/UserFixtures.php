@@ -4,10 +4,12 @@ namespace App\Infrastructure\Persistence\Fixtures;
 
 use App\Infrastructure\Persistence\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements DependentFixtureInterface
 {
     private UserPasswordHasherInterface $passwordHasher;
 
@@ -18,6 +20,8 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        $faker = Factory::create();
+
         $users = [
             [
                 'email' => 'admin@mail.com',
@@ -33,6 +37,13 @@ class UserFixtures extends Fixture
 
         foreach ($users as $key => $user) {
             $newUser = new User();
+
+            for ($i = 0; $i < 10; $i++) {
+                $songReference = 'song_' . $faker->numberBetween(0, 23);
+                $song = $this->getReference($songReference);
+                $newUser->addFavorite($song);
+            }
+
             $newUser->setUsername($user['email']);
             $hash = $this->passwordHasher->hashPassword($newUser, $user['password']);
             $newUser->setPassword($hash);
@@ -41,5 +52,12 @@ class UserFixtures extends Fixture
             $this->addReference('user_' . $key, $newUser);
         }
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            SongFixtures::class,
+        ];
     }
 }

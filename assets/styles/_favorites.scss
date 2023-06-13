@@ -1,3 +1,7 @@
+.main-favorite {
+    margin-top: 100px;
+}
+
 .playlist-line {
     cursor: pointer;
     //margin: 0 50px 0 50px;
@@ -82,5 +86,10 @@ i.heart-favorite {
 
 .dropdown-icon {
     width: 40px;
+}
+
+.delete-fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 

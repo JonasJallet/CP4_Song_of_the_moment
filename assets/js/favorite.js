@@ -1,7 +1,7 @@
-let favoritesButtons = document.getElementsByClassName("favorite");
+let favoriteButtons = document.getElementsByClassName("favorite");
 
-if (favoritesButtons) {
-    Array.from(favoritesButtons).forEach(function (element) {
+if (favoriteButtons) {
+    Array.from(favoriteButtons).forEach(function (element) {
         element.addEventListener('click', addToFavorite);
     });
 }
@@ -15,7 +15,6 @@ function addToFavorite(e)
 
     try {
         fetch(link)
-            // Extract the JSON from the response
             .then(res => res.json())
             .then(data => {
                 const favoriteIcon = favoriteLink.firstElementChild;
@@ -31,3 +30,40 @@ function addToFavorite(e)
         alert(error);
     }
 }
+
+let deleteButtons = document.getElementsByClassName("favorite-delete");
+let favoriteLengthElement = document.getElementById('favorite-length');
+let favoriteLength = favoriteLengthElement ? parseInt(favoriteLengthElement.innerText) : 0;
+
+if (deleteButtons) {
+    Array.from(deleteButtons).forEach(function (element) {
+        element.addEventListener('click', removeToFavorite);
+    });
+}
+
+function removeToFavorite(e)
+{
+    e.preventDefault();
+
+    const favoriteLink = e.currentTarget;
+    const link = favoriteLink.href;
+    const trParent = favoriteLink.closest('tr');
+    try {
+        fetch(link)
+            .then(res => res.json())
+            .then(data => {
+                trParent.classList.add('delete-fade-out');
+                setTimeout(() => {
+                    trParent.remove();
+                    favoriteLength--;
+                    favoriteLengthElement.innerText = favoriteLength.toString();
+                }, 500);
+            });
+    } catch (error) {
+        alert(error);
+    }
+}
+
+
+
+

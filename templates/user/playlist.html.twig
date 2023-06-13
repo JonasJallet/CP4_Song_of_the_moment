@@ -9,8 +9,12 @@
 {% block body %}
     <div id="back-hover">
         <main class="main-favorite">
-
-            <div class="list-song row col-12 m-0 d-flex justify-content-center" id="favoriteContent">
+            <div class="list-song row col-12 m-0 d-flex justify-content-center pb-5" id="favoriteContent">
+                <div class="d-flex align-items-center">
+                    <i class="icon-playlist bi bi-music-note-list m-2"></i>
+                    <h3 class="m-0">{{ playlist.name }}</h3>
+                    <h3 id="playlist-length" class="m-0">{{ playlist.songs|length }}</h3>
+                </div>
                 <table class="col-10">
                     <thead class="thead-playlist">
                     <tr>
@@ -54,12 +58,16 @@
                                     </button>
                                     <ul class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton1">
                                         <li>
-                                            <a class="playlist-popup dropdown-item text-white link-dark" data-playlist-url="{{ path('playlist_popup', {'songId': song.id}) }}">
+                                            <a  class="playlist-popup dropdown-item text-white link-dark"
+                                                data-playlist-url="{{ path('playlist_popup', {'songId': song.id}) }}">
                                                 Ajouter à une playlist
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="dropdown-item text-white link-dark" href="#">Supprimer de la playlist</a>
+                                            <a  class="song-delete dropdown-item text-white link-dark"
+                                                data-remove-song-url="{{ path('playlist_remove', {'songId': song.id, 'playlistId': playlist.id}) }}">
+                                                Supprimer de la playlist
+                                            </a>
                                         </li>
                                     </ul>
                                 </div>
