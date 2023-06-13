@@ -1,0 +1,34 @@
+<div class="sticky-popup-new d-flex sticky-top justify-content-end top-0 p-2">
+    <a id="playlist-popup-new" data-playlist-new-url="{{ path('playlist_popup_new', {'songId': song.id, }) }}">
+        <div class="d-flex flex-row">
+        <i class="icon-new-popup bi bi-plus"></i>
+        <h4 class="m-0">Nouvelle Playlist</h4>
+        </div>
+    </a>
+</div>
+<div class="row">
+    <div class="d-flex flex-column">
+        {% for element in collection %}
+            <div class="d-flex col-12 p-1">
+                <div class="d-flex flex-row flex-wrap rounded img-full-size">
+                    {% if element.songs|length == 0 %}
+                        <img src="" style="background-color: red" alt="song image" class="img-fluid img-full-size">
+                    {% elseif element.songs|length < 4 %}
+                        {% for song in element.songs %}
+                            {% if loop.index == 1 %}
+                                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-full-size">
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {% for song in element.songs %}
+                            <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-little-size">
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <a class="playlist-collection" data-playlist-id-url="{{ path('playlist_add', {'playlistId': element.playlist.id, 'songId': song.id, }) }}">
+                    {{ element.playlist.name }}
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>

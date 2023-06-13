@@ -7,6 +7,7 @@ form.form-song.d-flex.flex-column {
     font-size: 20px;
     width: 220px;
     margin: 30px;
+    border: none;
 
     &:hover {
         background: rgba(0, 0, 0, 0.5);
@@ -27,4 +28,10 @@ form.form-song.d-flex.flex-column {
 
 input#registration_form_agreeTerms {
     margin: 10px;
+}
+
+.help-text {
+    color: #adb5bd;
+    font-size: 18px;
+    font-style: italic;
 }

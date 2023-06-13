@@ -17,8 +17,45 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
+
             - '../src/Entity/'
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+            - '../src/Domain/Model/User'
+            - '../src/Infrastructure/Persistence/Migrations'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    App\Infrastructure\Controller\:
+        resource: '../src/Infrastructure/Controller'
+        tags: [ controller.service_arguments ]
+
+    App\Application\Query\Song\GetAllApprovedSongs\GetAllApprovedSongsHandler:
+        tags: [ { name: messenger.message_handler, bus: query.bus } ]
+        autoconfigure: false
+
+    App\Application\Query\Song\GetSongById\GetSongByIdHandler:
+        tags: [ { name: messenger.message_handler, bus: query.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Song\NewDomainSong\NewDomainSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Song\UpdateDomainSong\UpdateDomainSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Song\DeleteDomainSong\DeleteDomainSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Song\AddToFavoriteSong\AddToFavoriteSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
