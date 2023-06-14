@@ -9,11 +9,12 @@
 {% block body %}
     <div id="back-hover">
         <main class="main-favorite">
-            <div class="list-song row col-12 m-0 d-flex justify-content-center pb-5" id="favoriteContent">
+            <div class="list-song row col-11 m-0 d-flex justify-content-center mx-auto" id="favoriteContent">
                 <div class="d-flex align-items-center">
                     <i class="text-danger heart-favorite bi bi-heart-fill m-2"></i>
-                    <h3 class="m-0">Coup de coeur</h3>
+                    <h3 class="m-0">Coup de coeur -&nbsp;</h3>
                     <h3 id="favorite-length" class="m-0">{{ app.user.favorites|length }}</h3>
+                    <h3 class="m-0">&nbsp;Titres</h3>
                 </div>
                 <table class="col-11">
                     <thead class="thead-playlist">

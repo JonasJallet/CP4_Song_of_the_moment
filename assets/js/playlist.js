@@ -149,3 +149,10 @@ function removeToPlaylist(e) {
     }
 }
 
+let dropdownButtons = document.querySelectorAll('.dropdown .btn');
+dropdownButtons.forEach(function(button) {
+    button.addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
+});
+

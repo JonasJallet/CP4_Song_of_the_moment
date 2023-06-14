@@ -3,8 +3,6 @@
     <h4 class="text-center p-2 m-0">{{ form_label(createPlaylistForm.name) }}</h4>
     {{ form_widget(createPlaylistForm.name, {'attr': {'class': 'playlist-name-input', 'maxlength': 30}}) }}
     {{ form_end(createPlaylistForm) }}
-
-    <p id="playlist-error-message" style="display: none;"></p>
     <a id="playlist-new-add" class="pt-4" data-playlist-new-add-url="{{ path('playlist_new_add', {'songId': song.id}) }}">
         <i class="icon-validate bi bi-check-circle"></i>
     </a>

@@ -10,22 +10,20 @@
     <div class="d-flex flex-column">
         {% for element in collection %}
             <div class="d-flex col-12 p-1">
-                <div class="d-flex flex-row flex-wrap rounded img-full-size">
-                    {% if element.songs|length == 0 %}
-                        <img src="" style="background-color: red" alt="song image" class="img-fluid img-full-size">
-                    {% elseif element.songs|length < 4 %}
+                <div class="d-flex flex-row flex-wrap rounded img-popup-big">
+                    {% if element.songs|length < 4 %}
                         {% for song in element.songs %}
                             {% if loop.index == 1 %}
-                                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-full-size">
+                                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-popup-big">
                             {% endif %}
                         {% endfor %}
                     {% else %}
                         {% for song in element.songs %}
-                            <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-little-size">
+                            <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-popup-little">
                         {% endfor %}
                     {% endif %}
                 </div>
-                <a class="playlist-collection" data-playlist-id-url="{{ path('playlist_add', {'playlistId': element.playlist.id, 'songId': song.id, }) }}">
+                <a class="playlist-collection" data-playlist-id-url="{{ path('playlist_add_song', {'playlistId': element.playlist.id, 'songId': song.id, }) }}">
                     {{ element.playlist.name }}
                 </a>
             </div>

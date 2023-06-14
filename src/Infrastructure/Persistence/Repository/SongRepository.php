@@ -50,7 +50,7 @@ class SongRepository extends ServiceEntityRepository implements DomainSongReposi
         return $queryBuilder->getResult();
     }
 
-    public function fourRandomSongs(): array
+    public function homeRandomSongs(): array
     {
         $queryBuilder = $this->createQueryBuilder('s')
             ->where('s.isApproved = :approved')

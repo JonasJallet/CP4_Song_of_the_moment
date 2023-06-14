@@ -119,8 +119,8 @@ class PlaylistController extends AbstractController
         ]);
     }
 
-    #[Route('/{playlistId}/add/{songId}', name: 'playlist_add', methods: ['GET', 'POST'])]
-    public function playlistAdd(
+    #[Route('/{playlistId}/add/{songId}', name: 'playlist_add_song', methods: ['GET', 'POST'])]
+    public function playlistAddSong(
         int $songId,
         string $playlistId,
         SongRepository $songRepository,
@@ -158,8 +158,8 @@ class PlaylistController extends AbstractController
         ]);
     }
 
-    #[Route('/{playlistId}/remove/{songId}', name: 'playlist_remove', methods: ['GET', 'POST'])]
-    public function playlistRemove(
+    #[Route('/{playlistId}/remove/{songId}', name: 'playlist_delete_song', methods: ['GET', 'POST'])]
+    public function playlistRemoveSong(
         int $songId,
         string $playlistId,
         SongRepository $songRepository,
@@ -180,5 +180,19 @@ class PlaylistController extends AbstractController
         return $this->json([
             'playlist' => $serializedPlaylist
         ]);
+    }
+
+    #[Route('/{playlistId}/delete', name: 'playlist_delete', methods: ['GET', 'POST'])]
+    public function playlistRemove(
+        string $playlistId,
+        PlaylistRepository $playlistRepository,
+        Request $request,
+    ): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $playlistId, $request->request->get('_token'))) {
+            $playlist = $playlistRepository->findOneBy(['id' => $playlistId]);
+            $playlistRepository->remove($playlist, true);
+        }
+        return $this->redirectToRoute('app_user_song', [], Response::HTTP_SEE_OTHER);
     }
 }

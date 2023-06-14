@@ -13,7 +13,7 @@ class HomeController extends AbstractController
     public function index(SongRepository $songRepository): Response
     {
         return $this->render('home/index.html.twig', [
-            'songs' => $songRepository->fourRandomSongs(),
+            'songs' => $songRepository->homeRandomSongs(),
         ]);
     }
 }

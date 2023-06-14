@@ -18,18 +18,17 @@ class UserController extends AbstractController
     public function showPlaylists(
         UserInterface $user,
         UserRepository $userRepository,
-        SongRepository $songRepository
+        PlaylistRepository $playlistRepository
     ): Response {
         $user = $userRepository->findOneBy(
             ['id' => $user]
         );
 
         $playlistsByUser = $user->getPlaylists();
-
         $collection = [];
 
         foreach ($playlistsByUser as $playlist) {
-            $randomSongs = $songRepository->fourRandomSongs();
+            $randomSongs = $playlistRepository->randomSongsByPlaylistId($playlist->getId());
             $collection[$playlist->getId()] = [
                 'playlist' => $playlist,
                 'songs' => $randomSongs,

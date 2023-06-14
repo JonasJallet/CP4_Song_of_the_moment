@@ -9,13 +9,19 @@
 {% block body %}
     <div id="back-hover">
         <main class="main-favorite">
-            <div class="list-song row col-12 m-0 d-flex justify-content-center pb-5" id="favoriteContent">
-                <div class="d-flex align-items-center">
-                    <i class="icon-playlist bi bi-music-note-list m-2"></i>
-                    <h3 class="m-0">{{ playlist.name }}</h3>
-                    <h3 id="playlist-length" class="m-0">{{ playlist.songs|length }}</h3>
+            <div class="list-song row col-11 m-0 d-flex justify-content-center pb-5 mx-auto" id="favoriteContent">
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <i class="icon-playlist bi bi-music-note-list m-2"></i>
+                        <h3 class="m-0">{{ playlist.name }} -&nbsp;</h3>
+                        <h3 id="playlist-length" class="m-0">{{ playlist.songs|length }}</h3>
+                        <h3 class="m-0">&nbsp;Titres</h3>
+                    </div>
+                    <div>
+                        {{ include('playlist/_delete.html.twig') }}
+                    </div>
                 </div>
-                <table class="col-10">
+                <table class="col-11">
                     <thead class="thead-playlist">
                     <tr>
                         <th class="lead p-2">TITRE</th>
@@ -25,35 +31,26 @@
                     </thead>
                     <tbody>
                     {% for song in playlist.songs %}
-                        <tr class="playlist-line">
-                            <td class="link_id song-on-playlist"
-                                data-photo="{{ song.photoAlbum }}"
-                                data-youtube="{{ song.linkYoutube }}"
-                                data-title="{{ song.title }}"
-                                data-artist="{{ song.artist }}"
-                            >
+                        <tr
+                            class="playlist-line link_id song-on-playlist"
+                            data-photo="{{ song.photoAlbum }}"
+                            data-youtube="{{ song.linkYoutube }}"
+                            data-title="{{ song.title }}"
+                            data-artist="{{ song.artist }}"
+                        >
+                            <td>
                                 <img class="photo_song_id photo-song-playlist shadow p-2" src="{{ song.photoAlbum }}" alt="Photo album"/>
                                 {{ song.title }}
                             </td>
-                            <td class="link_id song-on-playlist"
-                                data-photo="{{ song.photoAlbum }}"
-                                data-youtube="{{ song.linkYoutube }}"
-                                data-title="{{ song.title }}"
-                                data-artist="{{ song.artist }}"
-                            >
+                            <td>
                                 {{ song.artist }}
                             </td>
-                            <td class="link_id song-on-playlist"
-                                data-photo="{{ song.photoAlbum }}"
-                                data-youtube="{{ song.linkYoutube }}"
-                                data-title="{{ song.title }}"
-                                data-artist="{{ song.artist }}"
-                            >
+                            <td>
                                 {{ song.album }}
                             </td>
-                            <td style="width: 40px">
+                            <td class="dropdown-icon">
                                 <div class="dropdown">
-                                    <button class="btn btn-secondary bg-transparent border-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <button class="btn btn-secondary bg-transparent border-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation()">
                                         <i class="playlist-line-icon bi bi-three-dots"></i>
                                     </button>
                                     <ul class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton1">
@@ -65,7 +62,7 @@
                                         </li>
                                         <li>
                                             <a  class="song-delete dropdown-item text-white link-dark"
-                                                data-remove-song-url="{{ path('playlist_remove', {'songId': song.id, 'playlistId': playlist.id}) }}">
+                                                data-remove-song-url="{{ path('playlist_delete_song', {'songId': song.id, 'playlistId': playlist.id}) }}">
                                                 Supprimer de la playlist
                                             </a>
                                         </li>

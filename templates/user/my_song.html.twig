@@ -13,7 +13,7 @@
                 <div class="favorites-card card d-flex flex-row col-4 border-0 shadow-lg m-4 p-0">
                     <a class="text-decoration-none" id="favorites" href="{{ path('app_user_favorite') }}">
                         <div class="d-flex flex-row">
-                            <div class="d-flex flex-row flex-wrap justify-content-center align-items-center" style="width: 80px; height: 80px">
+                            <div class="d-flex flex-row flex-wrap justify-content-center align-items-center img-big">
                                 <i class="favorites-icon bi bi-heart-fill"></i>
                             </div>
                             <p class="favorites-link m-0">Coup de coeur</p>
@@ -25,18 +25,16 @@
                     <div class="favorites-card card col-4 border-0 shadow-lg m-4 p-0">
                         <a class="text-decoration-none" href="{{ path('playlist_show', {'playlistId': element.playlist.id}) }}">
                             <div class="d-flex flex-row">
-                                <div class="d-flex flex-row flex-wrap" style="width: 80px">
-                                    {% if element.songs|length == 0 %}
-{#                                        <img src="" alt="song image" class="img-fluid img-full-size">#}
-                                    {% elseif element.songs|length < 4 %}
+                                <div class="d-flex flex-row flex-wrap img-big">
+                                    {% if element.songs|length < 4 %}
                                         {% for song in element.songs %}
                                             {% if loop.index == 1 %}
-                                                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-full-size">
+                                                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-big">
                                             {% endif %}
                                         {% endfor %}
                                     {% else %}
                                         {% for song in element.songs %}
-                                            <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid" style="width: 40px; height: 40px">
+                                            <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-little">
                                         {% endfor %}
                                     {% endif %}
                                 </div>
