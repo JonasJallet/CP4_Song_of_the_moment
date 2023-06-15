@@ -25,12 +25,8 @@ class PlaylistController extends AbstractController
         PlaylistRepository $playlistRepository,
         string $playlistId,
     ): Response {
-        $playlist = $playlistRepository->findOneBy([
-            'id' => $playlistId
-        ]);
-
         return $this->render('user/playlist.html.twig', [
-            'playlist' => $playlist,
+            'playlist' => $playlistRepository->findOneBy(['id' => $playlistId]),
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Persistence\Entity;
 
+use App\Domain\Model\DomainSongModelInterface;
 use App\Domain\Model\DomainUserModelInterface;
 use App\Infrastructure\Persistence\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -145,7 +146,7 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
         return $this->favorites;
     }
 
-    public function addFavorite(Song $favorites): self
+    public function addFavorite(DomainSongModelInterface $favorites): self
     {
         if (!$this->favorites->contains($favorites)) {
             $this->favorites->add($favorites);
@@ -154,14 +155,14 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
         return $this;
     }
 
-    public function removeFavorite(Song $favorites): self
+    public function removeFavorite(DomainSongModelInterface $favorites): self
     {
         $this->favorites->removeElement($favorites);
 
         return $this;
     }
 
-    public function isInFavorite(Song $song): bool
+    public function isInFavorite(DomainSongModelInterface $song): bool
     {
         return $this->favorites->contains($song);
     }

@@ -93,6 +93,16 @@ function newPlaylistAdd() {
     const playlistNewAddButton = document.getElementById('playlist-new-add');
     playlistNewAddButton.addEventListener('click', newAddSong);
 
+    const form = document.getElementById('createPlaylistForm');
+    const formInputs = form.querySelectorAll('input, textarea');
+    formInputs.forEach(input => {
+        input.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+            }
+        });
+    });
+
     function newAddSong(e) {
         e.preventDefault();
 

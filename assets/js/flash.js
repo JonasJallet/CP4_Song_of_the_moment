@@ -29,7 +29,7 @@ export function flashMessages(label, message) {
     flashDiv.role = 'alert';
     flashDiv.innerHTML = `
         <div class="d-flex flex-row align-items-center">
-            <img id="flash-logo" src="/build/images/icons/success.gif" alt="Flash Logo">
+            <img id="flash-logo" src="/build/images/icons/${label}.gif" alt="Flash Logo">
             <h5 class="text-white lead m-2">${message}</h5>
         </div>
     `;
