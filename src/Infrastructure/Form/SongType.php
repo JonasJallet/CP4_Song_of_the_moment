@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Form;
 
 use App\Infrastructure\Persistence\Entity\Song;
-use App\Infrastructure\Service\SongManager;
+use App\Infrastructure\Service\SongService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -12,11 +12,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SongType extends AbstractType
 {
-    private SongManager $songManager;
+    private SongService $songService;
 
-    public function __construct(SongManager $songManager)
+    public function __construct(SongService $songService)
     {
-        $this->songManager = $songManager;
+        $this->songService = $songService;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -110,10 +110,10 @@ class SongType extends AbstractType
 
         $builder->get('link_youtube')->addModelTransformer(new CallbackTransformer(
             function ($value) {
-                return $value ? 'https://www.youtube.com/watch?v=' . $this->songManager->formatLinkYoutube($value) : '';
+                return $value ? 'https://www.youtube.com/watch?v=' . $this->songService->formatLinkYoutube($value) : '';
             },
             function ($value) {
-                return $value ? $this->songManager->formatLinkYoutube($value) : '';
+                return $value ? $this->songService->formatLinkYoutube($value) : '';
             }
         ));
     }

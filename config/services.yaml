@@ -59,3 +59,10 @@ services:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
 
+    App\Application\Command\Playlist\NewPlaylistAddSong\NewPlaylistAddSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Playlist\PlaylistAddSong\PlaylistAddSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false

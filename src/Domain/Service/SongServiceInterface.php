@@ -2,7 +2,7 @@
 
 namespace App\Domain\Service;
 
-interface SongManagerInterface
+interface SongServiceInterface
 {
     public function formatLinkYoutube(string $linkYoutube);
 }

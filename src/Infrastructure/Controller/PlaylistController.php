@@ -2,8 +2,9 @@
 
 namespace App\Infrastructure\Controller;
 
+use App\Application\Command\Playlist\NewPlaylistAddSong\NewPlaylistAddSong;
+use App\Application\Command\Playlist\PlaylistAddSong\PlaylistAddSong;
 use App\Infrastructure\Form\PlaylistType;
-use App\Infrastructure\Persistence\Entity\Playlist;
 use App\Infrastructure\Persistence\Repository\PlaylistRepository;
 use App\Infrastructure\Persistence\Repository\SongRepository;
 use App\Infrastructure\Persistence\Repository\UserRepository;
@@ -11,6 +12,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -19,6 +22,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route('/playlist')]
 class PlaylistController extends AbstractController
 {
+    private MessageBusInterface $queryBus;
+    private MessageBusInterface $commandBus;
+
+    public function __construct(
+        MessageBusInterface $queryBus,
+        MessageBusInterface $commandBus,
+    ) {
+        $this->queryBus = $queryBus;
+        $this->commandBus = $commandBus;
+    }
+
     #[Route('/{playlistId}', name: 'playlist_show', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function showOnePlaylistById(
@@ -49,40 +63,20 @@ class PlaylistController extends AbstractController
     public function playlistNewAdd(
         int $songId,
         Request $request,
-        SongRepository $songRepository,
-        PlaylistRepository $playlistRepository,
-        SerializerInterface $serializer,
-        ValidatorInterface $validator,
     ): Response {
-        $song = $songRepository->findOneBy(['id' => $songId]);
-        $newPlaylist = new Playlist();
+        $userId = $this->getUser()->getId();
         $formPlaylist = $this->createForm(PlaylistType::class)->handleRequest($request);
-        $newPlaylist->setName($formPlaylist->getData()->getName());
-        $newPlaylist->setUser($this->getUser());
-        $newPlaylist->addSong($song);
-
-        $errors = $validator->validate($newPlaylist);
-        if (count($errors) > 0) {
-            $errorMessages = [];
-            foreach ($errors as $error) {
-                $errorMessages[] = $error->getMessage();
-            }
-
-            return $this->json([
-                'errors' => $errorMessages
-            ], 400);
-        }
-
-        $playlistRepository->save($newPlaylist, true);
-
-        $serializedPlaylist = $serializer->serialize(
-            $newPlaylist,
-            'json',
-            ['groups' => ['default'], 'enable_max_depth' => true]
-        );
+        $newPlaylistAddSong = new NewPlaylistAddSong();
+        $newPlaylistAddSong->songId = $songId;
+        $newPlaylistAddSong->userId = $userId;
+        $playlist = $formPlaylist->getData();
+        $newPlaylistAddSong->playlist = $playlist;
+        $result = $this->commandBus->dispatch($newPlaylistAddSong);
+        $handledStamp = $result->last(HandledStamp::class);
+        $message = $handledStamp->getResult();
 
         return $this->json([
-            'newPlaylist' => $serializedPlaylist
+            'message' => $message
         ]);
     }
 
@@ -98,7 +92,11 @@ class PlaylistController extends AbstractController
         $user = $userRepository->findOneBy(
             ['id' => $user]
         );
-        $playlistsByUser = $user->getPlaylists();
+        $playlistsByUser = $playlistRepository->findBy(
+            ['user' => $user],
+            ['name' => 'ASC']
+        );
+
         $collection = [];
 
         foreach ($playlistsByUser as $playlist) {
@@ -119,42 +117,20 @@ class PlaylistController extends AbstractController
     public function playlistAddSong(
         int $songId,
         string $playlistId,
-        SongRepository $songRepository,
-        PlaylistRepository $playlistRepository,
-        SerializerInterface $serializer,
-        ValidatorInterface $validator,
     ): Response
     {
-        $song = $songRepository->findOneBy(['id' => $songId]);
-        $playlist = $playlistRepository->findOneBy(['id' => $playlistId]);
-        $playlist->addSong($song);
-
-        $errors = $validator->validate($playlist);
-        if (count($errors) > 0) {
-            $errorMessages = [];
-            foreach ($errors as $error) {
-                $errorMessages[] = $error->getMessage();
-            }
-
-            return $this->json([
-                'errors' => $errorMessages
-            ], 400);
-        }
-
-        $playlistRepository->save($playlist, true);
-
-        $serializedPlaylist = $serializer->serialize(
-            $playlist,
-            'json',
-            ['groups' => ['default'], 'enable_max_depth' => true]
-        );
-
+        $playlistAddSong = new PlaylistAddSong();
+        $playlistAddSong->songId = $songId;
+        $playlistAddSong->playlistId = $playlistId;
+        $result = $this->commandBus->dispatch($playlistAddSong);
+        $handledStamp = $result->last(HandledStamp::class);
+        $message = $handledStamp->getResult();
         return $this->json([
-            'playlist' => $serializedPlaylist
+            'message' => $message
         ]);
     }
 
-    #[Route('/{playlistId}/remove/{songId}', name: 'playlist_delete_song', methods: ['GET', 'POST'])]
+    #[Route('/{playlistId}/delete/{songId}', name: 'playlist_delete_song', methods: ['GET', 'POST'])]
     public function playlistRemoveSong(
         int $songId,
         string $playlistId,
