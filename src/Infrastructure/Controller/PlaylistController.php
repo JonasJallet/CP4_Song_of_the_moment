@@ -4,6 +4,7 @@ namespace App\Infrastructure\Controller;
 
 use App\Application\Command\Playlist\NewPlaylistAddSong\NewPlaylistAddSong;
 use App\Application\Command\Playlist\PlaylistAddSong\PlaylistAddSong;
+use App\Application\Query\Playlist\GetPlaylistById\GetPlaylistById;
 use App\Infrastructure\Form\PlaylistType;
 use App\Infrastructure\Persistence\Repository\PlaylistRepository;
 use App\Infrastructure\Persistence\Repository\SongRepository;
@@ -17,7 +18,6 @@ use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/playlist')]
 class PlaylistController extends AbstractController
@@ -36,11 +36,16 @@ class PlaylistController extends AbstractController
     #[Route('/{playlistId}', name: 'playlist_show', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function showOnePlaylistById(
-        PlaylistRepository $playlistRepository,
         string $playlistId,
     ): Response {
+        $getPlaylistById = new GetPlaylistById();
+        $getPlaylistById->playlistId = $playlistId;
+        $result = $this->queryBus->dispatch($getPlaylistById);
+        $handledStamp = $result->last(HandledStamp::class);
+        $playlist = $handledStamp->getResult();
+
         return $this->render('user/playlist.html.twig', [
-            'playlist' => $playlistRepository->findOneBy(['id' => $playlistId]),
+            'playlist' => $playlist,
         ]);
     }
 

@@ -43,6 +43,10 @@ services:
         tags: [ { name: messenger.message_handler, bus: query.bus } ]
         autoconfigure: false
 
+    App\Application\Query\Playlist\GetPlaylistById\GetPlaylistByIdHandler:
+        tags: [ { name: messenger.message_handler, bus: query.bus } ]
+        autoconfigure: false
+
     App\Application\Command\Song\NewDomainSong\NewDomainSongHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false

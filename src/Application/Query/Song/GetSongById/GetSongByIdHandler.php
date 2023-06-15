@@ -8,7 +8,7 @@ use App\Domain\Repository\DomainSongRepositoryInterface;
 class GetSongByIdHandler
 {
     public function __construct(
-        public DomainSongRepositoryInterface $domainSongRepository,
+        public DomainSongRepositoryInterface $songRepository,
     ) {
     }
 
@@ -16,6 +16,6 @@ class GetSongByIdHandler
     {
         $id = $getSongById->songId;
 
-        return $this->domainSongRepository->findOneBy(['id' => $id]);
+        return $this->songRepository->findOneBy(['id' => $id]);
     }
 }
