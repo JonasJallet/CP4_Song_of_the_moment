@@ -14,8 +14,6 @@ class GetSongByIdHandler
 
     public function __invoke(GetSongById $getSongById): DomainSongModelInterface
     {
-        $id = $getSongById->songId;
-
-        return $this->songRepository->findOneBy(['id' => $id]);
+        return $this->songRepository->findOneBy(['id' => $getSongById->songId]);
     }
 }

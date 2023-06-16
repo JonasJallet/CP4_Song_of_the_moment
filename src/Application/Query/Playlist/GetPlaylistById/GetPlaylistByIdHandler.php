@@ -14,7 +14,6 @@ class GetPlaylistByIdHandler
 
     public function __invoke(GetPlaylistById $getPlaylistById): DomainPlaylistModelInterface
     {
-        $id = $getPlaylistById->playlistId;
-        return $this->playlistRepository->findOneBy(['id' => $id]);
+        return $this->playlistRepository->findOneBy(['id' => $getPlaylistById->playlistId]);
     }
 }

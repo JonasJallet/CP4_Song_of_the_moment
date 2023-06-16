@@ -1,31 +1,25 @@
 <?php
 
-namespace App\Application\Command\Playlist\NewPlaylistAddSong;
+namespace App\Application\Command\Playlist\AddSongPlaylist;
 
 use App\Domain\Repository\DomainPlaylistRepositoryInterface;
 use App\Domain\Repository\DomainSongRepositoryInterface;
-use App\Domain\Repository\DomainUserRepositoryInterface;
 use App\Domain\Service\PlaylistServiceInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class NewPlaylistAddSongHandler
+class AddSongPlaylistHandler
 {
     public function __construct(
         public DomainPlaylistRepositoryInterface $playlistRepository,
         public DomainSongRepositoryInterface     $songRepository,
-        public DomainUserRepositoryInterface     $userRepository,
         public PlaylistServiceInterface          $playlistService,
     ) {
     }
 
-    public function __invoke(NewPlaylistAddSong $newPlaylistAddSong): JsonResponse
+    public function __invoke(AddSongPlaylist $addSongPlaylist): JsonResponse
     {
-        $songId = $newPlaylistAddSong->songId;
-        $userId = $newPlaylistAddSong->userId;
-        $song = $this->songRepository->findOneBy(['id' => $songId]);
-        $user = $this->userRepository->findOneBy(['id' => $userId]);
-        $playlist = $newPlaylistAddSong->playlist;
-        $playlist->setUser($user);
+        $song = $this->songRepository->findOneBy(['id' => $addSongPlaylist->songId]);
+        $playlist = $this->playlistRepository->findOneBy(['id' => $addSongPlaylist->playlistId]);
         $message = $this->playlistService->addSong($playlist, $song);
         return new JsonResponse([
             'message' => $message

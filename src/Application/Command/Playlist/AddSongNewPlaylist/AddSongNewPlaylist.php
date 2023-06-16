@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\Command\Playlist\NewPlaylistAddSong;
+namespace App\Application\Command\Playlist\AddSongNewPlaylist;
 
 use App\Domain\Model\DomainPlaylistModelInterface;
 
-class NewPlaylistAddSong
+class AddSongNewPlaylist
 {
     public int $songId;
     public int $userId;

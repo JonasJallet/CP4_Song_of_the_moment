@@ -1,5 +1,5 @@
 <div class="sticky-popup-new d-flex sticky-top justify-content-end top-0 p-2">
-    <a id="playlist-popup-new" data-playlist-new-url="{{ path('playlist_popup_new', {'songId': song.id, }) }}">
+    <a id="playlist-popup-new" data-playlist-new-url="{{ path('playlist_popup_new', {'songId': songId, }) }}">
         <div class="d-flex flex-row">
         <i class="icon-new-popup bi bi-plus"></i>
         <h4 class="m-0">Nouvelle Playlist</h4>
@@ -23,7 +23,7 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-                <a class="playlist-collection" data-playlist-id-url="{{ path('playlist_add_song', {'playlistId': element.playlist.id, 'songId': song.id, }) }}">
+                <a class="playlist-collection" data-playlist-id-url="{{ path('playlist_add_song', {'playlistId': element.playlist.id, 'songId': songId, }) }}">
                     {{ element.playlist.name }}
                 </a>
             </div>

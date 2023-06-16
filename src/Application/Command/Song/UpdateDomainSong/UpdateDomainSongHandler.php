@@ -14,8 +14,7 @@ class UpdateDomainSongHandler
     }
     public function __invoke(UpdateDomainSong $updateDomainSong): void
     {
-        $id =  $updateDomainSong->id;
-        $song = $this->domainSongRepository->findOneBy(['id' => $id]);
+        $song = $this->domainSongRepository->findOneBy(['id' => $updateDomainSong->id]);
         $linkYoutube = $song->getLinkYoutube();
         $linkFormat = $this->songService->formatLinkYoutube($linkYoutube);
         $song->setLinkYoutube($linkFormat);

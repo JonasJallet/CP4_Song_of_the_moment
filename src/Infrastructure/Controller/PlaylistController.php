@@ -2,13 +2,13 @@
 
 namespace App\Infrastructure\Controller;
 
-use App\Application\Command\Playlist\NewPlaylistAddSong\NewPlaylistAddSong;
-use App\Application\Command\Playlist\PlaylistAddSong\PlaylistAddSong;
+use App\Application\Command\Playlist\AddSongNewPlaylist\AddSongNewPlaylist;
+use App\Application\Command\Playlist\AddSongPlaylist\AddSongPlaylist;
+use App\Application\Command\Playlist\DeletePlaylist\DeletePlaylist;
+use App\Application\Command\Playlist\DeleteSongPlaylist\DeleteSongPlaylist;
 use App\Application\Query\Playlist\GetPlaylistById\GetPlaylistById;
+use App\Application\Query\User\GetPlaylists\GetPlaylists;
 use App\Infrastructure\Form\PlaylistType;
-use App\Infrastructure\Persistence\Repository\PlaylistRepository;
-use App\Infrastructure\Persistence\Repository\SongRepository;
-use App\Infrastructure\Persistence\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/playlist')]
 class PlaylistController extends AbstractController
@@ -53,13 +51,11 @@ class PlaylistController extends AbstractController
     public function playlistPopupNew(
         int $songId,
         Request $request,
-        SongRepository $songRepository,
     ): Response {
-        $song = $songRepository->findOneBy(['id' => $songId]);
         $createPlaylistForm = $this->createForm(PlaylistType::class)->handleRequest($request);
 
         return $this->renderForm('playlist/_playlist_new_popup.html.twig', [
-            'song' => $song,
+            'songId' => $songId,
             'createPlaylistForm' => $createPlaylistForm,
         ]);
     }
@@ -71,7 +67,7 @@ class PlaylistController extends AbstractController
     ): Response {
         $userId = $this->getUser()->getId();
         $formPlaylist = $this->createForm(PlaylistType::class)->handleRequest($request);
-        $newPlaylistAddSong = new NewPlaylistAddSong();
+        $newPlaylistAddSong = new AddSongNewPlaylist();
         $newPlaylistAddSong->songId = $songId;
         $newPlaylistAddSong->userId = $userId;
         $playlist = $formPlaylist->getData();
@@ -88,33 +84,17 @@ class PlaylistController extends AbstractController
     #[Route('/popup/{songId}/', name: 'playlist_popup', methods: ['GET', 'POST'])]
     public function playlistPopup(
         int $songId,
-        UserInterface $user,
-        UserRepository $userRepository,
-        SongRepository $songRepository,
-        PlaylistRepository $playlistRepository,
     ): Response {
-        $song = $songRepository->findOneBy(['id' => $songId]);
-        $user = $userRepository->findOneBy(
-            ['id' => $user]
-        );
-        $playlistsByUser = $playlistRepository->findBy(
-            ['user' => $user],
-            ['name' => 'ASC']
-        );
-
-        $collection = [];
-
-        foreach ($playlistsByUser as $playlist) {
-            $randomSongs = $playlistRepository->randomSongsByPlaylistId($playlist->getId());
-            $collection[$playlist->getId()] = [
-                'playlist' => $playlist,
-                'songs' => $randomSongs,
-            ];
-        }
+        $userId = $this->getUser()->getId();
+        $getPlaylists = new GetPlaylists();
+        $getPlaylists->userId = $userId;
+        $result = $this->queryBus->dispatch($getPlaylists);
+        $handledStamp = $result->last(HandledStamp::class);
+        $collection = $handledStamp->getResult();
 
         return $this->renderForm('playlist/_playlist_popup.html.twig', [
             'collection' => $collection,
-            'song' => $song,
+            'songId' => $songId,
         ]);
     }
 
@@ -124,7 +104,7 @@ class PlaylistController extends AbstractController
         string $playlistId,
     ): Response
     {
-        $playlistAddSong = new PlaylistAddSong();
+        $playlistAddSong = new AddSongPlaylist();
         $playlistAddSong->songId = $songId;
         $playlistAddSong->playlistId = $playlistId;
         $result = $this->commandBus->dispatch($playlistAddSong);
@@ -139,36 +119,30 @@ class PlaylistController extends AbstractController
     public function playlistRemoveSong(
         int $songId,
         string $playlistId,
-        SongRepository $songRepository,
-        PlaylistRepository $playlistRepository,
-        SerializerInterface $serializer,
     ): Response
     {
-        $song = $songRepository->findOneBy(['id' => $songId]);
-        $playlist = $playlistRepository->findOneBy(['id' => $playlistId]);
-        $playlist->removeSong($song);
-        $playlistRepository->save($playlist, true);
-        $serializedPlaylist = $serializer->serialize(
-            $playlist,
-            'json',
-            ['groups' => ['default'], 'enable_max_depth' => true]
-        );
+        $playlistDeleteSong = new DeleteSongPlaylist();
+        $playlistDeleteSong->songId = $songId;
+        $playlistDeleteSong->playlistId = $playlistId;
+        $result = $this->commandBus->dispatch($playlistDeleteSong);
+        $handledStamp = $result->last(HandledStamp::class);
+        $delete = $handledStamp->getResult();
 
         return $this->json([
-            'playlist' => $serializedPlaylist
+            'delete' => $delete
         ]);
     }
 
     #[Route('/{playlistId}/delete', name: 'playlist_delete', methods: ['GET', 'POST'])]
     public function playlistRemove(
         string $playlistId,
-        PlaylistRepository $playlistRepository,
         Request $request,
     ): Response
     {
         if ($this->isCsrfTokenValid('delete' . $playlistId, $request->request->get('_token'))) {
-            $playlist = $playlistRepository->findOneBy(['id' => $playlistId]);
-            $playlistRepository->remove($playlist, true);
+            $deletePlaylist = new DeletePlaylist();
+            $deletePlaylist->playlistId = $playlistId;
+            $this->commandBus->dispatch($deletePlaylist);
         }
         return $this->redirectToRoute('app_user_song', [], Response::HTTP_SEE_OTHER);
     }

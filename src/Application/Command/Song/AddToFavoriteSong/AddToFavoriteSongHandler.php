@@ -16,11 +16,8 @@ class AddToFavoriteSongHandler
     }
     public function __invoke(AddToFavoriteSong $addToFavoriteUser): bool
     {
-        $userId = $addToFavoriteUser->userId;
-        $songId = $addToFavoriteUser->songId;
-
-        $user = $this->domainUserRepository->findOneBy(['id' => $userId]);
-        $song = $this->domainSongRepository->findOneBy(['id' => $songId]);
+        $user = $this->domainUserRepository->findOneBy(['id' => $addToFavoriteUser->userId]);
+        $song = $this->domainSongRepository->findOneBy(['id' => $addToFavoriteUser->songId]);
 
         if ($user->isInFavorite($song)) {
             $user->removeFavorite($song);

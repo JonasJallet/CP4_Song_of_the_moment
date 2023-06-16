@@ -4,6 +4,7 @@ namespace App\Infrastructure\Controller;
 
 use App\Application\Command\Song\AddToFavoriteSong\AddToFavoriteSong;
 use App\Application\Command\Song\DeleteDomainSong\DeleteDomainSong;
+use App\Application\Command\Song\IsApprovedSong\IsApprovedSong;
 use App\Application\Command\Song\NewDomainSong\NewDomainSong;
 use App\Application\Command\Song\UpdateDomainSong\UpdateDomainSong;
 use App\Application\Query\Song\GetAllApprovedSongs\GetAllApprovedSongs;
@@ -18,7 +19,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/song')]
 class SongController extends AbstractController
@@ -104,7 +104,6 @@ class SongController extends AbstractController
         $getSongById = new GetSongById();
         $getSongById->songId = $songId;
         $result = $this->queryBus->dispatch($getSongById);
-
         $handledStamp = $result->last(HandledStamp::class);
         $song = $handledStamp->getResult();
 
@@ -116,31 +115,20 @@ class SongController extends AbstractController
     #[Route('/{id}/isApproved', name: 'app_song_add_approved', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function addToApproved(
-        Song $song,
-        SongRepository $songRepository,
+        int $id,
         Request $request,
-        SerializerInterface $serializer
-    ): Response {
-
+    ) {
         if ($request->isMethod('POST')) {
-            $id = $request->get('id');
-            $song = $songRepository->findOneBy(['id' => $id]);
-            $song->setIsApproved(true);
-            $songRepository->save($song, true);
-
-            $serializedSong = $serializer->serialize(
-                $song,
-                'json',
-                ['groups' => ['default'], 'enable_max_depth' => true]
-            );
+            $isApprovedSong = new IsApprovedSong();
+            $isApprovedSong->songId = $id;
+            $result = $this->commandBus->dispatch($isApprovedSong);
+            $handledStamp = $result->last(HandledStamp::class);
+            $isApproved = $handledStamp->getResult();
 
             return $this->json([
-                'isApproved' => $serializedSong
+                'isApproved' => $isApproved
             ]);
         }
-        return $this->render('song/list.html.twig', [
-            'song' => $song,
-        ]);
     }
 
     #[Route('/{songId}/favorite', name: 'app_song_add_favorite', methods: ['GET', 'POST'])]
