@@ -2,16 +2,19 @@
 
 namespace App\Infrastructure\Persistence\Entity;
 
+use App\Domain\Model\DomainPlaylistModelInterface;
+use App\Domain\Model\DomainSongModelInterface;
+use App\Domain\Model\DomainUserModelInterface;
 use App\Infrastructure\Persistence\Repository\PlaylistRepository;
 use App\Infrastructure\Service\CustomUuidGenerator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
-class Playlist
+class Playlist implements DomainPlaylistModelInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'string', unique: true)]
@@ -27,6 +30,11 @@ class Playlist
     private Collection $songs;
 
     #[ORM\Column(length: 30)]
+    #[Assert\NotBlank(message: 'Le nom ne peut pas être vide.')]
+    #[Assert\Length(
+        max: 45,
+        maxMessage: 'Le nom ne doit pas dépasser {{ limit }} caractères.'
+    )]
     private ?string $name = null;
 
     public function __construct()
@@ -44,7 +52,7 @@ class Playlist
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?DomainUserModelInterface $user): self
     {
         $this->user = $user;
 
@@ -59,7 +67,7 @@ class Playlist
         return $this->songs;
     }
 
-    public function addSong(Song $song): self
+    public function addSong(DomainSongModelInterface $song): self
     {
         if (!$this->songs->contains($song)) {
             $this->songs->add($song);
@@ -68,7 +76,7 @@ class Playlist
         return $this;
     }
 
-    public function removeSong(Song $song): self
+    public function removeSong(DomainSongModelInterface $song): self
     {
         $this->songs->removeElement($song);
 

@@ -12,8 +12,7 @@ class DeleteDomainSongHandler
     }
     public function __invoke(DeleteDomainSong $deleteDomainSong): void
     {
-        $id =  $deleteDomainSong->songId;
-        $song = $this->domainSongRepository->findOneBy(['id' => $id]);
+        $song = $this->domainSongRepository->findOneBy(['id' => $deleteDomainSong->songId]);
         $this->domainSongRepository->remove($song, true);
     }
 }

@@ -8,14 +8,12 @@ use App\Domain\Repository\DomainSongRepositoryInterface;
 class GetSongByIdHandler
 {
     public function __construct(
-        public DomainSongRepositoryInterface $domainSongRepository,
+        public DomainSongRepositoryInterface $songRepository,
     ) {
     }
 
     public function __invoke(GetSongById $getSongById): DomainSongModelInterface
     {
-        $id = $getSongById->songId;
-
-        return $this->domainSongRepository->findOneBy(['id' => $id]);
+        return $this->songRepository->findOneBy(['id' => $getSongById->songId]);
     }
 }

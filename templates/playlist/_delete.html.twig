@@ -1,0 +1,6 @@
+<form method="post" action="{{ path('playlist_delete', {'playlistId': playlist.id}) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ playlist.id) }}">
+    <button class="btn border-0 p-0">
+        <i class="playlist-line-icon bi bi-trash3"></i>
+    </button>
+</form>

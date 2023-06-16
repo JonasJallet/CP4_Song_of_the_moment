@@ -43,6 +43,18 @@ services:
         tags: [ { name: messenger.message_handler, bus: query.bus } ]
         autoconfigure: false
 
+    App\Application\Query\User\GetPlaylists\GetPlaylistsHandler:
+        tags: [ { name: messenger.message_handler, bus: query.bus } ]
+        autoconfigure: false
+
+    App\Application\Query\User\GetFavorites\GetFavoritesHandler:
+        tags: [ { name: messenger.message_handler, bus: query.bus } ]
+        autoconfigure: false
+
+    App\Application\Query\Playlist\GetPlaylistById\GetPlaylistByIdHandler:
+        tags: [ { name: messenger.message_handler, bus: query.bus } ]
+        autoconfigure: false
+
     App\Application\Command\Song\NewDomainSong\NewDomainSongHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
@@ -59,3 +71,22 @@ services:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
 
+    App\Application\Command\Song\IsApprovedSong\IsApprovedSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Playlist\AddSongNewPlaylist\AddSongNewPlaylistHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Playlist\AddSongPlaylist\AddSongPlaylistHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Playlist\DeletePlaylist\DeletePlaylistHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Playlist\DeleteSongPlaylist\DeleteSongPlaylistHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false

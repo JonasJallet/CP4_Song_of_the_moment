@@ -4,7 +4,6 @@
 
 .playlist-line {
     cursor: pointer;
-    //margin: 0 50px 0 50px;
     &:hover {
         background-color: rgba(80, 80, 80, 0.401);
     }
@@ -92,4 +91,16 @@ i.heart-favorite {
     opacity: 0;
     transition: opacity 0.5s ease;
 }
+
+.img-little {
+    width: 40px;
+    height: 40px;
+}
+
+.img-big {
+    width: 80px;
+    height: 80px;
+}
+
+
 
