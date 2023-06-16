@@ -4,6 +4,7 @@ namespace App\Infrastructure\Persistence\Entity;
 
 use App\Domain\Model\DomainSongModelInterface;
 use App\Infrastructure\Persistence\Repository\SongRepository;
+use App\Infrastructure\Validator\Constraint\SongConstraint;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,6 +12,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
+#[SongConstraint]
 class Song implements DomainSongModelInterface
 {
     #[ORM\Id]
