@@ -2,17 +2,14 @@
 
 namespace App\Infrastructure\Validator\Constraint;
 
-use App\Infrastructure\Validator\UniqueSongValidator;
+use App\Infrastructure\Validator\SongValidator;
 use Symfony\Component\Validator\Constraint;
 
-#[\Attribute]
-class UniqueSongConstraint extends Constraint
+#[\Attribute] class SongConstraint extends Constraint
 {
-    public string $message = 'Le son est déjà dans la playlist';
-
     public function validatedBy(): string
     {
-        return UniqueSongValidator::class;
+        return SongValidator::class;
     }
     public function getTargets(): string
     {
