@@ -21,12 +21,12 @@
                         {{ include('playlist/_delete.html.twig') }}
                     </div>
                 </div>
-                <table class="col-11">
+                <table class="col-12">
                     <thead class="thead-playlist">
                         <tr>
                             <th class="lead p-2">TITRE</th>
                             <th class="lead p-2">ARTISTE</th>
-                            <th class="lead p-2">ALBUM</th>
+                            <th class="lead p-2 d-none d-md-table-cell">ALBUM</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,13 +39,13 @@
                             data-artist="{{ song.artist }}"
                         >
                             <td>
-                                <img class="photo_song_id photo-song-playlist shadow p-2" src="{{ song.photoAlbum }}" alt="Photo album"/>
+                                <img class="photo_song_id photo-song-playlist d-none d-md-inline-block shadow p-2" src="{{ song.photoAlbum }}" alt="Photo album"/>
                                 {{ song.title }}
                             </td>
                             <td>
                                 {{ song.artist }}
                             </td>
-                            <td>
+                            <td class="d-none d-md-table-cell">
                                 {{ song.album }}
                             </td>
                             <td class="dropdown-icon">
