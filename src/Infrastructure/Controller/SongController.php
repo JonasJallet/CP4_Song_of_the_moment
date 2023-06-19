@@ -63,18 +63,20 @@ class SongController extends AbstractController
     #[Route('/list', name: 'app_song_list', methods: ['GET', 'POST'])]
     public function list(Request $request, SongRepository $songRepository): Response
     {
-        if ($request->isMethod('POST')) {
-            $title = $request->get('title');
-            $songs = $songRepository->findLikeApprovedTitle($title);
-        } else {
-            $getSongs = new GetAllApprovedSongs();
-            $result = $this->queryBus->dispatch($getSongs);
+        $songsApprovedList = $songRepository->findBy(['isApproved' => true], ['isApproved' => 'asc', 'id' => 'asc']);
+        $searchTerm = $request->query->get('q');
+        $songs = $songRepository->findLikeApprovedTitle($searchTerm);
 
-            $handledStamp = $result->last(HandledStamp::class);
-            $songs = $handledStamp->getResult();
+        if ($request->query->get('preview')) {
+            return $this->render('song/_searchPreview.html.twig', [
+                'songs' => $songs,
+            ]);
         }
+
         return $this->render('song/list.html.twig', [
             'songs' => $songs,
+            'searchTerm' => $searchTerm,
+            'songsApprovedList' => $songsApprovedList,
         ]);
     }
 
