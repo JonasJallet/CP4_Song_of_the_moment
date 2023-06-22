@@ -72,6 +72,10 @@ class Song implements DomainSongModelInterface
     #[ORM\OrderBy(["id" => "DESC"])]
     private Collection $users;
 
+    #[ORM\Column(length: 255, unique: true)]
+    #[Slug(fields: ['artist', 'title'])]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->playlists = new ArrayCollection();
@@ -214,6 +218,16 @@ class Song implements DomainSongModelInterface
             $user->removeFavorite($this);
         }
 
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
         return $this;
     }
 }

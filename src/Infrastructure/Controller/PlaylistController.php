@@ -6,7 +6,7 @@ use App\Application\Command\Playlist\AddSongNewPlaylist\AddSongNewPlaylist;
 use App\Application\Command\Playlist\AddSongPlaylist\AddSongPlaylist;
 use App\Application\Command\Playlist\DeletePlaylist\DeletePlaylist;
 use App\Application\Command\Playlist\DeleteSongPlaylist\DeleteSongPlaylist;
-use App\Application\Query\Playlist\GetPlaylistById\GetPlaylistById;
+use App\Application\Query\Playlist\GetPlaylistBySlug\GetPlaylistBySlug;
 use App\Application\Query\User\GetPlaylists\GetPlaylists;
 use App\Infrastructure\Form\PlaylistType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -31,14 +31,14 @@ class PlaylistController extends AbstractController
         $this->commandBus = $commandBus;
     }
 
-    #[Route('/{playlistId}', name: 'playlist_show', methods: ['GET'])]
+    #[Route('/{slug}', name: 'playlist_show', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
     public function showOnePlaylistById(
-        string $playlistId,
+        string $slug,
     ): Response {
-        $getPlaylistById = new GetPlaylistById();
-        $getPlaylistById->playlistId = $playlistId;
-        $result = $this->queryBus->dispatch($getPlaylistById);
+        $getPlaylistBySlug = new GetPlaylistBySlug();
+        $getPlaylistBySlug->slug = $slug;
+        $result = $this->queryBus->dispatch($getPlaylistBySlug);
         $handledStamp = $result->last(HandledStamp::class);
         $playlist = $handledStamp->getResult();
 

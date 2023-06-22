@@ -39,7 +39,7 @@ services:
         tags: [ { name: messenger.message_handler, bus: query.bus } ]
         autoconfigure: false
 
-    App\Application\Query\Song\GetSongById\GetSongByIdHandler:
+    App\Application\Query\Song\GetSongBySlug\GetSongBySlugHandler:
         tags: [ { name: messenger.message_handler, bus: query.bus } ]
         autoconfigure: false
 
@@ -51,7 +51,7 @@ services:
         tags: [ { name: messenger.message_handler, bus: query.bus } ]
         autoconfigure: false
 
-    App\Application\Query\Playlist\GetPlaylistById\GetPlaylistByIdHandler:
+    App\Application\Query\Playlist\GetPlaylistBySlug\GetPlaylistBySlugHandler:
         tags: [ { name: messenger.message_handler, bus: query.bus } ]
         autoconfigure: false
 

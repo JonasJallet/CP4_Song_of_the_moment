@@ -7,8 +7,7 @@ use App\Application\Command\Song\DeleteDomainSong\DeleteDomainSong;
 use App\Application\Command\Song\IsApprovedSong\IsApprovedSong;
 use App\Application\Command\Song\NewDomainSong\NewDomainSong;
 use App\Application\Command\Song\UpdateDomainSong\UpdateDomainSong;
-use App\Application\Query\Song\GetAllApprovedSongs\GetAllApprovedSongs;
-use App\Application\Query\Song\GetSongById\GetSongById;
+use App\Application\Query\Song\GetSongBySlug\GetSongBySlug;
 use App\Infrastructure\Form\SongType;
 use App\Infrastructure\Persistence\Entity\Song;
 use App\Infrastructure\Persistence\Repository\SongRepository;
@@ -100,12 +99,12 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/{songId}', name: 'app_song_show', methods: ['GET'])]
-    public function show(int $songId): Response
+    #[Route('/{slug}', name: 'app_song_show', methods: ['GET'])]
+    public function show(string $slug): Response
     {
-        $getSongById = new GetSongById();
-        $getSongById->songId = $songId;
-        $result = $this->queryBus->dispatch($getSongById);
+        $getSongBySlug = new GetSongBySlug();
+        $getSongBySlug->slug = $slug;
+        $result = $this->queryBus->dispatch($getSongBySlug);
         $handledStamp = $result->last(HandledStamp::class);
         $song = $handledStamp->getResult();
 
@@ -131,6 +130,10 @@ class SongController extends AbstractController
                 'isApproved' => $isApproved
             ]);
         }
+
+        return $this->json([
+            'message' => 'La requête est invalide'
+        ]);
     }
 
     #[Route('/{songId}/favorite', name: 'app_song_add_favorite', methods: ['GET', 'POST'])]
