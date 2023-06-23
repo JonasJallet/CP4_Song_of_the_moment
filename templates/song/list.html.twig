@@ -46,7 +46,7 @@
             <div class="row d-flex flex-row justify-content-center">
                 {% for song in songsApprovedList %}
                     <div class="card-deck col-6 col-md-4 col-lg-3 col-xl-2">
-                        <a href="{{ path('app_song_show', {'songId': song.id}) }}">
+                        <a href="{{ path('app_song_show', {'slug': song.slug}) }}">
                             <div class="list-album card shadow">
                                 <img src="{{ song.photoAlbum }}" class="list-photo-album card-img-top" alt="Photo album">
                                 <div class="list-infos d-flex flex-column">

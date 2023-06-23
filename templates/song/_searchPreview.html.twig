@@ -2,7 +2,7 @@
     {% for song in songs %}
         <a
             class="list-group-item list-group-item-action text-white"
-            href="{{ path('app_song_show', { songId: song.id }) }}"
+            href="{{ path('app_song_show', { slug: song.slug }) }}"
         >
             <div class="d-flex align-items-center">
                 <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-little">

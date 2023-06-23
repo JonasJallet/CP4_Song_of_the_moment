@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\Command\Song\NewDomainSong;
+namespace App\Application\Command\Song\NewSong;
 
 use App\Domain\Model\DomainSongModelInterface;
 
-class NewDomainSong
+class NewSong
 {
     public DomainSongModelInterface $song;
 }

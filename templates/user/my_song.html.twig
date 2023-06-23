@@ -23,7 +23,7 @@
 
                 {% for element in collection %}
                     <div class="favorites-card card col-4 border-0 shadow-lg m-4 p-0">
-                        <a class="text-decoration-none" href="{{ path('playlist_show', {'playlistId': element.playlist.id}) }}">
+                        <a class="text-decoration-none" href="{{ path('playlist_show', {'slug': element.playlist.slug}) }}">
                             <div class="d-flex flex-row">
                                 <div class="d-flex flex-row flex-wrap img-big">
                                     {% if element.songs|length == 0 %}

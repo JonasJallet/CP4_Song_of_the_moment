@@ -4,6 +4,6 @@ namespace App\Application\Command\Playlist\AddSongPlaylist;
 
 class AddSongPlaylist
 {
-    public int $songId;
+    public string $songId;
     public string $playlistId;
 }

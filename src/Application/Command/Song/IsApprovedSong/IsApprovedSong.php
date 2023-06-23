@@ -4,5 +4,5 @@ namespace App\Application\Command\Song\IsApprovedSong;
 
 class IsApprovedSong
 {
-    public int $songId;
+    public string $songId;
 }

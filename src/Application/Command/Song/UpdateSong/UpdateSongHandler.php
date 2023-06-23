@@ -1,23 +1,23 @@
 <?php
 
-namespace App\Application\Command\Song\UpdateDomainSong;
+namespace App\Application\Command\Song\UpdateSong;
 
 use App\Domain\Repository\DomainSongRepositoryInterface;
 use App\Domain\Service\SongServiceInterface;
 
-class UpdateDomainSongHandler
+class UpdateSongHandler
 {
     public function __construct(
-        public DomainSongRepositoryInterface $domainSongRepository,
+        public DomainSongRepositoryInterface $songRepository,
         public SongServiceInterface          $songService,
     ) {
     }
-    public function __invoke(UpdateDomainSong $updateDomainSong): void
+    public function __invoke(UpdateSong $updateSong): void
     {
-        $song = $this->domainSongRepository->findOneBy(['id' => $updateDomainSong->id]);
+        $song = $this->songRepository->findOneBy(['id' => $updateSong->id]);
         $linkYoutube = $song->getLinkYoutube();
         $linkFormat = $this->songService->formatLinkYoutube($linkYoutube);
         $song->setLinkYoutube($linkFormat);
-        $this->domainSongRepository->save($song, true);
+        $this->songRepository->save($song, true);
     }
 }

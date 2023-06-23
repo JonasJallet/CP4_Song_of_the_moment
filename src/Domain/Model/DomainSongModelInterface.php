@@ -4,7 +4,7 @@ namespace App\Domain\Model;
 
 interface DomainSongModelInterface
 {
-    public function getId(): ?int;
+    public function getId(): ?string;
     public function getArtist(): ?string;
     public function getAlbum(): ?string;
     public function getPhotoAlbum(): ?string;
