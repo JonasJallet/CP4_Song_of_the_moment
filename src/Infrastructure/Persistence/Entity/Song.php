@@ -4,6 +4,7 @@ namespace App\Infrastructure\Persistence\Entity;
 
 use App\Domain\Model\DomainSongModelInterface;
 use App\Infrastructure\Persistence\Repository\SongRepository;
+use App\Infrastructure\Service\CustomUuidGenerator;
 use App\Infrastructure\Validator\Constraint\SongConstraint;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,9 +18,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Song implements DomainSongModelInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'string', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: CustomUuidGenerator::class)]
+    private ?string $id = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
@@ -83,9 +85,19 @@ class Song implements DomainSongModelInterface
         $this->users = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+        return $this;
     }
 
     public function getTitle(): ?string
@@ -219,16 +231,6 @@ class Song implements DomainSongModelInterface
             $user->removeFavorite($this);
         }
 
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
         return $this;
     }
 }

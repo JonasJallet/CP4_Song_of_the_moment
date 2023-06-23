@@ -49,7 +49,7 @@ class PlaylistController extends AbstractController
 
     #[Route('/new/{songId}', name: 'playlist_popup_new', methods: ['GET', 'POST'])]
     public function playlistPopupNew(
-        int $songId,
+        string $songId,
         Request $request,
     ): Response {
         $createPlaylistForm = $this->createForm(PlaylistType::class)->handleRequest($request);
@@ -62,7 +62,7 @@ class PlaylistController extends AbstractController
 
     #[Route('/new/add/{songId}', name: 'playlist_new_add', methods: ['GET', 'POST'])]
     public function playlistNewAdd(
-        int $songId,
+        string $songId,
         Request $request,
     ): Response {
         $userId = $this->getUser()->getId();
@@ -83,7 +83,7 @@ class PlaylistController extends AbstractController
 
     #[Route('/popup/{songId}/', name: 'playlist_popup', methods: ['GET', 'POST'])]
     public function playlistPopup(
-        int $songId,
+        string $songId,
     ): Response {
         $userId = $this->getUser()->getId();
         $getPlaylists = new GetPlaylists();
@@ -100,7 +100,7 @@ class PlaylistController extends AbstractController
 
     #[Route('/{playlistId}/add/{songId}', name: 'playlist_add_song', methods: ['GET', 'POST'])]
     public function playlistAddSong(
-        int $songId,
+        string $songId,
         string $playlistId,
     ): Response
     {
@@ -117,7 +117,7 @@ class PlaylistController extends AbstractController
 
     #[Route('/{playlistId}/delete/{songId}', name: 'playlist_delete_song', methods: ['GET', 'POST'])]
     public function playlistRemoveSong(
-        int $songId,
+        string $songId,
         string $playlistId,
     ): Response
     {

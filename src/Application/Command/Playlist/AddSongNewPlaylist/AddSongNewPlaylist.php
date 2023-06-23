@@ -6,7 +6,7 @@ use App\Domain\Model\DomainPlaylistModelInterface;
 
 class AddSongNewPlaylist
 {
-    public int $songId;
+    public string $songId;
     public int $userId;
     public DomainPlaylistModelInterface $playlist;
 }

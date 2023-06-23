@@ -3,10 +3,10 @@
 namespace App\Infrastructure\Controller;
 
 use App\Application\Command\Song\AddToFavoriteSong\AddToFavoriteSong;
-use App\Application\Command\Song\DeleteDomainSong\DeleteDomainSong;
+use App\Application\Command\Song\DeleteSong\DeleteSong;
 use App\Application\Command\Song\IsApprovedSong\IsApprovedSong;
-use App\Application\Command\Song\NewDomainSong\NewDomainSong;
-use App\Application\Command\Song\UpdateDomainSong\UpdateDomainSong;
+use App\Application\Command\Song\NewSong\NewSong;
+use App\Application\Command\Song\UpdateSong\UpdateSong;
 use App\Application\Query\Song\GetSongBySlug\GetSongBySlug;
 use App\Infrastructure\Form\SongType;
 use App\Infrastructure\Persistence\Entity\Song;
@@ -86,7 +86,7 @@ class SongController extends AbstractController
         $form = $this->createForm(SongType::class)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $newSong = new NewDomainSong();
+            $newSong = new NewSong();
             $song = $form->getData();
             $newSong->song = $song;
             $this->commandBus->dispatch($newSong);
@@ -116,7 +116,7 @@ class SongController extends AbstractController
     #[Route('/{id}/isApproved', name: 'app_song_add_approved', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function addToApproved(
-        int $id,
+        string $id,
         Request $request,
     ) {
         if ($request->isMethod('POST')) {
@@ -137,7 +137,7 @@ class SongController extends AbstractController
     }
 
     #[Route('/{songId}/favorite', name: 'app_song_add_favorite', methods: ['GET', 'POST'])]
-    public function addToFavorite(int $songId): Response
+    public function addToFavorite(string $songId): Response
     {
         $userId = $this->getUser()->getId();
         $addToFavoriteUser = new AddToFavoriteSong();
@@ -155,12 +155,12 @@ class SongController extends AbstractController
 
     #[Route('/{id}/update', name: 'app_song_update', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function update(int $id, Request $request, Song $song): Response
+    public function update(string $id, Request $request, Song $song): Response
     {
         $form = $this->createForm(SongType::class, $song)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $updateSong = new UpdateDomainSong();
+            $updateSong = new UpdateSong();
             $updateSong->id = $id;
             $this->commandBus->dispatch($updateSong);
 
@@ -175,10 +175,10 @@ class SongController extends AbstractController
 
     #[Route('/{songId}/delete', name: 'app_song_delete', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function delete(int $songId, Request $request): Response
+    public function delete(string $songId, Request $request): Response
     {
         if ($this->isCsrfTokenValid('delete' . $songId, $request->request->get('_token'))) {
-            $deleteSong = new DeleteDomainSong();
+            $deleteSong = new DeleteSong();
             $deleteSong->songId = $songId;
             $this->commandBus->dispatch($deleteSong);
         }

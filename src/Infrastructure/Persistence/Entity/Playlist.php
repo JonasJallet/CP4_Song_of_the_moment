@@ -52,6 +52,16 @@ class Playlist implements DomainPlaylistModelInterface
         return $this->id;
     }
 
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
     public function getUser(): ?User
     {
         return $this->user;
@@ -97,16 +107,6 @@ class Playlist implements DomainPlaylistModelInterface
     {
         $this->name = $name;
 
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
         return $this;
     }
 }

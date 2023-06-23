@@ -4,6 +4,6 @@ namespace App\Application\Command\Playlist\DeleteSongPlaylist;
 
 class DeleteSongPlaylist
 {
-    public int $songId;
+    public string $songId;
     public string $playlistId;
 }

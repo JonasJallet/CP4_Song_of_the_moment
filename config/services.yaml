@@ -55,15 +55,15 @@ services:
         tags: [ { name: messenger.message_handler, bus: query.bus } ]
         autoconfigure: false
 
-    App\Application\Command\Song\NewDomainSong\NewDomainSongHandler:
+    App\Application\Command\Song\NewSong\NewSongHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
 
-    App\Application\Command\Song\UpdateDomainSong\UpdateDomainSongHandler:
+    App\Application\Command\Song\UpdateSong\UpdateSongHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
 
-    App\Application\Command\Song\DeleteDomainSong\DeleteDomainSongHandler:
+    App\Application\Command\Song\DeleteSong\DeleteSongHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
 
