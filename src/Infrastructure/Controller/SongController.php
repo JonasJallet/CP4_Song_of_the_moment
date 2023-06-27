@@ -64,18 +64,18 @@ class SongController extends AbstractController
     {
         $songsApprovedList = $songRepository->findBy(['isApproved' => true], ['isApproved' => 'asc', 'id' => 'asc']);
         $searchTerm = $request->query->get('q');
-        $songs = $songRepository->findLikeApprovedTitle($searchTerm);
+        $searchSongs = $songRepository->findLikeApprovedTitle($searchTerm);
 
         if ($request->query->get('preview')) {
             return $this->render('song/_searchPreview.html.twig', [
-                'songs' => $songs,
+                'searchSongs' => $searchSongs,
             ]);
         }
 
         return $this->render('song/list.html.twig', [
-            'songs' => $songs,
+            'searchSongs' => $searchSongs,
             'searchTerm' => $searchTerm,
-            'songsApprovedList' => $songsApprovedList,
+            'songsApproved' => $songsApprovedList,
         ]);
     }
 
@@ -113,15 +113,15 @@ class SongController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/isApproved', name: 'app_song_add_approved', methods: ['GET', 'POST'])]
+    #[Route('/{songId}/isApproved', name: 'app_song_add_approved', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function addToApproved(
-        string $id,
+        string $songId,
         Request $request,
     ) {
         if ($request->isMethod('POST')) {
             $isApprovedSong = new IsApprovedSong();
-            $isApprovedSong->songId = $id;
+            $isApprovedSong->songId = $songId;
             $result = $this->commandBus->dispatch($isApprovedSong);
             $handledStamp = $result->last(HandledStamp::class);
             $isApproved = $handledStamp->getResult();

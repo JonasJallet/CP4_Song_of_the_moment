@@ -1,5 +1,5 @@
 <div class="list-group rounded-0">
-    {% for song in songs %}
+    {% for song in searchSongs %}
         <a
             class="list-group-item list-group-item-action text-white"
             href="{{ path('app_song_show', { slug: song.slug }) }}"
