@@ -33,24 +33,6 @@ class SongController extends AbstractController
         $this->commandBus = $commandBus;
     }
 
-    #[Route('/', name: 'app_song_index', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
-    public function index(Request $request, SongRepository $songRepository): Response
-    {
-        if ($request->isMethod('POST') && !empty($request->get('title'))) {
-            $title = $request->get('title');
-            $songs = $songRepository->findLikeTitle($title);
-        } elseif ($request->isMethod('POST') && !empty($request->get('isApproved'))) {
-            $isApproved = $request->get('isApproved');
-            $songs = $songRepository->findLikeApproved($isApproved);
-        } else {
-            $songs = $songRepository->findBy([], ['isApproved' => 'asc', 'id' => 'asc']);
-        }
-        return $this->render('admin/index.html.twig', [
-            'songs' => $songs,
-        ]);
-    }
-
     #[Route('/random', name: 'app_song_random', methods: ['GET'])]
     public function random(SongRepository $songRepository): Response
     {
