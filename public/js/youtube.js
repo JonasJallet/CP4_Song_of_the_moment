@@ -95,15 +95,20 @@ function youTubePlayerActive()
     return youTubePlayer;
 }
 
-const songRows = document.querySelectorAll('.song-on-playlist');
+/**
+ * Playlist
+ */
+const songRows = Array.from(document.querySelectorAll('.song-on-playlist'));
 let currentRow = 0;
+let isShuffleActive = false;
+let songList;
 
 if (songRows.length > 0) {
     songRows.forEach((row, index) => {
-        let youtube = row.getAttribute('data-youtube');
-        let photo = row.getAttribute('data-photo');
-        let title = row.getAttribute('data-title');
-        let artist = row.getAttribute('data-artist');
+        const youtube = row.getAttribute('data-youtube');
+        const photo = row.getAttribute('data-photo');
+        const title = row.getAttribute('data-title');
+        const artist = row.getAttribute('data-artist');
         row.addEventListener('click', () => {
             document.getElementById('YouTube-video-id').value = youtube;
             document.getElementById('Album-photo-id').src = photo;
@@ -113,19 +118,48 @@ if (songRows.length > 0) {
         });
     });
 
-    document.getElementById('next').addEventListener('click', () => {
-        currentRow = (currentRow + 1) % songRows.length;
-        let nextRow = songRows[currentRow];
-        let youtube = nextRow.getAttribute('data-youtube');
-        let photo = nextRow.getAttribute('data-photo');
-        let title = nextRow.getAttribute('data-title');
-        let artist = nextRow.getAttribute('data-artist');
+    function updatePlayer(row) {
+        const nextIndex = isShuffleActive ? songList[row] : row;
+        const nextRow = songRows[nextIndex];
+        const youtube = nextRow.getAttribute('data-youtube');
+        const photo = nextRow.getAttribute('data-photo');
+        const title = nextRow.getAttribute('data-title');
+        const artist = nextRow.getAttribute('data-artist');
         document.getElementById('YouTube-video-id').value = youtube;
         document.getElementById('Album-photo-id').src = photo;
         document.getElementById('Infos-id').innerHTML = title + ' - ' + artist;
         youTubePlayerChangeVideoId();
-        console.log (currentRow);
-        console.log (songRows.length);
+    }
+
+    document.getElementById('next').addEventListener('click', () => {
+        currentRow = (currentRow + 1) % songRows.length;
+        updatePlayer(currentRow);
+    });
+
+    document.getElementById('previous').addEventListener('click', () => {
+        currentRow = (currentRow - 1 + songRows.length) % songRows.length;
+        updatePlayer(currentRow);
+    });
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    document.getElementById('shuffle').addEventListener('click', () => {
+        isShuffleActive = !isShuffleActive;
+
+        if (isShuffleActive) {
+            songList = Array.from(Array(songRows.length).keys());
+            shuffleArray(songList);
+        } else {
+            currentRow = songList[currentRow];
+            songList = [];
+        }
+
+        document.getElementById('shuffle').classList.toggle('active', isShuffleActive);
     });
 }
 
