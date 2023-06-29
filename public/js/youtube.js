@@ -30,16 +30,31 @@ function onYouTubeIframeAPIReady()
 
     function onStateChange(event)
     {
+        let playButton = document.getElementById('play');
+        let pauseButton = document.getElementById('pause');
+
         switch (event.data) {
             case YT.PlayerState.CUED:
                 youTubePlayer.playVideo();
                 youTubePlayer.unMute();
                 break;
             case YT.PlayerState.ENDED:
-                let nextButton = document.getElementById("next");
-                if (nextButton) {
-                    nextButton.click();
+                if (currentRow !== songRows.length - 1) {
+                    let nextButton = document.getElementById("next");
+                    if (nextButton) {
+                        nextButton.click();
+                    }
                 }
+                break;
+            case YT.PlayerState.PAUSED:
+                playButton.classList.remove("d-none"); // Show play button
+                pauseButton.classList.add("d-none"); // Hide pause button
+                break;
+            case YT.PlayerState.PLAYING:
+                playButton.classList.add("d-none");
+                pauseButton.classList.remove("d-none"); // Show pause button
+                break;
+            default:
                 break;
         }
     }
@@ -68,16 +83,12 @@ function onYouTubeIframeAPIReady()
         }
     );
 
-    // Add private data to the YouTube object
     youTubePlayer.personalPlayer = {
         'currentTimeSliding': false,
         'errors': []
     };
 }
 
-/**
- * return true if the player is active, else false
- */
 function youTubePlayerActive()
 {
     'use strict';
@@ -113,19 +124,14 @@ if (songRows.length > 0) {
         document.getElementById('Album-photo-id').src = photo;
         document.getElementById('Infos-id').innerHTML = title + ' - ' + artist;
         youTubePlayerChangeVideoId();
-
-        if (currentRow === songRows.length - 1) {
-            document.getElementById("stop").click();
-        }
+        console.log (currentRow);
+        console.log (songRows.length);
     });
 }
 
 /**
- * Get videoId from the #YouTube-video-id HTML item value,
- * load this video, pause it
- * and show new infos.
+ * Get videoId from the #YouTube-video-id HTML item value, load this video, pause it and show new infos.
  */
-
 function youTubePlayerChangeVideoId()
 {
     'use strict';
@@ -143,9 +149,7 @@ function youTubePlayerChangeVideoId()
 
 /**
  * Seek the video to the currentTime.
- * (And mark that the HTML slider *don't* move.)
- *
- * :param currentTime: 0 <= number <= 100
+ * param currentTime: 0 <= number <= 100
  */
 function youTubePlayerCurrentTimeChange(currentTime)
 {
@@ -168,10 +172,8 @@ function youTubePlayerCurrentTimeSlide()
 }
 
 /**
- * Display
- *   some video informations to #YouTube-player-infos,
- *   errors to #YouTube-player-errors
- *   and set progress bar #YouTube-player-progress.
+ *   Display some video info to #YouTube-player-infos,
+ *   errors to #YouTube-player-errors and set progress bar #YouTube-player-progress.
  */
 function youTubePlayerDisplayInfos()
 {
@@ -215,7 +217,7 @@ function youTubePlayerDisplayInfos()
 let pause = document.getElementById('pause');
 
 pause.addEventListener("click", function () {
-    youTubePlayer.pauseVideo();
+    youTubePlayerPause();
 });
 
 function youTubePlayerPause()
@@ -245,8 +247,7 @@ function youTubePlayerPlay()
 let stop = document.getElementById('stop');
 
 stop.addEventListener("click", function () {
-    youTubePlayer.stopVideo();
-    youTubePlayer.clearVideo();
+    youTubePlayerStop();
 });
 
 function youTubePlayerStop()
@@ -254,8 +255,9 @@ function youTubePlayerStop()
     'use strict';
 
     if (youTubePlayerActive()) {
-        youTubePlayer.stopVideo();
-        youTubePlayer.clearVideo();
+        youTubePlayer.seekTo(0);
+        youTubePlayer.pauseVideo();
+
     }
 }
 
