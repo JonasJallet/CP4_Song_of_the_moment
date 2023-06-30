@@ -26,6 +26,10 @@ function onYouTubeIframeAPIReady()
     {
         youTubePlayer.playVideo();
         youTubePlayer.unMute();
+
+        if (songRows.length > 0) {
+            youTubePlayer.pauseVideo();
+        }
     }
 
     function onStateChange(event)
@@ -295,6 +299,21 @@ function youTubePlayerStop()
     }
 }
 
+function initFirstSong() {
+    if (songRows.length > 0) {
+        const firstSongRow = songRows[0];
+        const youtube = firstSongRow.getAttribute('data-youtube');
+        const photo = firstSongRow.getAttribute('data-photo');
+        const title = firstSongRow.getAttribute('data-title');
+        const artist = firstSongRow.getAttribute('data-artist');
+        document.getElementById('YouTube-video-id').value = youtube;
+        document.getElementById('Album-photo-id').src = photo;
+        document.getElementById('Infos-id').innerHTML = title + ' - ' + artist;
+        youTubePlayerChangeVideoId();
+        currentRow = 0;
+    }
+}
+
 /**
  * Main
  */
@@ -314,6 +333,8 @@ function youTubePlayerStop()
 
         // Set timer to display infos
         setInterval(youTubePlayerDisplayInfos, 1000);
+
+        initFirstSong();
     }
 
     if (window.addEventListener) {

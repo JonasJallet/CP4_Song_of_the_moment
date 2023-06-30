@@ -2,6 +2,16 @@
     <div class="col-12 col-md-11 col-lg-9 ol-xl-7 player-container d-flex flex-column flex-md-row justify-content-around align-items-center p-2 bg-dark">
         <div id="YouTube-player" class="d-none"></div>
         <input id="YouTube-video-id" type="hidden" value="" size="12" pattern="[_\-0-9A-Za-z]{11}" onchange="youTubePlayerChangeVideoId();">
+        <img id="Album-photo-id" class="d-none d-md-block" src="{{ asset('build/images/default_cover.png') }}" alt="Photo Album">
+        <div class="infos-playing d-flex flex-column justify-content-center">
+            <div id="Infos-id"></div>
+            <label for="YouTube-player-progress"></label>
+            <input id="YouTube-player-progress" type="range" value="0" min="0" max="100" onchange="youTubePlayerCurrentTimeChange(this.value);" oninput="youTubePlayerCurrentTimeSlide();">
+        </div>
+        <div class="framed d-none">
+            <div id="YouTube-player-infos"></div>
+            <div id="YouTube-player-errors"></div>
+        </div>
         <div class="d-flex flex-row justify-content-center align-items-center button-player">
             <div id="previous">
                 <svg xmlns="http://www.w3.org/2000/svg" class="player-skip bi bi-skip-start-fill" viewbox="0 0 16 16">
@@ -34,16 +44,6 @@
                     <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z"/>
                 </svg>
             </div>
-        </div>
-        <div class="infos-playing d-flex flex-column justify-content-center">
-            <div id="Infos-id"></div>
-            <label for="YouTube-player-progress"></label>
-            <input id="YouTube-player-progress" type="range" value="0" min="0" max="100" onchange="youTubePlayerCurrentTimeChange(this.value);" oninput="youTubePlayerCurrentTimeSlide();">
-        </div>
-        <img id="Album-photo-id" class="d-none d-md-block" src="{{ asset('build/images/default_cover.png') }}" alt="Photo Album">
-        <div class="framed d-none">
-            <div id="YouTube-player-infos"></div>
-            <div id="YouTube-player-errors"></div>
         </div>
     </div>
 </div>
