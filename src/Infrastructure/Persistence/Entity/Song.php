@@ -66,6 +66,9 @@ class Song implements DomainSongModelInterface
     #[ORM\Column]
     private ?bool $isApproved = false;
 
+    #[ORM\Column]
+    private ?bool $isValid = true;
+
     #[MaxDepth(2)]
     #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'songs')]
     private Collection $playlists;
@@ -232,5 +235,21 @@ class Song implements DomainSongModelInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getIsValid(): ?bool
+    {
+        return $this->isValid;
+    }
+
+    /**
+     * @param bool|null $isValid
+     */
+    public function setIsValid(?bool $isValid): void
+    {
+        $this->isValid = $isValid;
     }
 }
