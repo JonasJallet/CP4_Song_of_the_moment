@@ -8,6 +8,10 @@ parameters:
 services:
     # default configuration for services in *this* file
     _defaults:
+        bind:
+            # pass this value to any $adminEmail argument for any service
+            # that's defined in this file (including controller arguments)
+            $googleApiKey: 'manager@example.com'
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
@@ -31,6 +35,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    app.check_youtube_links:
+        alias: App\Infrastructure\Command\CheckYoutubeLinksCommand
+        public: true
+
+
     App\Infrastructure\Controller\:
         resource: '../src/Infrastructure/Controller'
         tags: [ controller.service_arguments ]
