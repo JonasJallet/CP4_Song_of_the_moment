@@ -63,7 +63,3 @@ function removeToFavorite(e)
         alert(error);
     }
 }
-
-
-
-

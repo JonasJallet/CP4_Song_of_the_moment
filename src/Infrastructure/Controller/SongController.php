@@ -13,6 +13,7 @@ use App\Infrastructure\Persistence\Entity\Song;
 use App\Infrastructure\Persistence\Repository\SongRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -44,7 +45,10 @@ class SongController extends AbstractController
     #[Route('/list', name: 'app_song_list', methods: ['GET', 'POST'])]
     public function list(Request $request, SongRepository $songRepository): Response
     {
-        $songsApprovedList = $songRepository->findBy(['isApproved' => true], ['isApproved' => 'asc', 'id' => 'asc']);
+        $songsApprovedList = $songRepository->findBy(
+            ['isApproved' => true],
+            ['createdAt' => 'desc']
+        );
         $searchTerm = $request->query->get('q');
         $searchSongs = $songRepository->findLikeApprovedTitle($searchTerm);
 
@@ -100,7 +104,7 @@ class SongController extends AbstractController
     public function addToApproved(
         string $songId,
         Request $request,
-    ) {
+    ): JsonResponse {
         if ($request->isMethod('POST')) {
             $isApprovedSong = new IsApprovedSong();
             $isApprovedSong->songId = $songId;

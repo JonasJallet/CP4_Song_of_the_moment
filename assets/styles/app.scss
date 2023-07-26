@@ -89,4 +89,32 @@ li {
     background: none;
 }
 
+.card-api {
+    cursor: pointer;
+}
 
+.card-api>.card-api-text {
+    border: 1px solid #383838;
+    border-left: 0;
+    border-radius: 0 15px 15px 0;
+}
+
+.card-api.selected>.card-api-text {
+    border-color: #14A44D;
+}
+
+.card-api-img {
+    height: 100px;
+    border-radius: 15px 0 0 15px
+}
+
+.card-api-text {
+    width: 100%;
+}
+
+.fixed-button-container {
+    position: fixed;
+    bottom: 20px; /* Adjust the value to set the desired distance from the bottom */
+    left: 50%; /* Horizontally center the button */
+    transform: translateX(-50%); /* Center the button using translation */
+}

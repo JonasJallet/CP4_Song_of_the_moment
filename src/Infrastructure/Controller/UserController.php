@@ -23,7 +23,8 @@ class UserController extends AbstractController
 
     #[Route('/my-song', name: 'app_user_song', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function showPlaylists(): Response {
+    public function showPlaylists(): Response
+    {
         $userId = $this->getUser()->getId();
         $getPlaylists = new GetPlaylists();
         $getPlaylists->userId = $userId;
@@ -38,7 +39,8 @@ class UserController extends AbstractController
 
     #[Route('/favorite', name: 'app_user_favorite', methods: ['GET'])]
     #[IsGranted('ROLE_USER')]
-    public function showFavorites(): Response {
+    public function showFavorites(): Response
+    {
         $userId = $this->getUser()->getId();
         $getFavorites = new GetFavorites();
         $getFavorites->userId = $userId;

@@ -12,13 +12,13 @@ if (flashElement) {
             flashElement.remove();
         }, 500);
     }, 6000);
-
 }
 
-export function flashMessages(label, message) {
+export function flashMessages(label, message)
+{
     const flashDiv = document.createElement('div');
     flashDiv.id = 'flash';
-    flashDiv.className = `alert border border-start-0 border-end-0 border-bottom-0 border-5 border-${label} position-absolute mb-4 mx-auto`;
+    flashDiv.className = `alert border border - start - 0 border - end - 0 border - bottom - 0 border - 5 border - ${label} position - absolute mb - 4 mx - auto`;
     flashDiv.style.width = '300px';
     flashDiv.style.zIndex = '1000';
     flashDiv.style.left = '0';
@@ -28,10 +28,10 @@ export function flashMessages(label, message) {
     flashDiv.style.transition = 'opacity 0.5s ease-in-out';
     flashDiv.role = 'alert';
     flashDiv.innerHTML = `
-        <div class="d-flex flex-row align-items-center">
-            <img id="flash-logo" src="/build/images/icons/${label}.gif" alt="Flash Logo">
-            <h5 class="text-white lead m-2">${message}</h5>
-        </div>
+        < div class = "d-flex flex-row align-items-center" >
+            < img id = "flash-logo" src = "/build/images/icons/${label}.gif" alt = "Flash Logo" >
+            < h5 class = "text-white lead m-2" > ${message} < / h5 >
+        <  / div >
     `;
 
     document.body.appendChild(flashDiv);
