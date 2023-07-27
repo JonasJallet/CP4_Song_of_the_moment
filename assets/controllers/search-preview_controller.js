@@ -9,16 +9,19 @@ export default class extends Controller {
     static targets = ['result', 'input']; // Add the target
     static debounces = ['search'];
 
-    connect() {
+    connect()
+    {
         useClickOutside(this);
         useDebounce(this);
     }
 
-    onSearchInput(event) {
+    onSearchInput(event)
+    {
         this.search();
     }
 
-    async search() {
+    async search()
+    {
         const params = new URLSearchParams({
             q: this.inputTarget.value,
             preview: 1,
@@ -27,7 +30,8 @@ export default class extends Controller {
         this.resultTarget.innerHTML = await response.text();
     }
 
-    clickOutside(event) {
+    clickOutside(event)
+    {
         this.resultTarget.innerHTML = '';
     }
 }

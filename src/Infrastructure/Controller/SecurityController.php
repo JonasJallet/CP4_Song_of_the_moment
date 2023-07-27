@@ -27,7 +27,7 @@ class SecurityController extends AbstractController
     public function redirectAfterLogin(): Response
     {
         if (in_array('ROLE_ADMIN', $this->getUser()->getRoles())) {
-            return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_index', [], Response::HTTP_SEE_OTHER);
         }
         if (in_array('ROLE_USER', $this->getUser()->getRoles())) {
             return $this->redirectToRoute('app_user_song', [], Response::HTTP_SEE_OTHER);

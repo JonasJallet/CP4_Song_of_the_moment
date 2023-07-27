@@ -26,20 +26,39 @@ function onYouTubeIframeAPIReady()
     {
         youTubePlayer.playVideo();
         youTubePlayer.unMute();
+
+        if (songRows.length > 0) {
+            youTubePlayer.pauseVideo();
+        }
     }
 
     function onStateChange(event)
     {
+        let playButton = document.getElementById('play');
+        let pauseButton = document.getElementById('pause');
+
         switch (event.data) {
             case YT.PlayerState.CUED:
                 youTubePlayer.playVideo();
                 youTubePlayer.unMute();
                 break;
             case YT.PlayerState.ENDED:
-                let nextButton = document.getElementById("next");
-                if (nextButton) {
-                    nextButton.click();
+                if (currentRow !== songRows.length - 1) {
+                    let nextButton = document.getElementById("next");
+                    if (nextButton) {
+                        nextButton.click();
+                    }
                 }
+                break;
+            case YT.PlayerState.PAUSED:
+                playButton.classList.remove("d-none"); // Show play button
+                pauseButton.classList.add("d-none"); // Hide pause button
+                break;
+            case YT.PlayerState.PLAYING:
+                playButton.classList.add("d-none");
+                pauseButton.classList.remove("d-none"); // Show pause button
+                break;
+            default:
                 break;
         }
     }
@@ -68,31 +87,32 @@ function onYouTubeIframeAPIReady()
         }
     );
 
-    // Add private data to the YouTube object
     youTubePlayer.personalPlayer = {
         'currentTimeSliding': false,
         'errors': []
     };
 }
 
-/**
- * return true if the player is active, else false
- */
 function youTubePlayerActive()
 {
     'use strict';
     return youTubePlayer;
 }
 
-const songRows = document.querySelectorAll('.song-on-playlist');
+/**
+ * Playlist
+ */
+const songRows = Array.from(document.querySelectorAll('.song-on-playlist'));
 let currentRow = 0;
+let isShuffleActive = false;
+let songList;
 
 if (songRows.length > 0) {
     songRows.forEach((row, index) => {
-        let youtube = row.getAttribute('data-youtube');
-        let photo = row.getAttribute('data-photo');
-        let title = row.getAttribute('data-title');
-        let artist = row.getAttribute('data-artist');
+        const youtube = row.getAttribute('data-youtube');
+        const photo = row.getAttribute('data-photo');
+        const title = row.getAttribute('data-title');
+        const artist = row.getAttribute('data-artist');
         row.addEventListener('click', () => {
             document.getElementById('YouTube-video-id').value = youtube;
             document.getElementById('Album-photo-id').src = photo;
@@ -102,30 +122,54 @@ if (songRows.length > 0) {
         });
     });
 
-    document.getElementById('next').addEventListener('click', () => {
-        currentRow = (currentRow + 1) % songRows.length;
-        let nextRow = songRows[currentRow];
-        let youtube = nextRow.getAttribute('data-youtube');
-        let photo = nextRow.getAttribute('data-photo');
-        let title = nextRow.getAttribute('data-title');
-        let artist = nextRow.getAttribute('data-artist');
+    function updatePlayer(row) {
+        const nextIndex = isShuffleActive ? songList[row] : row;
+        const nextRow = songRows[nextIndex];
+        const youtube = nextRow.getAttribute('data-youtube');
+        const photo = nextRow.getAttribute('data-photo');
+        const title = nextRow.getAttribute('data-title');
+        const artist = nextRow.getAttribute('data-artist');
         document.getElementById('YouTube-video-id').value = youtube;
         document.getElementById('Album-photo-id').src = photo;
         document.getElementById('Infos-id').innerHTML = title + ' - ' + artist;
         youTubePlayerChangeVideoId();
+    }
 
-        if (currentRow === songRows.length - 1) {
-            document.getElementById("stop").click();
+    document.getElementById('next').addEventListener('click', () => {
+        currentRow = (currentRow + 1) % songRows.length;
+        updatePlayer(currentRow);
+    });
+
+    document.getElementById('previous').addEventListener('click', () => {
+        currentRow = (currentRow - 1 + songRows.length) % songRows.length;
+        updatePlayer(currentRow);
+    });
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
         }
+    }
+
+    document.getElementById('shuffle').addEventListener('click', () => {
+        isShuffleActive = !isShuffleActive;
+
+        if (isShuffleActive) {
+            songList = Array.from(Array(songRows.length).keys());
+            shuffleArray(songList);
+        } else {
+            currentRow = songList[currentRow];
+            songList = [];
+        }
+
+        document.getElementById('shuffle').classList.toggle('active', isShuffleActive);
     });
 }
 
 /**
- * Get videoId from the #YouTube-video-id HTML item value,
- * load this video, pause it
- * and show new infos.
+ * Get videoId from the #YouTube-video-id HTML item value, load this video, pause it and show new infos.
  */
-
 function youTubePlayerChangeVideoId()
 {
     'use strict';
@@ -143,9 +187,7 @@ function youTubePlayerChangeVideoId()
 
 /**
  * Seek the video to the currentTime.
- * (And mark that the HTML slider *don't* move.)
- *
- * :param currentTime: 0 <= number <= 100
+ * param currentTime: 0 <= number <= 100
  */
 function youTubePlayerCurrentTimeChange(currentTime)
 {
@@ -168,10 +210,8 @@ function youTubePlayerCurrentTimeSlide()
 }
 
 /**
- * Display
- *   some video informations to #YouTube-player-infos,
- *   errors to #YouTube-player-errors
- *   and set progress bar #YouTube-player-progress.
+ *   Display some video info to #YouTube-player-infos,
+ *   errors to #YouTube-player-errors and set progress bar #YouTube-player-progress.
  */
 function youTubePlayerDisplayInfos()
 {
@@ -215,7 +255,7 @@ function youTubePlayerDisplayInfos()
 let pause = document.getElementById('pause');
 
 pause.addEventListener("click", function () {
-    youTubePlayer.pauseVideo();
+    youTubePlayerPause();
 });
 
 function youTubePlayerPause()
@@ -245,8 +285,7 @@ function youTubePlayerPlay()
 let stop = document.getElementById('stop');
 
 stop.addEventListener("click", function () {
-    youTubePlayer.stopVideo();
-    youTubePlayer.clearVideo();
+    youTubePlayerStop();
 });
 
 function youTubePlayerStop()
@@ -254,8 +293,24 @@ function youTubePlayerStop()
     'use strict';
 
     if (youTubePlayerActive()) {
-        youTubePlayer.stopVideo();
-        youTubePlayer.clearVideo();
+        youTubePlayer.seekTo(0);
+        youTubePlayer.pauseVideo();
+
+    }
+}
+
+function initFirstSong() {
+    if (songRows.length > 0) {
+        const firstSongRow = songRows[0];
+        const youtube = firstSongRow.getAttribute('data-youtube');
+        const photo = firstSongRow.getAttribute('data-photo');
+        const title = firstSongRow.getAttribute('data-title');
+        const artist = firstSongRow.getAttribute('data-artist');
+        document.getElementById('YouTube-video-id').value = youtube;
+        document.getElementById('Album-photo-id').src = photo;
+        document.getElementById('Infos-id').innerHTML = title + ' - ' + artist;
+        youTubePlayerChangeVideoId();
+        currentRow = 0;
     }
 }
 
@@ -278,6 +333,8 @@ function youTubePlayerStop()
 
         // Set timer to display infos
         setInterval(youTubePlayerDisplayInfos, 1000);
+
+        initFirstSong();
     }
 
     if (window.addEventListener) {

@@ -13,7 +13,6 @@ class SongValidator extends ConstraintValidator
     public function __construct(
         private readonly SongRepository $songRepository
     ) {
-
     }
 
     public function validate($value, Constraint $constraint): void
@@ -23,17 +22,17 @@ class SongValidator extends ConstraintValidator
 
     private function ensureUniquePairingSongName(Song $song): void
     {
-        $errors= new ArrayCollection();
+        $errors = new ArrayCollection();
 
-        if($song->getTitle() !== null && $song->getArtist() !== null) {
+        if ($song->getTitle() !== null && $song->getArtist() !== null) {
             $existingSongPairing = $this->songRepository
                 ->findBy([
-                    'title'=> $song->getTitle(),
+                    'title' => $song->getTitle(),
                     'artist' => $song->getArtist(),
                 ]);
 
-            if(sizeof($existingSongPairing)>1) {
-                $errors->add(['message'=>'Le titre existe déjà pour l\'artiste indiqué.']);
+            if (sizeof($existingSongPairing) > 1) {
+                $errors->add(['message' => 'Le titre existe déjà pour l\'artiste indiqué.']);
             }
 
             if ($song->getId() !== null) {
