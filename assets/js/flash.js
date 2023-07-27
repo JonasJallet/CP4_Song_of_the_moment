@@ -12,10 +12,10 @@ if (flashElement) {
             flashElement.remove();
         }, 500);
     }, 6000);
-
 }
 
-export function flashMessages(label, message) {
+export function flashMessages(label, message)
+{
     const flashDiv = document.createElement('div');
     flashDiv.id = 'flash';
     flashDiv.className = `alert border border-start-0 border-end-0 border-bottom-0 border-5 border-${label} position-absolute mb-4 mx-auto`;

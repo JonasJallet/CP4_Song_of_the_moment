@@ -6,6 +6,7 @@ use App\Domain\Model\DomainSongModelInterface;
 use App\Infrastructure\Persistence\Repository\SongRepository;
 use App\Infrastructure\Service\CustomUuidGenerator;
 use App\Infrastructure\Validator\Constraint\SongConstraint;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,6 +15,8 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
+#[ORM\UniqueConstraint(name: "unique_song_title_artist", columns: ["title", "artist"])]
+#[ORM\HasLifecycleCallbacks]
 #[SongConstraint]
 class Song implements DomainSongModelInterface
 {
@@ -69,7 +72,6 @@ class Song implements DomainSongModelInterface
     #[MaxDepth(2)]
     #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'songs')]
     private Collection $playlists;
-
     #[MaxDepth(2)]
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
     #[ORM\OrderBy(["id" => "DESC"])]
@@ -78,6 +80,15 @@ class Song implements DomainSongModelInterface
     #[ORM\Column(length: 255, unique: true)]
     #[Slug(fields: ['artist', 'title'])]
     private ?string $slug = null;
+
+    #[ORM\Column]
+    private ?DateTimeImmutable $createdAt = null;
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->createdAt = new DateTimeImmutable();
+    }
 
     public function __construct()
     {
@@ -230,6 +241,18 @@ class Song implements DomainSongModelInterface
         if ($this->users->removeElement($user)) {
             $user->removeFavorite($this);
         }
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

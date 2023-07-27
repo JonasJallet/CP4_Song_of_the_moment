@@ -36,20 +36,3 @@
     min-width: 330px;
     text-shadow: 0 0 4px rgb(38 38 38 / 60%);
 }
-
-svg.youtube-play,
-.youtube-pause,
-.youtube-stop,
-.youtube-next {
-    fill: white;
-    stroke-linecap: butt;
-    cursor: pointer;
-    height: 40px;
-    width: 40px;
-    margin: 0 5px 0 5px;
-
-    &:hover {
-        fill: white;
-        opacity: 0.5;
-    }
-}

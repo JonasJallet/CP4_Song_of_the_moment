@@ -7,7 +7,8 @@ Array.from(playlistButtons).forEach(function (element) {
 
 let popup;
 
-function openPlaylistPopup(e) {
+function openPlaylistPopup(e)
+{
     e.preventDefault();
 
     let url = this.dataset.playlistUrl;
@@ -32,7 +33,8 @@ function openPlaylistPopup(e) {
         });
 }
 
-function closePlaylistPopup() {
+function closePlaylistPopup()
+{
     if (popup) {
         popup.remove();
     }
@@ -40,7 +42,8 @@ function closePlaylistPopup() {
 
 document.addEventListener('click', closePlaylistPopup);
 
-function AddToPlaylistId() {
+function AddToPlaylistId()
+{
     let addToPlaylistElements = document.getElementsByClassName('playlist-collection');
     Array.from(addToPlaylistElements).forEach(function (element) {
         if (element.dataset.playlistIdUrl) {
@@ -48,7 +51,8 @@ function AddToPlaylistId() {
         }
     });
 
-    function addToPlaylist(e) {
+    function addToPlaylist(e)
+    {
         e.preventDefault();
         let url = this.dataset.playlistIdUrl;
         try {
@@ -68,11 +72,13 @@ function AddToPlaylistId() {
     }
 }
 
-function newPlaylist() {
+function newPlaylist()
+{
     const playlistNewButton = document.getElementById('playlist-popup-new');
     playlistNewButton.addEventListener('click', newPlaylistPopup);
 
-    function newPlaylistPopup(e) {
+    function newPlaylistPopup(e)
+    {
         e.preventDefault();
 
         let url = this.dataset.playlistNewUrl;
@@ -89,21 +95,23 @@ function newPlaylist() {
     }
 }
 
-function newPlaylistAdd() {
+function newPlaylistAdd()
+{
     const playlistNewAddButton = document.getElementById('playlist-new-add');
     playlistNewAddButton.addEventListener('click', newAddSong);
 
     const form = document.getElementById('createPlaylistForm');
     const formInputs = form.querySelectorAll('input, textarea');
     formInputs.forEach(input => {
-        input.addEventListener('keydown', function(event) {
+        input.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
             }
         });
     });
 
-    function newAddSong(e) {
+    function newAddSong(e)
+    {
         e.preventDefault();
 
         let form = document.getElementById('createPlaylistForm');
@@ -137,7 +145,8 @@ Array.from(deleteButtons).forEach(function (element) {
         element.addEventListener("click", removeToPlaylist);
 });
 
-function removeToPlaylist(e) {
+function removeToPlaylist(e)
+{
     e.preventDefault();
     const songLink = e.currentTarget;
     const trParent = songLink.closest('tr');
@@ -160,9 +169,8 @@ function removeToPlaylist(e) {
 }
 
 let dropdownButtons = document.querySelectorAll('.dropdown .btn');
-dropdownButtons.forEach(function(button) {
-    button.addEventListener('click', function(event) {
+dropdownButtons.forEach(function (button) {
+    button.addEventListener('click', function (event) {
         event.stopPropagation();
     });
 });
-
