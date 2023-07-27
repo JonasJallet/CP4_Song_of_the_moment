@@ -89,6 +89,11 @@ li {
     background: none;
 }
 
+.main-searchApi {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
 .card-api {
     cursor: pointer;
 }
@@ -118,3 +123,18 @@ li {
     left: 50%; /* Horizontally center the button */
     transform: translateX(-50%); /* Center the button using translation */
 }
+
+input.autofill.playlist-name-input,
+input.autofill.playlist-name-input:hover,
+input.autofill.playlist-name-input:focus,
+textarea.autofill.playlist-name-input,
+textarea.autofill.playlist-name-input:hover,
+textarea.autofill.playlist-name-input:focus,
+select.autofill.playlist-name-input,
+select.autofill.playlist-name-input:hover,
+select.autofill.playlist-name-input:focus {
+    border: 0;
+    -webkit-text-fill-color: white;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
