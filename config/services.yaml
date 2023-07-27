@@ -8,10 +8,6 @@ parameters:
 services:
     # default configuration for services in *this* file
     _defaults:
-        bind:
-            # pass this value to any $adminEmail argument for any service
-            # that's defined in this file (including controller arguments)
-            $googleApiKey: 'manager@example.com'
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
