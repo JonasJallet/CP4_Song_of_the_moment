@@ -4,7 +4,8 @@ namespace App\Infrastructure\Controller;
 
 use App\Infrastructure\Persistence\Entity\Song;
 use App\Infrastructure\Persistence\Repository\SongRepository;
-use App\Infrastructure\Service\SongService;
+use App\Infrastructure\Service\LinkYoutubeSearch;
+use App\Infrastructure\Service\SongDeezerSearch;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,12 +21,15 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 #[Route('/api/song')]
 class SearchApiController extends AbstractController
 {
-    private SongService $songSearch;
+    private SongDeezerSearch $songDeezerSearch;
+    private LinkYoutubeSearch $linkYoutubeSearch;
 
     public function __construct(
-        SongService $songSearch,
+        SongDeezerSearch $songDeezerSearch,
+        LinkYoutubeSearch $linkYoutubeSearch
     ) {
-        $this->songSearch = $songSearch;
+        $this->songDeezerSearch = $songDeezerSearch;
+        $this->linkYoutubeSearch = $linkYoutubeSearch;
     }
 
     /**
@@ -42,7 +46,7 @@ class SearchApiController extends AbstractController
         $results = [];
         if ($request->isMethod('POST') && !empty($request->get('q'))) {
             $songTitle = $request->get('q');
-            $results = $this->songSearch->searchDeezerSongs($songTitle);
+            $results = $this->songDeezerSearch->search($songTitle);
             return $this->render('searchApi/index.html.twig', [
                 'results' => $results,
             ]);
@@ -73,7 +77,7 @@ class SearchApiController extends AbstractController
                     $song->setAlbum($songData['album']);
                     $song->setPhotoAlbum($songData['cover']);
                     $song->setLinkYoutube(
-                        $this->songSearch->searchYoutubeLink($songData['title'], $songData['artist'])
+                        $this->linkYoutubeSearch->search($songData['title'], $songData['artist'])
                     );
                     $song->setIsApproved(true);
                     $songRepository->save($song, true);

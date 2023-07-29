@@ -19,7 +19,7 @@ class SongFixtures extends Fixture
                 'artist' => 'Stupeflip',
                 'album' => 'Stupeflip',
                 'photo_album' => 'https://m.media-amazon.com/images/I/61PF6XQWF1L.jpg',
-                'link_youtube' => 'ZYEIFIZZXTs',
+                'link_youtube' => 'b2NGDGXeDnA',
             ],
             [
                 'title' => 'Peng Black Girls Remix',

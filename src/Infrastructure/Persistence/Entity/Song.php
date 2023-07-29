@@ -58,6 +58,9 @@ class Song implements DomainSongModelInterface
     )]
     private ?string $linkYoutube = null;
 
+    #[ORM\Column]
+    private bool $linkYoutubeValid = true;
+
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: 'Ne me laisse pas tout vide')]
     #[Assert\Length(
@@ -255,5 +258,21 @@ class Song implements DomainSongModelInterface
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLinkYoutubeValid(): bool
+    {
+        return $this->linkYoutubeValid;
+    }
+
+    /**
+     * @param bool $linkYoutubeValid
+     */
+    public function setLinkYoutubeValid(bool $linkYoutubeValid): void
+    {
+        $this->linkYoutubeValid = $linkYoutubeValid;
     }
 }
