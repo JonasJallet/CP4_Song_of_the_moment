@@ -11,7 +11,6 @@ Encore
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
     .setPublicPath('/build')
-    // only needed for CDN's or sub-directory deploy
     // .setManifestKeyPrefix('build/')
     .copyFiles({
         from: './assets/images',
@@ -20,7 +19,7 @@ Encore
         // to: 'images/[path][name].[ext]',
 
         // if versioning is enabled, add the file hash too
-        to: 'images/[path][name].[hash:8].[ext]',
+        to: 'images/[path][name].[ext]',
 
         // only copy files matching this pattern
         // pattern: /\.(png|jpg|jpeg)$/
@@ -31,7 +30,12 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/app.js')
+    // .addEntry('app', './assets/app.js')
+    .addEntry('app', ['whatwg-fetch', './assets/app.js'])
+    .addEntry('favorite', './assets/js/favorite.js')
+    .addEntry('approved', './assets/js/approved.js')
+    .addEntry('playlist', './assets/js/playlist.js')
+    .addEntry('search_api', './assets/js/search_api.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -68,15 +72,15 @@ Encore
     // uncomment if you use TypeScript
     // .enableTypeScriptLoader()
 
-// uncomment if you use React
-// .enableReactPreset()
+    // uncomment if you use React
+    // .enableReactPreset()
 
-// uncomment to get integrity="..." attributes on your script & link tags
-// requires WebpackEncoreBundle 1.4 or higher
-// .enableIntegrityHashes(Encore.isProduction())
+    // uncomment to get integrity="..." attributes on your script & link tags
+    // requires WebpackEncoreBundle 1.4 or higher
+    // .enableIntegrityHashes(Encore.isProduction())
 
-// uncomment if you're having problems with a jQuery plugin
-// .autoProvidejQuery()
+    // uncomment if you're having problems with a jQuery plugin
+    // .autoProvidejQuery()
 
     // enables Sass/SCSS support
     .enableSassLoader();

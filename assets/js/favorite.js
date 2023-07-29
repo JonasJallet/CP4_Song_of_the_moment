@@ -1,16 +1,21 @@
-document.getElementById("favorite").addEventListener("click", addToFavorite);
+let favoriteButtons = document.getElementsByClassName("favorite");
 
-function addToFavorite(e) {
+if (favoriteButtons) {
+    Array.from(favoriteButtons).forEach(function (element) {
+        element.addEventListener('click', addToFavorite);
+    });
+}
+
+function addToFavorite(e)
+{
     e.preventDefault();
 
     const favoriteLink = e.currentTarget;
     const link = favoriteLink.href;
-    // Send an HTTP request with fetch to the URI defined in the href
+
     try {
         fetch(link)
-            // Extract the JSON from the response
             .then(res => res.json())
-            // Then update the icon
             .then(data => {
                 const favoriteIcon = favoriteLink.firstElementChild;
                 if (data.isInFavorite) {
@@ -20,6 +25,39 @@ function addToFavorite(e) {
                     favoriteIcon.classList.remove("bi-heart-fill");
                     favoriteIcon.classList.add("bi-heart");
                 }
+            });
+    } catch (error) {
+        alert(error);
+    }
+}
+
+let deleteButtons = document.getElementsByClassName("favorite-delete");
+let favoriteLengthElement = document.getElementById('favorite-length');
+let favoriteLength = favoriteLengthElement ? parseInt(favoriteLengthElement.innerText) : 0;
+
+if (deleteButtons) {
+    Array.from(deleteButtons).forEach(function (element) {
+        element.addEventListener('click', removeToFavorite);
+    });
+}
+
+function removeToFavorite(e)
+{
+    e.preventDefault();
+
+    const favoriteLink = e.currentTarget;
+    const link = favoriteLink.href;
+    const trParent = favoriteLink.closest('tr');
+    try {
+        fetch(link)
+            .then(res => res.json())
+            .then(data => {
+                trParent.classList.add('delete-fade-out');
+                setTimeout(() => {
+                    trParent.remove();
+                    favoriteLength--;
+                    favoriteLengthElement.innerText = favoriteLength.toString();
+                }, 500);
             });
     } catch (error) {
         alert(error);

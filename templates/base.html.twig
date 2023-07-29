@@ -1,33 +1,40 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>
-			{% block title %}Song of the Moment
-			{% endblock %}
-		</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link
-		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-		{% block stylesheets %}
-			{{ encore_entry_link_tags('app') }}
-		{% endblock %}
-	</head>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {% block title %}Song of the Moment
+            {% endblock %}
+        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="{{ asset('build/images/icons/favicon.png') }}">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+    </head>
 
-	<body {% block styleBody %} {% endblock %}>
+    <body {% block styleBody %} {% endblock %}>
+        {% block navbar %}
+            {% include '_navbar.html.twig' %}
+        {% endblock %}
 
-		{% block navbar %}
-			{% include '_navbar.html.twig' %}
-		{% endblock %}
+        {% block body %}{% endblock %}
 
-		{% block body %}{% endblock %}
+        <div id="flash-messages" class="d-flex justify-content-center">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div id="flash" class="alert border border-start-0 border-end-0 border-bottom-0 border-5 border-{{ label }} position-absolute mb-4 mx-2" role="alert">
+                        <div class="d-flex flex-row align-items-center">
+                            <img id="flash-logo" src="{{ asset('build/images/icons/' ~ label ~ '.gif') }}" alt="Flash Logo">
+                            <h5 class="text-white lead m-2">{{ message|trans|raw }}</h5>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
 
-		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-		{% endblock %}
-
-	</body>
-
-
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </body>
 </html>

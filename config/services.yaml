@@ -10,6 +10,9 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $googleApiKeySearch: '%env(GOOGLE_API_KEY_SEARCH)%'
+            $googleApiKeyCheck: '%env(GOOGLE_API_KEY_CHECK)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -17,8 +20,81 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
+
             - '../src/Entity/'
             - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+            - '../src/Domain/Model/User'
+            - '../src/Infrastructure/Persistence/Migrations'
+            - '../src/Kernel.php'
+            - '../src/Tests/'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    app.check_youtube_links:
+        alias: App\Infrastructure\Command\CheckYoutubeLinksCommand
+        public: true
+
+
+    App\Infrastructure\Controller\:
+        resource: '../src/Infrastructure/Controller'
+        tags: [ controller.service_arguments ]
+
+    App\Application\Query\Song\GetAllApprovedSongs\GetAllApprovedSongsHandler:
+        tags: [ { name: messenger.message_handler, bus: query.bus } ]
+        autoconfigure: false
+
+    App\Application\Query\Song\GetSongBySlug\GetSongBySlugHandler:
+        tags: [ { name: messenger.message_handler, bus: query.bus } ]
+        autoconfigure: false
+
+    App\Application\Query\User\GetPlaylists\GetPlaylistsHandler:
+        tags: [ { name: messenger.message_handler, bus: query.bus } ]
+        autoconfigure: false
+
+    App\Application\Query\User\GetFavorites\GetFavoritesHandler:
+        tags: [ { name: messenger.message_handler, bus: query.bus } ]
+        autoconfigure: false
+
+    App\Application\Query\Playlist\GetPlaylistBySlug\GetPlaylistBySlugHandler:
+        tags: [ { name: messenger.message_handler, bus: query.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Song\NewSong\NewSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Song\UpdateSong\UpdateSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Song\DeleteSong\DeleteSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Song\AddToFavoriteSong\AddToFavoriteSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Song\IsApprovedSong\IsApprovedSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Playlist\AddSongNewPlaylist\AddSongNewPlaylistHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Playlist\AddSongPlaylist\AddSongPlaylistHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Playlist\DeletePlaylist\DeletePlaylistHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+    App\Application\Command\Playlist\DeleteSongPlaylist\DeleteSongPlaylistHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false

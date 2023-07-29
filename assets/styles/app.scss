@@ -1,17 +1,18 @@
 @import "~bootstrap/scss/bootstrap";
-
 @import url('https://fonts.googleapis.com/css2?family=Dosis:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-@import "song-show";
-@import "song-list";
-@import "song-admin";
-@import "navbar";
-@import "form";
-@import "searchbar";
+@import "admin";
 @import "favorites";
+@import "form";
+@import "navbar";
+@import "player";
+@import "playlist";
+@import "searchbar";
+@import "song-list";
+@import "song-show";
 
 body {
-    background-color: rgb(26, 31, 40);
+    background-color: rgb(26, 31, 40)!important;
     color: white;
     font: 400 20px Dosis;
 }
@@ -39,8 +40,8 @@ body {
     font-size: 30px;
 }
 
-.backome {
-    background: url(../../assets/images/backome.avif) no-repeat center center fixed;
+.back-home {
+    background: url(../../assets/images/back-home.avif) no-repeat center center fixed;
     background-size: cover;
     position: absolute;
     width: 100%;
@@ -56,6 +57,84 @@ li {
     font-size: 26px;
 }
 
-.main-favorite {
-    margin-top: 140px;
+#flash {
+    opacity: 0;
+    transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+    background-color: #212121;
+    bottom: 30px;
+    z-index: 1000;
 }
+
+#flash-logo {
+    width: 45px;
+}
+
+#flash.fade-out {
+    opacity: 0;
+}
+
+#flash.fade-in {
+    opacity: 1;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #494949;
+}
+
+::-webkit-scrollbar-track {
+    background: none;
+}
+
+.main-searchApi {
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+
+.card-api {
+    cursor: pointer;
+}
+
+.card-api>.card-api-text {
+    border: 1px solid #383838;
+    border-left: 0;
+    border-radius: 0 15px 15px 0;
+}
+
+.card-api.selected>.card-api-text {
+    border-color: #14A44D;
+}
+
+.card-api-img {
+    height: 100px;
+    border-radius: 15px 0 0 15px
+}
+
+.card-api-text {
+    width: 100%;
+}
+
+.fixed-button-container {
+    position: fixed;
+    bottom: 20px; /* Adjust the value to set the desired distance from the bottom */
+    left: 50%; /* Horizontally center the button */
+    transform: translateX(-50%); /* Center the button using translation */
+}
+
+input.autofill.playlist-name-input,
+input.autofill.playlist-name-input:hover,
+input.autofill.playlist-name-input:focus,
+textarea.autofill.playlist-name-input,
+textarea.autofill.playlist-name-input:hover,
+textarea.autofill.playlist-name-input:focus,
+select.autofill.playlist-name-input,
+select.autofill.playlist-name-input:hover,
+select.autofill.playlist-name-input:focus {
+    border: 0;
+    -webkit-text-fill-color: white;
+    transition: background-color 5000s ease-in-out 0s;
+}
+

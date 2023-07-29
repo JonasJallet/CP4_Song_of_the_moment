@@ -1,0 +1,15 @@
+<div class="list-group rounded-0">
+    {% for song in searchSongs %}
+        <a
+            class="list-group-item list-group-item-action text-white"
+            href="{{ path('app_song_show', { slug: song.slug }) }}"
+        >
+            <div class="d-flex align-items-center">
+                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-little">
+                <p class="m-0 mx-2">{{ song.title }} - {{ song.artist }}</p>
+            </div>
+        </a>
+    {% else %}
+        <div class="list-group-item bg-dark text-white">Aucun Résultat !</div>
+    {% endfor %}
+</div>

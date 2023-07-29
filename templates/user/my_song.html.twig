@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Sons
+{% endblock %}
+
+{% block styleBody %}class="back-home"
+{% endblock %}
+
+{% block body %}
+    <div id="back-hover">
+        <main class="main-favorite">
+            <div class="row col-12 d-flex flex-row justify-content-center m-0">
+                <div class="favorites-card card d-flex flex-row col-4 border-0 shadow-lg m-4 p-0">
+                    <a class="text-decoration-none" id="favorites" href="{{ path('app_user_favorite') }}">
+                        <div class="d-flex flex-row">
+                            <div class="d-flex flex-row flex-wrap justify-content-center align-items-center img-big">
+                                <i class="favorites-icon bi bi-heart-fill"></i>
+                            </div>
+                            <p class="favorites-link m-0">Coup de coeur</p>
+                        </div>
+                    </a>
+                </div>
+
+                {% for element in collection %}
+                    <div class="favorites-card card col-4 border-0 shadow-lg m-4 p-0">
+                        <a class="text-decoration-none" href="{{ path('playlist_show', {'slug': element.playlist.slug}) }}">
+                            <div class="d-flex flex-row">
+                                <div class="d-flex flex-row flex-wrap img-big">
+                                    {% if element.songs|length == 0 %}
+                                        <div class="d-flex flex-row flex-wrap justify-content-center align-items-center img-big">
+                                            <i class="favorites-icon bi bi-music-note-list text-white"></i>
+                                        </div>
+                                    {% elseif element.songs|length < 4 %}
+                                        {% for song in element.songs %}
+                                            {% if loop.index == 1 %}
+                                                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-big">
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        {% for song in element.songs %}
+                                            <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-little">
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <p class="favorites-link m-0">{{ element.playlist.name }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+{% endblock %}

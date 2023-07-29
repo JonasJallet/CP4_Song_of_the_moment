@@ -1,6 +1,6 @@
 .search-buttton {
     position: absolute;
-    border: 0px;
+    border: 0;
     padding: 8px;
     margin-right: 6px;
 }
@@ -16,7 +16,6 @@
     border-radius: 20px;
     border-width: 2px;
     font-size: 20px;
-    box-shadow: 0px;
 
 
     &::placeholder {
@@ -42,4 +41,27 @@
 
 .sticky-top {
     top: 2em;
+}
+
+::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
+
+.search-preview {
+    position: absolute;
+    z-index: 100;
+    width: 94%;
+    top: 46px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.list-group-item {
+    background-color: #212529;
+}
+
+.list-group-item:hover {
+    background-color: #292f33;
 }

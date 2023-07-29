@@ -3,44 +3,65 @@
 {% block title %}Rechercher
 {% endblock %}
 
-{% block styleBody %}class="backlist"
+{% block styleBody %}class="back-list"
 {% endblock %}
 
 {% block body %}
-	<section class="backblur">
-		<main class="song-list p-3">
-			<form action="{{ path('app_song_list') }}" method="post" class="mb-4">
-				<div class="form-row">
-					<div class="form-group d-flex justify-content-end col-9 col-md-7 col-lg-5 col-xl-3 m-auto">
-						<input type="text" name="title" class="search-input form-control" placeholder="rechercher un titre ...">
-						<button type="submit" class="search-buttton btn">
-							<svg xmlns="http://www.w3.org/2000/svg" class="search-svg bi bi-search" viewbox="0 0 16 16">
-								<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-							</svg>
-						</button>
-					</div>
-				</div>
-			</form>
-
-			<div class="row d-flex flex-row justify-content-center">
-				{% for song in songs %}
-					<div class="card-deck col-6 col-md-4 col-lg-3 col-xl-2">
-						<a href="{{ path('app_song_show', {'id': song.id}) }}">
-							<div class="list-album card shadow">
-								<img src="{{ song.photoAlbum }}" class="list-photo-album card-img-top">
-								<div class="list-infos d-flex flex-column">
-									<p>{{ song.title }}</p>
-									<p class="list-infos-artist">{{ song.artist }}</p>
-								</div>
-							</div>
-						</a>
-					</div>
-				{% else %}
-					<h2 class="text-center">Aucun résultat</h2>
-				{% endfor %}
-			</div>
-		</main>
-	</section>
-
-
+    <section class="back-blur">
+        <main class="song-list p-3">
+            <form action="{{ path('app_song_list') }}" method="post" class="mb-4">
+                <div class="form-row">
+                    <div class="form-group d-flex justify-content-end col-9 col-md-7 col-lg-5 col-xl-4 m-auto">
+                        <div
+                            class="input-group d-flex flex-column"
+                            {{ stimulus_controller('search-preview', {
+                                url: path('app_song_list')
+                            }) }}
+                        >
+                            <div>
+                                <input
+                                    name="q"
+                                    type="search"
+                                    value="{{ searchTerm }}"
+                                    class="search-input form-control"
+                                    placeholder="rechercher un titre ..."
+                                    data-action="search-preview#onSearchInput"
+                                    data-search-preview-target="input"
+                                >
+                            </div>
+                            <div
+                                class="search-preview"
+                                data-search-preview-target="result"
+                            ></div>
+                        </div>
+                        <button type="submit" class="search-buttton btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="search-svg bi bi-search" viewbox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="row d-flex flex-row justify-content-end">
+                <a href="{{ path('api_search_song') }}" class="button-approved btn mb-4 text-center">Ajouter des sons</a>
+            </div>
+            <div class="row d-flex flex-row justify-content-center">
+                {% for song in songsApproved %}
+                    <div class="card-deck col-6 col-md-4 col-lg-3 col-xl-2">
+                        <a href="{{ path('app_song_show', {'slug': song.slug}) }}">
+                            <div class="list-album card shadow">
+                                <img src="{{ song.photoAlbum }}" class="list-photo-album card-img-top" alt="Photo album">
+                                <div class="list-infos d-flex flex-column">
+                                    <p>{{ song.title }}</p>
+                                    <p class="list-infos-artist">{{ song.artist }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% else %}
+                    <h2 class="text-center">Aucun résultat</h2>
+                {% endfor %}
+            </div>
+        </main>
+    </section>
 {% endblock %}
