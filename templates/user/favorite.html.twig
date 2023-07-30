@@ -16,38 +16,30 @@
                     <h3 id="favorite-length" class="m-0">{{ app.user.favorites|length }}</h3>
                     <h3 class="m-0">&nbsp;Titres</h3>
                 </div>
-                <table class="col-11">
-                    <thead class="thead-playlist">
-                        <tr>
-                            <th class="lead p-2">TITRE</th>
-                            <th class="lead p-2">ARTISTE</th>
-                            <th class="lead p-2">ALBUM</th>
-                        </tr>
-                    </thead>
+                <table class="col-12">
                     <tbody>
                         {% for song in app.user.favorites %}
-                            <tr class="playlist-line">
-                                <td class="link_id song-on-playlist"
-                                    data-photo="{{ song.photoAlbum }}"
-                                    data-youtube="{{ song.linkYoutube }}"
-                                    data-title="{{ song.title }}"
-                                    data-artist="{{ song.artist }}"
-                                >
+                            <tr
+                                class="playlist-line link_id song-on-playlist"
+                                data-photo="{{ song.photoAlbum }}"
+                                data-youtube="{{ song.linkYoutube }}"
+                                data-title="{{ song.title }}"
+                                data-artist="{{ song.artist }}"
+                            >
+                                <td>
                                     <img class="photo_song_id photo-song-playlist shadow p-2" src="{{ song.photoAlbum }}" alt="Photo album"/>
+                                </td>
+                                <td class="d-flex flex-column m-2 d-lg-none">
+                                    <h5>{{ song.title }}</h5>
+                                    <small class="text-muted">{{ song.artist }} - {{ song.album }}</small>
+                                </td>
+                                <td class="d-none d-lg-table-cell">
                                     {{ song.title }}
                                 </td>
-                                <td class="link_id song-on-playlist" data-photo="{{ song.photoAlbum }}"
-                                    data-youtube="{{ song.linkYoutube }}"
-                                    data-title="{{ song.title }}"
-                                    data-artist="{{ song.artist }}">
+                                <td class="d-none d-lg-table-cell">
                                     {{ song.artist }}
                                 </td>
-                                <td class="link_id song-on-playlist"
-                                    data-photo="{{ song.photoAlbum }}"
-                                    data-youtube="{{ song.linkYoutube }}"
-                                    data-title="{{ song.title }}"
-                                    data-artist="{{ song.artist }}"
-                                >
+                                <td class="d-none d-lg-table-cell">
                                     {{ song.album }}
                                 </td>
                                 <td class="dropdown-icon">
@@ -70,14 +62,18 @@
                                     </div>
                                 </td>
                             </tr>
+                        {% else %}
+                            <h3 class="text-center">Vous n'avez pas encore de coup de coeur</h3>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
 
-            <div class="row">
-                {% include 'user/_player.html.twig' %}
-            </div>
+            {% if app.user.favorites is not empty %}
+                <div class="row">
+                    {% include 'user/_player.html.twig' %}
+                </div>
+            {% endif %}
         </main>
     </div>
 {% endblock %}
