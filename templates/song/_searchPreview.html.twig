@@ -1,7 +1,7 @@
 <div class="list-group rounded-0">
     {% for song in searchSongs %}
         <a
-            class="list-group-item list-group-item-action text-white"
+            class="list-group-item list-group-item-action text-white border-0"
             href="{{ path('app_song_show', { slug: song.slug }) }}"
         >
             <div class="d-flex align-items-center">
