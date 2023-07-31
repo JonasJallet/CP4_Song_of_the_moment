@@ -18,7 +18,7 @@ export function flashMessages(label, message)
 {
     const flashDiv = document.createElement('div');
     flashDiv.id = 'flash';
-    flashDiv.className = `alert border border-start-0 border-end-0 border-bottom-0 border-5 border-${label} position-absolute mb-4 mx-auto`;
+    flashDiv.className = `alert border border-start-0 border-end-0 border-bottom-0 border-5 border-${label} position-fixed mb-4 mx-auto`;
     flashDiv.style.width = '300px';
     flashDiv.style.zIndex = '1000';
     flashDiv.style.left = '0';
