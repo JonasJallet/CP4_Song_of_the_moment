@@ -46,14 +46,14 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
     #[Assert\NotNull(message: 'Le mot de passe est obligatoire')]
     private ?string $password = null;
 
-    #[ORM\ManyToMany(targetEntity: Song::class, inversedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: Song::class, inversedBy: 'users', cascade: ['persist', 'remove'])]
     private Collection $favorites;
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
     #[MaxDepth(2)]
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Playlist::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Playlist::class, cascade: ['persist', 'remove'])]
     private Collection $playlists;
 
     public function __construct()
