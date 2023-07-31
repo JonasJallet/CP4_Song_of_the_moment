@@ -18,13 +18,12 @@ class LinkYoutubeSearch
         $googleClient = new GoogleClient();
         $googleClient->setDeveloperKey($this->googleApiKeySearch);
         $youtube = new YouTube($googleClient);
-        $searchQuery = $songArtist . ' ' . $songTitle;
+        $searchQuery = $songArtist . ' - ' . $songTitle;
         $youtubeSearch = $youtube->search->listSearch(
             'snippet',
             ['q' => $searchQuery,
-                'maxResults' => 1,
-                'order' => 'viewCount']
+                'maxResults' => 2]
         );
-        return $youtubeSearch['items'][0]['id']['videoId'];
+        return $youtubeSearch['items'][1]['id']['videoId'];
     }
 }
