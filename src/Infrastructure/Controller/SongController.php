@@ -53,7 +53,7 @@ class SongController extends AbstractController
         $searchSongs = $songRepository->findLikeApprovedTitle($searchTerm);
 
         if ($request->query->get('preview')) {
-            return $this->render('song/_searchPreview.html.twig', [
+            return $this->render('song/_search_preview.html.twig', [
                 'searchSongs' => $searchSongs,
             ]);
         }
