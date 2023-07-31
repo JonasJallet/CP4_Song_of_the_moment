@@ -24,7 +24,7 @@ class SongDeezerSearch
         $response = $httpClient->request('GET', "https://api.deezer.com/search", [
             'query' => [
                 'q' => "track:" . '"' . $query . '"',
-                'limit' => '24',
+                'limit' => '30',
             ],
         ]);
 

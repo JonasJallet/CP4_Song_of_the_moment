@@ -77,7 +77,7 @@ class SearchApiController extends AbstractController
                     $song->setAlbum($songData['album']);
                     $song->setPhotoAlbum($songData['cover']);
                     $song->setLinkYoutube(
-                        $this->linkYoutubeSearch->search($songData['title'], $songData['artist'])
+                        $this->linkYoutubeSearch->search($songData['artist'], $songData['title'])
                     );
                     $song->setIsApproved(true);
                     $songRepository->save($song, true);

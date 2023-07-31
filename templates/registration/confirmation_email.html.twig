@@ -1,7 +1,16 @@
+<a class="logo-sotm-text navbar-brand d-flex flex-row align-items-center" href="{{ path('app_home') }}">
+    <h3>Song</h3>
+    <div class="d-flex flex-column">
+        <p class="sotm-text-p">of</p>
+        <p class="sotm-text-p">the</p>
+    </div>
+    <h3>Moment</h3>
+</a>
+
 <h2>Bienvenue à toi sur Song Of The Moment</h2>
 
 
-<p>Merci de confirmer ton adresse mail en cliquant sur le lien suivant :</p>
-<a href="{{ signedUrl|raw }}">Confirmer mon Email</a>
-<p>Le lien exprire dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.</p>
+<h5>Merci de confirmer ton adresse mail en cliquant sur le lien suivant :</h5>
+<a href="{{ signedUrl|raw }}">Confirmer mon adresse Email</a>
+<h5>Le lien expire dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.</h5>
 
