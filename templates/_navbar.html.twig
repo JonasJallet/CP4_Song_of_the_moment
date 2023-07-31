@@ -1,6 +1,6 @@
 <nav class="navbar navbar-light fixed-top px-2 px-md-4">
     <div class="logo-sotm">
-        <a class="logo-sotm-text navbar-brand d-flex flex-row align-items-center" href="{{ path('app_home') }}">
+        <a class="logo-sotm-text navbar-brand d-flex flex-row align-items-center" href="{{ path('app_home') }}" aria-label="Page d'acccueil">
             <h3>Song</h3>
             <div class="d-flex flex-column">
                 <p class="sotm-text-p">of</p>
@@ -13,7 +13,7 @@
     <div class="justify-content-end">
         <ul class="navbar-nav mr-auto d-flex flex-row align-items-end">
             <li class="nav-item">
-                <a class="nav-link" href="{{ path('app_song_list') }}">
+                <a class="nav-link" href="{{ path('app_song_list') }}" aria-label="Rechercher">
                     <p class="d-none d-md-block">Rechercher</p>
                     <svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-search d-md-none" viewbox="0 0 16 16">
                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -21,7 +21,7 @@
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="{{ path('app_song_random') }}">
+                <a class="nav-link" href="{{ path('app_song_random') }}" aria-label="Son Aléatoire">
                     <p class="d-none d-md-block">Son Aléatoire</p>
                     <svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-dice-5-fill d-md-none" viewbox="0 0 16 16">
                         <path d="M3 0a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V3a3 3 0 0 0-3-3H3zm2.5 4a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm8 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM12 13.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM5.5 12a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM8 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/>
@@ -32,7 +32,7 @@
             {% if app.user %}
                 {% if not is_granted('ROLE_ADMIN') %}
                     <li class="nav-item active">
-                        <a class="nav-link" href="{{ path('app_user_song') }}">
+                        <a class="nav-link" href="{{ path('app_user_song') }}" aria-label="Mes sons">
                             <p class="d-none d-md-block">Mes Sons</p>
                             <svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-heart-fill d-md-none" viewbox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
@@ -42,7 +42,7 @@
                 {% endif %}
             {% else %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('app_login') }}">
+                    <a class="nav-link" href="{{ path('app_login') }}" aria-label="Connexion">
                         <p class="d-none d-md-block">Mes Favoris</p>
                         <svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-heart-fill d-md-none" viewbox="0 0 16 16">
                             <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
@@ -53,7 +53,7 @@
 
             {% if is_granted('ROLE_ADMIN') %}
                 <li class="nav-item active">
-                    <a class="nav-link nav-link-admin text-danger" href="{{ path('admin_index') }}">
+                    <a class="nav-link nav-link-admin text-danger" href="{{ path('admin_index') }}" aria-label="Panneau Administrateur">>
                         <p class="d-none d-md-block">Panneau Admin</p>
                         <svg xmlns="http://www.w3.org/2000/svg" class="navbar-svg bi bi-gear-fill d-md-none" viewbox="0 0 16 16">
                             <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
