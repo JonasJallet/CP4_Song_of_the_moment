@@ -7,7 +7,7 @@
 {% block body %}
 <section class="back-blur">
     <div id="back-hover">
-        <main class="main-searchApi mx-5">
+        <main class="main-searchApi mx-4">
             <h2 class="text-center">Ajouter des nouveaux sons</h2>
             <form action="{{ path('api_search_song') }}" method="post" class="mb-4">
                 <div class="form-row">
@@ -36,7 +36,7 @@
                     <p class="fst-italic text-center text-success">cliquez sur les sons que vous souhaitez ajouter</p>
                     <div class="row d-flex flex-row justify-content-center mt-2">
                         {% for result in results %}
-                            <div class="col-9 col-md-7 col-lg-5 col-xl-4">
+                            <div class="col-12 col-sm-9 col-md-7 col-lg-5 col-xl-4">
                                 <div
                                     class="card-api card mb-4 rounded-4 shadow-lg d-flex flex-row bg-transparent shadow-lg"
                                     data-title="{{ result.title }}"

@@ -64,9 +64,17 @@ i.heart-favorite {
     text-decoration: none;
 }
 
+.h3-playlist {
+    margin-left: 50px;
+}
+
 .favorites-card {
-    background: #212529;
-    width: 385px;
+    width: 270px;
+}
+
+.favorites-card:hover .favorites-link {
+    border: 1px solid #626161;
+    border-top: 0;
 }
 
 .favorites-icon {
@@ -75,12 +83,25 @@ i.heart-favorite {
 }
 
 .favorites-link {
-    padding: 1.6rem;
+    border: 1px solid #383838;
+    border-top: 0;
+    border-radius: 0 0 15px 15px;
+    padding: 10px 0 10px 0;
     width: 305px;
     color: white;
+}
+
+.heart-song {
+    border: 1px solid #383838;
+    border-radius: 15px;
     &:hover {
-        color: #ad0505;
+        border: 1px solid #626161;
     }
+}
+
+.heart-img {
+    width: 80px;
+    height: 80px;
 }
 
 .dropdown-icon {
@@ -93,13 +114,13 @@ i.heart-favorite {
 }
 
 .img-little {
-    width: 40px;
-    height: 40px;
+    width: 135px;
+    height: 135px;
 }
 
 .img-big {
-    width: 80px;
-    height: 80px;
+    width: 270px;
+    height: 270px;
 }
 
 

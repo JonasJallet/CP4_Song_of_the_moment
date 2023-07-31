@@ -1,6 +1,6 @@
 <section class="back-blur">
     <div id="back-hover">
-        <main class="show-song">
+        <main class="d-flex flex-row align-items-center vh-100">
             <div class="row col-12 justify-content-center m-0">
                 <div class="col-10 d-flex flex-column flex-md-row justify-content-center align-items-center">
                     <img class="photo-song-show shadow" src="{{ song.photoAlbum }}" alt="Photo album"/>
@@ -22,9 +22,14 @@
                                 </a>
                             </div>
                         {% else %}
-                            <a href="{{ path('app_login') }}">
-                                <i class="heart-favorite bi bi-heart"></i>
-                            </a>
+                            <div class="col-4 d-flex justify-content-around">
+                                <a href="{{ path('app_login') }}">
+                                    <i class="heart-favorite bi bi-heart"></i>
+                                </a>
+                                <a href="{{ path('app_login') }}">
+                                    <i class="icon-playlist bi bi-music-note-list"></i>
+                                </a>
+                            </div>
                         {% endif %}
 
                         <div id="YouTube-player" class="d-none"></div>
