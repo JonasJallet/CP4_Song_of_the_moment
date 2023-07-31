@@ -22,8 +22,8 @@ class LinkYoutubeSearch
         $youtubeSearch = $youtube->search->listSearch(
             'snippet',
             ['q' => $searchQuery,
-                'maxResults' => 2]
+                'maxResults' => 1]
         );
-        return $youtubeSearch['items'][1]['id']['videoId'];
+        return $youtubeSearch['items'][0]['id']['videoId'];
     }
 }
