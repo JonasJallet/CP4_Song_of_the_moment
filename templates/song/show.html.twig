@@ -6,7 +6,8 @@
     {{ song.title }}
 {% endblock %}
 
-{% block styleBody %}class="back-song" style="background-image: url('{{ song.photoAlbum }}')"
+{% block styleBody %}
+    class="back-song" style="background-image: url('{{ asset('songs/covers/' ~ song.photoAlbum) }}')"
 {% endblock %}
 
 {% block body %}

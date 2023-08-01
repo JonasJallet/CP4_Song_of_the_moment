@@ -10,7 +10,7 @@
 
 {% block styleBody %}
     {% for song in songs %}
-        class="back-song" style="background-image: url('{{ song.photoAlbum }}')"
+        class="back-song" style="background-image: url('{{ asset('songs/covers/' ~ song.photoAlbum) }}')"
     {% endfor %}
 {% endblock %}
 

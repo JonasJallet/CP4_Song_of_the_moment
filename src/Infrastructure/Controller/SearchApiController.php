@@ -6,11 +6,13 @@ use App\Infrastructure\Persistence\Entity\Song;
 use App\Infrastructure\Persistence\Repository\SongRepository;
 use App\Infrastructure\Service\LinkYoutubeSearch;
 use App\Infrastructure\Service\SongDeezerSearch;
-use Exception;
+use App\Infrastructure\Service\SongUploadCover;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -23,13 +25,16 @@ class SearchApiController extends AbstractController
 {
     private SongDeezerSearch $songDeezerSearch;
     private LinkYoutubeSearch $linkYoutubeSearch;
+    private SongUploadCover $songUploadCover;
 
     public function __construct(
         SongDeezerSearch $songDeezerSearch,
-        LinkYoutubeSearch $linkYoutubeSearch
+        LinkYoutubeSearch $linkYoutubeSearch,
+        SongUploadCover $songUploadCover
     ) {
         $this->songDeezerSearch = $songDeezerSearch;
         $this->linkYoutubeSearch = $linkYoutubeSearch;
+        $this->songUploadCover = $songUploadCover;
     }
 
     /**
@@ -56,10 +61,19 @@ class SearchApiController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
     #[Route('/create', name: 'api_song_new', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function persistSongs(Request $request, SongRepository $songRepository): Response
-    {
+    public function persistSongs(
+        Request $request,
+        SongRepository $songRepository,
+        KernelInterface $kernel,
+    ): Response {
         $data = json_decode($request->getContent(), true);
         $songs = $data['songs'] ?? [];
 
@@ -75,7 +89,12 @@ class SearchApiController extends AbstractController
                     $song->setTitle($songData['title']);
                     $song->setArtist($songData['artist']);
                     $song->setAlbum($songData['album']);
-                    $song->setPhotoAlbum($songData['cover']);
+
+                    $name = $songData['artist'] . ' - ' . $songData['album'] . '.avif';
+                    $song->setPhotoAlbum(
+                        $this->songUploadCover->upload($songData['cover'], $name)
+                    );
+
                     $song->setLinkYoutube(
                         $this->linkYoutubeSearch->search($songData['artist'], $songData['title'])
                     );
@@ -85,7 +104,7 @@ class SearchApiController extends AbstractController
             }
             $this->addFlash('success', 'Sons ajoutés avec succès.');
             return $this->json(['success' => true, 'route' => $this->generateUrl('app_song_list')]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->addFlash('danger', 'Erreur lors de l\'ajout');
             return $this->json([
                 'success' => false,
