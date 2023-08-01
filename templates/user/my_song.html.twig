@@ -8,10 +8,10 @@
 
 {% block body %}
     <div id="back-hover">
-        <main class="main-favorite">
+        <main class="main-favorite mx-5">
             <div class="row col-12 d-flex flex-row justify-content-center m-0">
                 <a class="text-decoration-none" id="favorites" href="{{ path('app_user_favorite') }}">
-                    <div class="heart-song card d-flex flex-row col-4 border-1 shadow-lg m-5 p-0 bg-transparent">
+                    <div class="heart-song card d-flex flex-row border-1 shadow-lg m-5 p-0 bg-transparent">
                         <div class="d-flex flex-row align-items-center">
                             <div class="d-flex flex-row flex-wrap justify-content-center align-items-center heart-img">
                                 <i class="favorites-icon bi bi-heart-fill"></i>
@@ -20,7 +20,7 @@
                         </div>
                     </div>
                 </a>
-                <h3 class="h3-playlist">
+                <h3>
                     {% if collection is not empty %}
                         {{ collection|length }}
                     {% endif %}
@@ -38,12 +38,12 @@
                                     {% elseif element.songs|length < 4 %}
                                         {% for song in element.songs %}
                                             {% if loop.index == 1 %}
-                                                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-big">
+                                                <img src="{{ asset('songs/covers/' ~ song.photoAlbum) }}" alt="song image" class="img-fluid img-big">
                                             {% endif %}
                                         {% endfor %}
                                     {% else %}
                                         {% for song in element.songs %}
-                                            <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-little">
+                                            <img src="{{ asset('songs/covers/' ~ song.photoAlbum) }}" alt="song image" class="img-fluid img-little">
                                         {% endfor %}
                                     {% endif %}
                                 </div>
@@ -54,7 +54,7 @@
                         </a>
                     </div>
                 {% else %}
-                    <h3 class="ml-5">Vous n'avez pas encore de playlist</h3>
+                    <h3 class="ml-5 text-center">Vous n'avez pas encore de playlist</h3>
                 {% endfor %}
             </div>
         </main>

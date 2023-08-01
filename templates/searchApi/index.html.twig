@@ -5,9 +5,9 @@
 {% endblock %}
 
 {% block body %}
-<section class="back-blur">
+<main class="back-blur">
     <div id="back-hover">
-        <main class="main-searchApi mx-4">
+        <section class="main-searchApi mx-4">
             <h2 class="text-center">Ajouter des nouveaux sons</h2>
             <form action="{{ path('api_search_song') }}" method="post" class="mb-4">
                 <div class="form-row">
@@ -60,9 +60,9 @@
                     </div>
                 {% endif %}
             </div>
-        </main>
+        </section>
     </div>
-</section>
+</main>
 {% if results is not empty %}
     <div class="text-center fixed-button-container">
         <button id="add-selected" class="button-approved btn mb-4">Ajouter des sons</button>

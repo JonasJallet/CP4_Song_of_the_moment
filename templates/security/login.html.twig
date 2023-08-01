@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block body %}
-    <section class="back-blur">
+    <main class="back-blur">
         <div id="back-hover">
-            <main class="d-flex flex-column justify-content-center vh-100">
+            <section class="d-flex flex-column justify-content-center vh-100">
 
                 <h2 class="text-center m-0">Connexion</h2>
 
@@ -32,13 +32,11 @@
                     </form>
                 </div>
 
-                <h4 class="text-center">Vous n'avez pas encore de compte ?</h4>
-                <h4>
-                    <a class="link-register nav-link text-success text-center" href="{{ path('app_register') }}">
-                        Inscrivez-vous ici !
-                    </a>
-                </h4>
-            </main>
+                <p class="text-big text-center">Vous n'avez pas encore de compte ?</p>
+                <a class="text-big nav-link text-success text-center" href="{{ path('app_register') }}">
+                    Inscrivez-vous ici !
+                </a>
+            </section>
         </div>
-    </section>
+    </main>
 {% endblock %}

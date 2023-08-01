@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block body %}
-    <section class="back-blur">
+    <main class="back-blur">
         <div id="back-hover">
-            <main class="form-main container">
+            <section class="form-main container">
                 <h2 class="text-center">Ajouter un nouveau son</h2>
                 {{ include('song/_form_song.html.twig') }}
                 <div class="fixed-bottom d-flex flex-row p-3">
@@ -19,7 +19,7 @@
                         </svg>
                     </a>
                 </div>
-            </main>
+            </section>
         </div>
-    </section>
+    </main>
 {% endblock %}
