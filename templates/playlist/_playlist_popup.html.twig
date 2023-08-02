@@ -18,12 +18,12 @@
                     {% elseif element.songs|length < 4 %}
                         {% for song in element.songs %}
                             {% if loop.index == 1 %}
-                                <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-popup-big">
+                                <img src="{{ asset('songs/covers/' ~ song.photoAlbum) }}" alt="song image" class="img-fluid img-popup-big">
                             {% endif %}
                         {% endfor %}
                     {% else %}
                         {% for song in element.songs %}
-                            <img src="{{ song.photoAlbum }}" alt="song image" class="img-fluid img-popup-little">
+                            <img src="{{ asset('songs/covers/' ~ song.photoAlbum) }}" alt="song image" class="img-fluid img-popup-little">
                         {% endfor %}
                     {% endif %}
                 </div>

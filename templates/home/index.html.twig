@@ -4,9 +4,9 @@
 {% endblock %}
 
 {% block body %}
-    <section class="back-blur">
+    <main class="back-blur">
         <div id="back-hover">
-            <main class="main-home container">
+            <section class="main-home container">
                 <div class="logo-sotm">
                     <a class="logo-sotm-text navbar-brand d-flex flex-row justify-content-center align-items-center" href="{{ path('app_song_list') }}">
                         <h1 class="home-logo-h1">Song</h1>
@@ -28,7 +28,7 @@
                         <div class="card-deck col-6 col-md-4 col-lg-3 col-xl-2">
                             <a href="{{ path('app_song_show', {'slug': song.slug}) }}">
                                 <div class="list-album card shadow">
-                                    <img src="{{ song.photoAlbum }}" class="list-photo-album card-img-top" alt="Photo album">
+                                    <img src="{{ asset('songs/covers/' ~ song.photoAlbum) }}" class="list-photo-album card-img-top" alt="Photo album">
                                     <div class="list-infos d-flex flex-column">
                                         <p>{{ song.title }}</p>
                                         <p class="list-infos-artist">{{ song.artist }}</p>
@@ -38,8 +38,7 @@
                         </div>
                     {% endfor %}
                 </div>
-            </main>
+            </section>
         </div>
-    </section>
-
+    </main>
 {% endblock %}

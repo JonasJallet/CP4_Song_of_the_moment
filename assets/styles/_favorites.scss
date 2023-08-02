@@ -64,17 +64,12 @@ i.heart-favorite {
     text-decoration: none;
 }
 
-.h3-playlist {
-    margin-left: 50px;
-}
-
 .favorites-card {
     width: 270px;
 }
 
 .favorites-card:hover .favorites-link {
-    border: 1px solid #626161;
-    border-top: 0;
+    color: #E4A11B;
 }
 
 .favorites-icon {
@@ -83,8 +78,6 @@ i.heart-favorite {
 }
 
 .favorites-link {
-    border: 1px solid #383838;
-    border-top: 0;
     border-radius: 0 0 15px 15px;
     padding: 10px 0 10px 0;
     width: 305px;
@@ -92,6 +85,7 @@ i.heart-favorite {
 }
 
 .heart-song {
+    width: 300px;
     border: 1px solid #383838;
     border-radius: 15px;
     &:hover {

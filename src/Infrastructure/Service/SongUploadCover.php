@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Infrastructure\Service;
+
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+
+class SongUploadCover
+{
+    private KernelInterface $kernel;
+
+    public function __construct(KernelInterface $kernel)
+    {
+        $this->kernel = $kernel;
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ClientExceptionInterface
+     */
+    public function upload($url, $name): string
+    {
+        $httpClient = HttpClient::create();
+        $fileUrl = $httpClient->request('GET', $url);
+        $fileName = str_replace("'", " ", $name);
+        $fileFolder = $this->kernel->getProjectDir() . '/public/songs/covers/';
+        file_put_contents($fileFolder . '/' . $fileName, $fileUrl->getContent());
+        return $fileName;
+    }
+}

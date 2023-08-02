@@ -26,13 +26,13 @@
                     {% for song in playlist.songs %}
                         <tr
                             class="playlist-line link_id song-on-playlist"
-                            data-photo="{{ song.photoAlbum }}"
+                            data-photo="{{ asset('songs/covers/' ~ song.photoAlbum) }}"
                             data-youtube="{{ song.linkYoutube }}"
                             data-title="{{ song.title }}"
                             data-artist="{{ song.artist }}"
                         >
                             <td>
-                                <img class="photo_song_id photo-song-playlist shadow p-2" src="{{ song.photoAlbum }}" alt="Photo album"/>
+                                <img class="photo_song_id photo-song-playlist shadow p-2" src="{{ asset('songs/covers/' ~ song.photoAlbum) }}" alt="Photo album"/>
                             </td>
                             <td class="d-flex flex-column m-2 d-lg-none">
                                 <h5>{{ song.title }}</h5>
