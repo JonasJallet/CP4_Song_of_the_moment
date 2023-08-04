@@ -28,7 +28,7 @@ class SongUploadCover
     {
         $httpClient = HttpClient::create();
         $fileUrl = $httpClient->request('GET', $url);
-        $fileName = str_replace("'", " ", $name);
+        $fileName = str_replace(["'", " ", "*"], "", strtolower($name));
         $fileFolder = $this->kernel->getProjectDir() . '/public/songs/covers/';
         file_put_contents($fileFolder . '/' . $fileName, $fileUrl->getContent());
         return $fileName;
