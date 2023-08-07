@@ -50,7 +50,7 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
     private Collection $favorites;
 
     #[ORM\Column(type: 'boolean')]
-    private $isVerified = false;
+    private bool $isVerified = false;
 
     #[MaxDepth(2)]
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Playlist::class, cascade: ['persist', 'remove'])]

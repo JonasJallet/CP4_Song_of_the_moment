@@ -12,9 +12,9 @@ class AddSongNewPlaylistHandler
 {
     public function __construct(
         public DomainPlaylistRepositoryInterface $playlistRepository,
-        public DomainSongRepositoryInterface     $songRepository,
-        public DomainUserRepositoryInterface     $userRepository,
-        public PlaylistServiceInterface          $playlistService,
+        public DomainSongRepositoryInterface $songRepository,
+        public DomainUserRepositoryInterface $userRepository,
+        public PlaylistServiceInterface $playlistService,
     ) {
     }
 
