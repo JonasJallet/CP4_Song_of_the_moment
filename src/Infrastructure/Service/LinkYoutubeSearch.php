@@ -2,10 +2,11 @@
 
 namespace App\Infrastructure\Service;
 
+use App\Domain\Service\LinkYoutubeSearchInterface;
 use Google\Client as GoogleClient;
 use Google\Service\YouTube;
 
-class LinkYoutubeSearch
+class LinkYoutubeSearch implements LinkYoutubeSearchInterface
 {
     private string $googleApiKeySearch;
 

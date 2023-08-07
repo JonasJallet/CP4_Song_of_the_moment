@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Service;
 
+use App\Domain\Service\SongUploadCoverInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -9,7 +10,7 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class SongUploadCover
+class SongUploadCover implements SongUploadCoverInterface
 {
     private KernelInterface $kernel;
 

@@ -7,12 +7,11 @@ use App\Infrastructure\Persistence\Repository\SongRepository;
 use App\Infrastructure\Service\LinkYoutubeSearch;
 use App\Infrastructure\Service\SongDeezerSearch;
 use App\Infrastructure\Service\SongUploadCover;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -72,7 +71,6 @@ class SearchApiController extends AbstractController
     public function persistSongs(
         Request $request,
         SongRepository $songRepository,
-        KernelInterface $kernel,
     ): Response {
         $data = json_decode($request->getContent(), true);
         $songs = $data['songs'] ?? [];
@@ -104,7 +102,7 @@ class SearchApiController extends AbstractController
             }
             $this->addFlash('success', 'Sons ajoutés avec succès.');
             return $this->json(['success' => true, 'route' => $this->generateUrl('app_song_list')]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->addFlash('danger', 'Erreur lors de l\'ajout');
             return $this->json([
                 'success' => false,

@@ -29,7 +29,7 @@
                             <a href="{{ path('app_song_show', {'slug': song.slug}) }}">
                                 <div class="list-album card shadow">
                                     <img src="{{ asset('songs/covers/' ~ song.photoAlbum) }}" class="list-photo-album card-img-top" alt="Photo album">
-                                    <div class="list-infos d-flex flex-column">
+                                    <div class="list-infos d-flex flex-column p-1">
                                         <p>{{ song.title }}</p>
                                         <p class="list-infos-artist">{{ song.artist }}</p>
                                     </div>
