@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Controller;
 
 use App\Application\Command\SearchApi\CreateSong\CreateSong;
+use App\Application\Query\SearchApi\GetSongsData\GetSongsData;
 use App\Infrastructure\Persistence\Entity\Song;
 use App\Infrastructure\Persistence\Repository\SongRepository;
 use App\Infrastructure\Service\LinkYoutubeSearch;
@@ -14,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -56,7 +58,12 @@ class SearchApiController extends AbstractController
         $results = [];
         if ($request->isMethod('POST') && !empty($request->get('q'))) {
             $songTitle = $request->get('q');
-            $results = $this->songDeezerSearch->search($songTitle);
+
+            $getSongsData = new GetSongsData($songTitle);
+            $dispatch = $this->queryBus->dispatch($getSongsData);
+            $handledStamp = $dispatch->last(HandledStamp::class);
+            $results = $handledStamp->getResult();
+
             return $this->render('searchApi/index.html.twig', [
                 'results' => $results,
             ]);
@@ -67,7 +74,6 @@ class SearchApiController extends AbstractController
     }
 
     /**
-     * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
