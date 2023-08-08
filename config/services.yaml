@@ -98,3 +98,9 @@ services:
     App\Application\Command\Playlist\DeleteSongPlaylist\DeleteSongPlaylistHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
+
+    App\Application\Command\SearchApi\CreateSong\CreateSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+
