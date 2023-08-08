@@ -26,20 +26,13 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 #[Route('/api/song')]
 class SearchApiController extends AbstractController
 {
-    private SongDeezerSearch $songDeezerSearch;
     private MessageBusInterface $queryBus;
     private MessageBusInterface $commandBus;
 
     public function __construct(
-        SongDeezerSearch $songDeezerSearch,
-        LinkYoutubeSearch $linkYoutubeSearch,
-        SongUploadCover $songUploadCover,
         MessageBusInterface $queryBus,
         MessageBusInterface $commandBus
     ) {
-        $this->songDeezerSearch = $songDeezerSearch;
-        $this->linkYoutubeSearch = $linkYoutubeSearch;
-        $this->songUploadCover = $songUploadCover;
         $this->queryBus = $queryBus;
         $this->commandBus = $commandBus;
     }
@@ -80,10 +73,8 @@ class SearchApiController extends AbstractController
      */
     #[Route('/create', name: 'api_song_new', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function persistSongs(
-        Request $request,
-        SongRepository $songRepository,
-    ): Response {
+    public function persistSongs(Request $request): Response
+    {
         $data = json_decode($request->getContent(), true);
         $songsData = $data['songs'] ?? [];
 
