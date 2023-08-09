@@ -10,7 +10,6 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Song|null find($id, $lockMode = null, $lockVersion = null)
- * @method Song|null findOneBy(array $criteria, array $orderBy = null)
  * @method Song[]    findAll()
  * @method Song[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -39,6 +38,11 @@ class SongRepository extends ServiceEntityRepository implements DomainSongReposi
         }
     }
 
+    public function findOneBy(array $criteria, array $orderBy = null): ?DomainSongModelInterface
+    {
+        return parent::findOneBy($criteria, $orderBy);
+    }
+
     public function randomSong(): array
     {
         $queryBuilder = $this->createQueryBuilder('s')
@@ -54,18 +58,22 @@ class SongRepository extends ServiceEntityRepository implements DomainSongReposi
     {
         $queryBuilder = $this->createQueryBuilder('s')
             ->where('s.isApproved = :approved')
+            ->andWhere('s.linkYoutubeValid = :valid')
             ->setParameter('approved', true)
+            ->setParameter('valid', true)
             ->setMaxResults(4)
             ->orderBy('RAND()')
             ->getQuery();
         return $queryBuilder->getResult();
     }
 
-    public function allApprovedSong(): array
+    public function allValidSong(): array
     {
         $queryBuilder = $this->createQueryBuilder('s')
             ->where('s.isApproved = :approved')
+            ->andWhere('s.linkYoutubeValid = :valid')
             ->setParameter('approved', true)
+            ->setParameter('valid', true)
             ->orderBy('s.id', 'DESC')
             ->getQuery();
 
