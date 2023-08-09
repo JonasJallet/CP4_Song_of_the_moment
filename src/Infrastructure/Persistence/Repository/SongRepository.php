@@ -72,7 +72,18 @@ class SongRepository extends ServiceEntityRepository implements DomainSongReposi
         return $queryBuilder->getResult();
     }
 
-    public function findLikeTitle(string $title): array
+    public function findLinkYoutubeInvalid(bool $linkYoutubeValid): array
+    {
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->where('s.linkYoutubeValid = :valid')
+            ->setParameter('valid', $linkYoutubeValid)
+            ->orderBy('s.id', 'DESC')
+            ->getQuery();
+
+        return $queryBuilder->getResult();
+    }
+
+    public function findTitle(string $title): array
     {
         $queryBuilder = $this->createQueryBuilder('s')
             ->where('s.title LIKE :title')
@@ -99,20 +110,12 @@ class SongRepository extends ServiceEntityRepository implements DomainSongReposi
         return $queryBuilder->getResult();
     }
 
-    public function findLikeApproved(string $isApproved): array
+    public function findApproved(bool $isApproved): array
     {
-        $queryBuilder = $this->createQueryBuilder('s');
-
-        if ($isApproved === 'true') {
-            $queryBuilder->where('s.isApproved = :approved')
-                ->setParameter('approved', true)
+        $queryBuilder = $this->createQueryBuilder('s')
+                ->where('s.isApproved = :approved')
+                ->setParameter('approved', $isApproved)
                 ->orderBy('s.id', 'DESC');
-        } elseif ($isApproved === 'false') {
-            $queryBuilder->where('s.isApproved = :approved')
-                ->setParameter('approved', false)
-                ->orderBy('s.id', 'ASC');
-        }
-
         return $queryBuilder->getQuery()->getResult();
     }
 }

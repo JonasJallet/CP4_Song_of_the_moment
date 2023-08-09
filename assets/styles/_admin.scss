@@ -24,7 +24,7 @@
     width: 32px;
 }
 
-.button-approved, .button-unapproved, .button-addSong {
+.button-approved, .button-unapproved, .button-invalid, .button-addSong {
     color: white;
     font-size: 20px;
     width: 220px;
@@ -47,4 +47,26 @@
 .button-addSong {
     background-color: #3B71CA;
 }
+
+.button-invalid {
+    background-color: #dc3545;
+}
+
+.border-approved, .border-unapproved, .border-invalid {
+    border-right: 10px solid;
+    border-radius: 0 10px 10px 0;
+}
+
+.border-approved {
+    border-color: #14A44D;
+}
+
+.border-unapproved {
+    border-color: #E4A11B;
+}
+
+.border-invalid {
+    border-color: #dc3545;
+}
+
 

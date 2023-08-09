@@ -18,6 +18,7 @@ class UpdateSongHandler
         $linkYoutube = $song->getLinkYoutube();
         $linkFormat = $this->linkYoutubeFormat->format($linkYoutube);
         $song->setLinkYoutube($linkFormat);
+        $song->setLinkYoutubeValid(true);
         $this->songRepository->save($song, true);
     }
 }
