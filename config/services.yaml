@@ -63,6 +63,10 @@ services:
         tags: [ { name: messenger.message_handler, bus: query.bus } ]
         autoconfigure: false
 
+    App\Application\Query\SearchApi\GetSongsData\GetSongsDataHandler:
+        tags: [ { name: messenger.message_handler, bus: query.bus } ]
+        autoconfigure: false
+
     App\Application\Command\Song\NewSong\NewSongHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
@@ -98,3 +102,9 @@ services:
     App\Application\Command\Playlist\DeleteSongPlaylist\DeleteSongPlaylistHandler:
         tags: [ { name: messenger.message_handler, bus: command.bus } ]
         autoconfigure: false
+
+    App\Application\Command\SearchApi\CreateSong\CreateSongHandler:
+        tags: [ { name: messenger.message_handler, bus: command.bus } ]
+        autoconfigure: false
+
+

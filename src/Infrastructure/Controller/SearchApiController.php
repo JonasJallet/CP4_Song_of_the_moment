@@ -2,16 +2,15 @@
 
 namespace App\Infrastructure\Controller;
 
-use App\Infrastructure\Persistence\Entity\Song;
-use App\Infrastructure\Persistence\Repository\SongRepository;
-use App\Infrastructure\Service\LinkYoutubeSearch;
-use App\Infrastructure\Service\SongDeezerSearch;
-use App\Infrastructure\Service\SongUploadCover;
+use App\Application\Command\SearchApi\CreateSong\CreateSong;
+use App\Application\Query\SearchApi\GetSongsData\GetSongsData;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\HandledStamp;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
@@ -22,18 +21,15 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 #[Route('/api/song')]
 class SearchApiController extends AbstractController
 {
-    private SongDeezerSearch $songDeezerSearch;
-    private LinkYoutubeSearch $linkYoutubeSearch;
-    private SongUploadCover $songUploadCover;
+    private MessageBusInterface $queryBus;
+    private MessageBusInterface $commandBus;
 
     public function __construct(
-        SongDeezerSearch $songDeezerSearch,
-        LinkYoutubeSearch $linkYoutubeSearch,
-        SongUploadCover $songUploadCover
+        MessageBusInterface $queryBus,
+        MessageBusInterface $commandBus
     ) {
-        $this->songDeezerSearch = $songDeezerSearch;
-        $this->linkYoutubeSearch = $linkYoutubeSearch;
-        $this->songUploadCover = $songUploadCover;
+        $this->queryBus = $queryBus;
+        $this->commandBus = $commandBus;
     }
 
     /**
@@ -50,7 +46,12 @@ class SearchApiController extends AbstractController
         $results = [];
         if ($request->isMethod('POST') && !empty($request->get('q'))) {
             $songTitle = $request->get('q');
-            $results = $this->songDeezerSearch->search($songTitle);
+
+            $getSongsData = new GetSongsData($songTitle);
+            $dispatch = $this->queryBus->dispatch($getSongsData);
+            $handledStamp = $dispatch->last(HandledStamp::class);
+            $results = $handledStamp->getResult();
+
             return $this->render('searchApi/index.html.twig', [
                 'results' => $results,
             ]);
@@ -61,45 +62,20 @@ class SearchApiController extends AbstractController
     }
 
     /**
-     * @throws TransportExceptionInterface
      * @throws ServerExceptionInterface
      * @throws RedirectionExceptionInterface
      * @throws ClientExceptionInterface
      */
     #[Route('/create', name: 'api_song_new', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
-    public function persistSongs(
-        Request $request,
-        SongRepository $songRepository,
-    ): Response {
+    public function persistSongs(Request $request): Response
+    {
         $data = json_decode($request->getContent(), true);
-        $songs = $data['songs'] ?? [];
+        $songsData = $data['songs'] ?? [];
 
         try {
-            foreach ($songs as $songData) {
-                $existingSongs = $songRepository->findBy([
-                    'artist' => $songData['artist'],
-                    'title' => $songData['title'],
-                ]);
-
-                if (!$existingSongs) {
-                    $song = new Song();
-                    $song->setTitle($songData['title']);
-                    $song->setArtist($songData['artist']);
-                    $song->setAlbum($songData['album']);
-
-                    $name = $songData['artist'] . ' - ' . $songData['album'] . '.avif';
-                    $song->setPhotoAlbum(
-                        $this->songUploadCover->upload($songData['cover'], $name)
-                    );
-
-                    $song->setLinkYoutube(
-                        $this->linkYoutubeSearch->search($songData['artist'], $songData['title'])
-                    );
-                    $song->setIsApproved(true);
-                    $songRepository->save($song, true);
-                }
-            }
+            $command = new CreateSong($songsData);
+            $this->commandBus->dispatch($command);
             $this->addFlash('success', 'Sons ajoutés avec succès.');
             return $this->json(['success' => true, 'route' => $this->generateUrl('app_song_list')]);
         } catch (Exception $e) {
