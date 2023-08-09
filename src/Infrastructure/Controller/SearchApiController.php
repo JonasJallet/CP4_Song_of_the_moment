@@ -4,11 +4,6 @@ namespace App\Infrastructure\Controller;
 
 use App\Application\Command\SearchApi\CreateSong\CreateSong;
 use App\Application\Query\SearchApi\GetSongsData\GetSongsData;
-use App\Infrastructure\Persistence\Entity\Song;
-use App\Infrastructure\Persistence\Repository\SongRepository;
-use App\Infrastructure\Service\LinkYoutubeSearch;
-use App\Infrastructure\Service\SongDeezerSearch;
-use App\Infrastructure\Service\SongUploadCover;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

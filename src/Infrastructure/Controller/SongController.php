@@ -46,11 +46,22 @@ class SongController extends AbstractController
     public function list(Request $request, SongRepository $songRepository): Response
     {
         $songsApprovedList = $songRepository->findBy(
-            ['isApproved' => true],
+            ['isApproved' => true, 'linkYoutubeValid' => true],
             ['createdAt' => 'desc']
         );
         $searchTerm = $request->query->get('q');
-        $searchSongs = $songRepository->findLikeApprovedTitle($searchTerm);
+        $searchSongs = $songRepository->findLikeValidTitle($searchTerm);
+
+        if ($request->isMethod('POST')) {
+            $searchTerm = $request->request->get('q');
+            if ($searchTerm) {
+                $searchSongs = $songRepository->findLikeValidTitle($searchTerm);
+                return $this->render('song/list.html.twig', [
+                    'songsApproved' => $searchSongs,
+                    'searchTerm' => $searchTerm,
+                ]);
+            }
+        }
 
         if ($request->query->get('preview')) {
             return $this->render('song/_search_preview.html.twig', [
@@ -59,7 +70,6 @@ class SongController extends AbstractController
         }
 
         return $this->render('song/list.html.twig', [
-            'searchSongs' => $searchSongs,
             'searchTerm' => $searchTerm,
             'songsApproved' => $songsApprovedList,
         ]);

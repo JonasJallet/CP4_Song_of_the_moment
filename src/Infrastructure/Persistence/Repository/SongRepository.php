@@ -83,19 +83,20 @@ class SongRepository extends ServiceEntityRepository implements DomainSongReposi
         return $queryBuilder->getResult();
     }
 
-    public function findLikeApprovedTitle(?string $title)
+    public function findLikeValidTitle(?string $term)
     {
-        if ($title) {
-            $queryBuilder = $this->createQueryBuilder('s')
-                ->where('s.title LIKE :title')
-                ->andWhere('s.isApproved = :approved')
-                ->setParameter('title', '%' . $title . '%')
-                ->setParameter('approved', true)
-                ->orderBy('s.title', 'ASC')
-                ->getQuery();
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->where('s.title LIKE :term OR s.artist LIKE :term')
+            ->andWhere('s.isApproved = :approved')
+            ->andWhere('s.linkYoutubeValid = :valid')
+            ->setParameter('term', '%' . $term . '%')
+            ->setParameter('approved', true)
+            ->setParameter('valid', true)
+            ->orderBy('s.artist', 'ASC')
+            ->addOrderBy('s.title', 'ASC')
+            ->getQuery();
 
-            return $queryBuilder->getResult();
-        }
+        return $queryBuilder->getResult();
     }
 
     public function findLikeApproved(string $isApproved): array
