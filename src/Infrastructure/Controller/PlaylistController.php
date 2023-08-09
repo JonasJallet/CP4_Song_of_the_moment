@@ -86,7 +86,7 @@ class PlaylistController extends AbstractController
         string $songId,
     ): Response {
         $userId = $this->getUser()->getId();
-        $getPlaylists = new GetPlaylists();
+        $getPlaylists = new GetPlaylists($userId);
         $getPlaylists->userId = $userId;
         $result = $this->queryBus->dispatch($getPlaylists);
         $handledStamp = $result->last(HandledStamp::class);
@@ -102,8 +102,7 @@ class PlaylistController extends AbstractController
     public function playlistAddSong(
         string $songId,
         string $playlistId,
-    ): Response
-    {
+    ): Response {
         $playlistAddSong = new AddSongPlaylist();
         $playlistAddSong->songId = $songId;
         $playlistAddSong->playlistId = $playlistId;
@@ -119,8 +118,7 @@ class PlaylistController extends AbstractController
     public function playlistRemoveSong(
         string $songId,
         string $playlistId,
-    ): Response
-    {
+    ): Response {
         $playlistDeleteSong = new DeleteSongPlaylist();
         $playlistDeleteSong->songId = $songId;
         $playlistDeleteSong->playlistId = $playlistId;
@@ -137,8 +135,7 @@ class PlaylistController extends AbstractController
     public function playlistRemove(
         string $playlistId,
         Request $request,
-    ): Response
-    {
+    ): Response {
         if ($this->isCsrfTokenValid('delete' . $playlistId, $request->request->get('_token'))) {
             $deletePlaylist = new DeletePlaylist();
             $deletePlaylist->playlistId = $playlistId;

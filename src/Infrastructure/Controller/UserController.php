@@ -26,7 +26,7 @@ class UserController extends AbstractController
     public function showPlaylists(): Response
     {
         $userId = $this->getUser()->getId();
-        $getPlaylists = new GetPlaylists();
+        $getPlaylists = new GetPlaylists($userId);
         $getPlaylists->userId = $userId;
         $result = $this->queryBus->dispatch($getPlaylists);
         $handledStamp = $result->last(HandledStamp::class);
@@ -42,7 +42,7 @@ class UserController extends AbstractController
     public function showFavorites(): Response
     {
         $userId = $this->getUser()->getId();
-        $getFavorites = new GetFavorites();
+        $getFavorites = new GetFavorites($userId);
         $getFavorites->userId = $userId;
         $result = $this->queryBus->dispatch($getFavorites);
         $handledStamp = $result->last(HandledStamp::class);

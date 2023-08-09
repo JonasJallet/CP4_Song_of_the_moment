@@ -11,9 +11,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method Playlist|null find($id, $lockMode = null, $lockVersion = null)
- * @method Playlist|null findOneBy(array $criteria, array $orderBy = null)
  * @method Playlist[]    findAll()
- * @method Playlist[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PlaylistRepository extends ServiceEntityRepository implements DomainPlaylistRepositoryInterface
 {
@@ -38,6 +36,16 @@ class PlaylistRepository extends ServiceEntityRepository implements DomainPlayli
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function findOneBy(array $criteria, array $orderBy = null): ?DomainPlaylistModelInterface
+    {
+        return parent::findOneBy($criteria, $orderBy);
+    }
+
+    public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array
+    {
+        return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 
     public function randomSongsByPlaylistId(string $playlistId): array
