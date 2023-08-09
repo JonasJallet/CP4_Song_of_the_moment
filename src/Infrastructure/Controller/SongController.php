@@ -87,7 +87,7 @@ class SongController extends AbstractController
             $newSong->song = $song;
             $this->commandBus->dispatch($newSong);
 
-            return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('song/new.html.twig', [
@@ -160,7 +160,7 @@ class SongController extends AbstractController
             $updateSong->id = $id;
             $this->commandBus->dispatch($updateSong);
 
-            return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('song/update.html.twig', [
@@ -179,6 +179,6 @@ class SongController extends AbstractController
             $this->commandBus->dispatch($deleteSong);
         }
 
-        return $this->redirectToRoute('app_song_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('admin_index', [], Response::HTTP_SEE_OTHER);
     }
 }

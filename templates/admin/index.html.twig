@@ -22,14 +22,16 @@
         </form>
 
         <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
+            <a class="button-approved btn border-1" href="{{ path('admin_index') }}">Validation effectué</a>
+
             <form method="post" action="{{ path('admin_index') }}">
-                <input type="hidden" name="isApproved" value="false" />
+                <input type="hidden" name="isApproved" value="0" />
                 <button type="submit" class="button-unapproved btn">En attente de validation</button>
             </form>
 
             <form method="post" action="{{ path('admin_index') }}">
-                <input type="hidden" name="isApproved" value="true" />
-                <button type="submit" class="button-approved btn">Validation effectué</button>
+                <input type="hidden" name="linkYoutubeValid" value="0" />
+                <button type="submit" class="button-invalid btn">Lien Youtube Invalide</button>
             </form>
 
             <a class="button-addSong btn border-1" href="{{ path('app_song_new') }}">Ajouter un son</a>
@@ -38,11 +40,18 @@
         <div class="row d-flex flex-row justify-content-center mt-2">
             {% for song in songs %}
                 <div class="col-12 col-md-9 col-lg-7 col-xl-6 col-xxl-4">
-                    <div class="card-admin card mb-4 rounded-4 shadow-lg d-flex flex-row border-0 shadow-lg">
+                    <div class="card-admin card mb-4 rounded-4 shadow-lg d-flex flex-row shadow-lg border-0">
                         <div class="col-4">
                             <img src="{{ asset('songs/covers/' ~ song.photoAlbum) }}" class="img-fluid rounded-start" alt="image artiste">
                         </div>
-                        <div class="col-8 d-flex align-items-center">
+                        <div class="col-8 d-flex align-items-center
+                        {% if song.isApproved == false %}
+                         border-unapproved
+                        {% elseif song.linkYoutubeValid == false%}
+                         border-invalid
+                        {% else %}
+                         border-approved
+                        {% endif %}">
 
                             {% if song.isApproved == false %}
                                 <form method="post" action="{{ path('app_song_add_approved', {songId: song.id})}}">
@@ -55,10 +64,10 @@
                                 </form>
                             {% endif %}
 
-                            <div class="card-body p-1">
-                                <h5 class="text-infos-admin card-text">{{ song.title }}</h5>
-                                <p class="text-infos-admin card-text">{{ song.artist }}</p>
-                                <p class="text-infos-admin card-text">{{ song.album }}</p>
+                            <div class="card-body p-1 text-truncate">
+                                <h5 class="text-infos-admin card-text text-truncate m-1">{{ song.title }}</h5>
+                                <p class="text-infos-admin card-text text-truncate m-1">{{ song.artist }}</p>
+                                <p class="text-infos-admin card-text text-truncate m-1">{{ song.album }}</p>
 
                                 <div class="d-flex flex-row justify-content-around align-items-center">
                                     <a href="https://www.youtube.com/watch?v={{ song.linkYoutube }}" target="_blank">

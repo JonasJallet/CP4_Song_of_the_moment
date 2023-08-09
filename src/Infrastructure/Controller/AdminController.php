@@ -18,12 +18,21 @@ class AdminController extends AbstractController
     {
         if ($request->isMethod('POST') && !empty($request->get('title'))) {
             $title = $request->get('title');
-            $songs = $songRepository->findLikeTitle($title);
-        } elseif ($request->isMethod('POST') && !empty($request->get('isApproved'))) {
+            $songs = $songRepository->findTitle($title);
+        } elseif ($request->isMethod('POST') && $request->get('isApproved') === "0") {
             $isApproved = $request->get('isApproved');
-            $songs = $songRepository->findLikeApproved($isApproved);
+            $songs = $songRepository->findApproved($isApproved);
+        } elseif ($request->isMethod('POST') && $request->get('linkYoutubeValid') === "0") {
+            $linkYoutubeValid = $request->get('linkYoutubeValid');
+            $songs = $songRepository->findLinkYoutubeInvalid($linkYoutubeValid);
         } else {
-            $songs = $songRepository->findBy([], ['isApproved' => 'asc', 'id' => 'asc']);
+            $songs = $songRepository->findBy(
+                [
+                    'isApproved' => 'true',
+                    'linkYoutubeValid' => 'true'
+                ],
+                ['createdAt' => 'desc']
+            );
         }
         return $this->render('admin/index.html.twig', [
             'songs' => $songs,

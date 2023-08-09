@@ -15,13 +15,13 @@ function addToApproved(e)
 
     axios.post(link, { id: approvedButton.previousElementSibling.value })
         .then(response => {
-            const buttonElement = approvedButton.parentNode;
+            const cardElement = approvedButton.closest('.card-admin'); // Get the parent card element
             if (response.data.isApproved) {
-                buttonElement.style.opacity = '0';
-                buttonElement.style.transition = 'opacity 0.5s ease-in-out';
-                setTimeout(() => {
-                    buttonElement.remove();
-                }, 500);
+                cardElement.style.transition = 'opacity 1s ease-in-out';
+                cardElement.style.opacity = '0';
+                cardElement.addEventListener('transitionend', () => {
+                    cardElement.remove(); // Remove the card after the transition ends
+                });
             }
         })
         .catch(error => {
