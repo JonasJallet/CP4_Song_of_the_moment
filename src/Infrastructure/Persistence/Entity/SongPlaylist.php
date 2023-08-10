@@ -17,7 +17,12 @@ class SongPlaylist implements DomainSongPlaylistModelInterface
     #[ORM\Column(type: 'integer')]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Song::class, fetch: "EAGER", inversedBy: "songPlaylists")]
+    #[ORM\ManyToOne(
+        targetEntity: Song::class,
+        cascade: ['persist', 'remove'],
+        fetch: "EAGER",
+        inversedBy: "songPlaylists"
+    )]
     private DomainSongModelInterface $song;
 
     #[ORM\ManyToOne(targetEntity: Playlist::class, fetch: "EAGER", inversedBy: "songPlaylists")]
