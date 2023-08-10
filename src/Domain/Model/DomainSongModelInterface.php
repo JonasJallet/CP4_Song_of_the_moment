@@ -18,5 +18,4 @@ interface DomainSongModelInterface
     public function setIsApproved(bool $isApproved): self;
 
     public function isIsApproved(): ?bool;
-
 }

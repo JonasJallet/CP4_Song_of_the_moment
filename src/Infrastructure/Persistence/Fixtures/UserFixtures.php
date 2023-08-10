@@ -41,7 +41,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             for ($i = 0; $i < 10; $i++) {
                 $songReference = 'song_' . $faker->numberBetween(0, 23);
                 $song = $this->getReference($songReference);
-                $newUser->addFavorite($song);
+                $newUser->addSongFavorite($song);
             }
 
             $newUser->setUsername($user['email']);

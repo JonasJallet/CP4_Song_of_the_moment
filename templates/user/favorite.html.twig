@@ -13,34 +13,34 @@
                 <div class="d-flex align-items-center">
                     <i class="text-danger heart-favorite bi bi-heart-fill m-2"></i>
                     <h3 class="m-0">Coup de coeur -&nbsp;</h3>
-                    <h3 id="favorite-length" class="m-0">{{ app.user.favorites|length }}</h3>
+                    <h3 id="favorite-length" class="m-0">{{ app.user.songFavorites|length }}</h3>
                     <h3 class="m-0">&nbsp;Titres</h3>
                 </div>
                 <table class="col-12">
                     <tbody>
-                        {% for song in app.user.favorites %}
+                        {% for favorite in favorites %}
                             <tr
                                 class="playlist-line link_id song-on-playlist"
-                                data-photo="{{ asset('songs/covers/' ~ song.photoAlbum) }}"
-                                data-youtube="{{ song.linkYoutube }}"
-                                data-title="{{ song.title }}"
-                                data-artist="{{ song.artist }}"
+                                data-photo="{{ asset('songs/covers/' ~ favorite.song.photoAlbum) }}"
+                                data-youtube="{{ favorite.song.linkYoutube }}"
+                                data-title="{{ favorite.song.title }}"
+                                data-artist="{{ favorite.song.artist }}"
                             >
                                 <td>
-                                    <img class="photo_song_id photo-song-playlist shadow p-2" src="{{ asset('songs/covers/' ~ song.photoAlbum) }}" alt="Photo album"/>
+                                    <img class="photo_song_id photo-song-playlist shadow p-2" src="{{ asset('songs/covers/' ~ favorite.song.photoAlbum) }}" alt="Photo album"/>
                                 </td>
                                 <td class="d-flex flex-column m-2 d-lg-none">
-                                    <h5>{{ song.title }}</h5>
-                                    <small>{{ song.artist }} - {{ song.album }}</small>
+                                    <h5>{{ favorite.song.title }}</h5>
+                                    <small>{{ favorite.song.artist }} - {{ favorite.song.album }}</small>
                                 </td>
                                 <td class="d-none d-lg-table-cell">
-                                    {{ song.title }}
+                                    {{ favorite.song.title }}
                                 </td>
                                 <td class="d-none d-lg-table-cell">
-                                    {{ song.artist }}
+                                    {{ favorite.song.artist }}
                                 </td>
                                 <td class="d-none d-lg-table-cell">
-                                    {{ song.album }}
+                                    {{ favorite.song.album }}
                                 </td>
                                 <td class="dropdown-icon">
                                     <div class="dropdown">
@@ -49,12 +49,12 @@
                                         </button>
                                         <ul class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton1">
                                             <li>
-                                                <a class="favorite-delete dropdown-item text-white link-dark" href="{{ path('app_song_add_favorite', {songId: song.id})}}">
+                                                <a class="favorite-delete dropdown-item text-white link-dark" href="{{ path('app_song_add_favorite', {songId: favorite.song.id})}}">
                                                     Retirer des favoris
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="playlist-popup dropdown-item text-white link-dark" data-playlist-url="{{ path('playlist_popup', {'songId': song.id}) }}">
+                                                <a class="playlist-popup dropdown-item text-white link-dark" data-playlist-url="{{ path('playlist_popup', {'songId': favorite.song.id}) }}">
                                                     Ajouter à une playlist
                                                 </a>
                                             </li>
@@ -69,7 +69,7 @@
                 </table>
             </div>
 
-            {% if app.user.favorites is not empty %}
+            {% if app.user.songFavorites is not empty %}
                 <div class="row">
                     {% include 'user/_player.html.twig' %}
                 </div>

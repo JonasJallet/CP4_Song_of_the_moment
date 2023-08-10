@@ -75,10 +75,8 @@ class Song implements DomainSongModelInterface
     #[MaxDepth(2)]
     #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'songs')]
     private Collection $playlists;
-    #[MaxDepth(2)]
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'favorites')]
-    #[ORM\OrderBy(["id" => "DESC"])]
-    private Collection $users;
+    #[ORM\OneToMany(mappedBy: 'song', targetEntity: SongFavorite::class, cascade: ['persist', 'remove'])]
+    private Collection $songFavorites;
 
     #[ORM\Column(length: 255, unique: true)]
     #[Slug(fields: ['artist', 'title'])]
@@ -96,7 +94,7 @@ class Song implements DomainSongModelInterface
     public function __construct()
     {
         $this->playlists = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        $this->songFavorites = new ArrayCollection();
     }
 
     public function getId(): ?string
@@ -221,33 +219,6 @@ class Song implements DomainSongModelInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, User>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->addFavorite($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->removeElement($user)) {
-            $user->removeFavorite($this);
-        }
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?DateTimeImmutable
     {
         return $this->createdAt;
@@ -274,5 +245,30 @@ class Song implements DomainSongModelInterface
     public function setLinkYoutubeValid(bool $linkYoutubeValid): void
     {
         $this->linkYoutubeValid = $linkYoutubeValid;
+    }
+
+    /**
+     * @return Collection<int, SongFavorite>
+     */
+    public function getSongFavorites(): Collection
+    {
+        return $this->songFavorites;
+    }
+
+    public function addSongFavorite(SongFavorite $songFavorite): self
+    {
+        if (!$this->songFavorites->contains($songFavorite)) {
+            $this->songFavorites->add($songFavorite);
+            $songFavorite->setSong($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSongFavorite(SongFavorite $songFavorite): self
+    {
+        $this->songFavorites->removeElement($songFavorite);
+
+        return $this;
     }
 }

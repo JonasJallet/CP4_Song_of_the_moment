@@ -9,6 +9,7 @@ if (favoriteButtons) {
 function addToFavorite(e)
 {
     e.preventDefault();
+    e.stopPropagation();
 
     const favoriteLink = e.currentTarget;
     const link = favoriteLink.href;
@@ -44,6 +45,7 @@ if (deleteButtons) {
 function removeToFavorite(e)
 {
     e.preventDefault();
+    e.stopPropagation();
 
     const favoriteLink = e.currentTarget;
     const link = favoriteLink.href;

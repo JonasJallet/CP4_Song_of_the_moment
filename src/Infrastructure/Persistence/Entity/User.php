@@ -46,8 +46,13 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
     #[Assert\NotNull(message: 'Le mot de passe est obligatoire')]
     private ?string $password = null;
 
-    #[ORM\ManyToMany(targetEntity: Song::class, inversedBy: 'users', cascade: ['persist', 'remove'])]
-    private Collection $favorites;
+    #[ORM\OneToMany(
+        mappedBy: 'user',
+        targetEntity: SongFavorite::class,
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
+    private Collection $songFavorites;
 
     #[ORM\Column(type: 'boolean')]
     private bool $isVerified = false;
@@ -58,7 +63,7 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
 
     public function __construct()
     {
-        $this->favorites = new ArrayCollection();
+        $this->songFavorites = new ArrayCollection();
         $this->playlists = new ArrayCollection();
     }
 
@@ -114,6 +119,18 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
         return $this;
     }
 
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
     /**
      * @see PasswordAuthenticatedUserInterface
      */
@@ -127,44 +144,6 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
         $this->password = $password;
 
         return $this;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
-
-    /**
-     * @return Collection<int, Song>
-     */
-    public function getFavorites(): Collection
-    {
-        return $this->favorites;
-    }
-
-    public function addFavorite(DomainSongModelInterface $favorites): self
-    {
-        if (!$this->favorites->contains($favorites)) {
-            $this->favorites->add($favorites);
-        }
-
-        return $this;
-    }
-
-    public function removeFavorite(DomainSongModelInterface $favorites): self
-    {
-        $this->favorites->removeElement($favorites);
-
-        return $this;
-    }
-
-    public function isInFavorite(DomainSongModelInterface $song): bool
-    {
-        return $this->favorites->contains($song);
     }
 
     public function validatePassword(ExecutionContextInterface $context): void
@@ -197,16 +176,13 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
         }
     }
 
-    public function isVerified(): bool
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
     {
-        return $this->isVerified;
-    }
-
-    public function setIsVerified(bool $isVerified): self
-    {
-        $this->isVerified = $isVerified;
-
-        return $this;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     /**
@@ -237,5 +213,40 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, SongFavorite>
+     */
+    public function getSongFavorites(): Collection
+    {
+        return $this->songFavorites;
+    }
+
+    public function addSongFavorite(SongFavorite $songFavorite): self
+    {
+        if (!$this->songFavorites->contains($songFavorite)) {
+            $this->songFavorites->add($songFavorite);
+            $songFavorite->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSongFavorite(SongFavorite $songFavorite): self
+    {
+        $this->songFavorites->removeElement($songFavorite);
+
+        return $this;
+    }
+
+    public function isInFavorite(DomainSongModelInterface $song): bool
+    {
+        foreach ($this->songFavorites as $songFavorite) {
+            if ($songFavorite->getSong()->getId() === $song->getId()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
