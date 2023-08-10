@@ -41,9 +41,9 @@ class UserController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function showFavorites(): Response
     {
-        $userId = $this->getUser()->getId();
-        $getFavorites = new GetFavorites($userId);
-        $getFavorites->userId = $userId;
+        $user = $this->getUser()->getId();
+        $getFavorites = new GetFavorites($user);
+        $getFavorites->user = $user;
         $result = $this->queryBus->dispatch($getFavorites);
         $handledStamp = $result->last(HandledStamp::class);
         $favorites = $handledStamp->getResult();

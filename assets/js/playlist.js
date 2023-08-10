@@ -10,6 +10,7 @@ let popup;
 function openPlaylistPopup(e)
 {
     e.preventDefault();
+    e.stopPropagation();
 
     let url = this.dataset.playlistUrl;
 
@@ -148,6 +149,7 @@ Array.from(deleteButtons).forEach(function (element) {
 function removeToPlaylist(e)
 {
     e.preventDefault();
+    e.stopPropagation();
     const songLink = e.currentTarget;
     const trParent = songLink.closest('tr');
     let url = this.dataset.removeSongUrl;
