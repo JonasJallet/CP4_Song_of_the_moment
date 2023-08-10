@@ -38,11 +38,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         foreach ($users as $key => $user) {
             $newUser = new User();
 
-            for ($i = 0; $i < 10; $i++) {
-                $songReference = 'song_' . $faker->numberBetween(0, 23);
-                $song = $this->getReference($songReference);
-                $newUser->addSongFavorite($song);
-            }
+
 
             $newUser->setUsername($user['email']);
             $hash = $this->passwordHasher->hashPassword($newUser, $user['password']);

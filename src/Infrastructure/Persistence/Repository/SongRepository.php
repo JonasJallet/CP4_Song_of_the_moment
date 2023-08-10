@@ -47,7 +47,9 @@ class SongRepository extends ServiceEntityRepository implements DomainSongReposi
     {
         $queryBuilder = $this->createQueryBuilder('s')
             ->where('s.isApproved = :approved')
+            ->andWhere('s.linkYoutubeValid = :valid')
             ->setParameter('approved', true)
+            ->setParameter('valid', true)
             ->setMaxResults(1)
             ->orderBy('RAND()')
             ->getQuery();
