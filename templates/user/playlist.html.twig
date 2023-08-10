@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block body %}
+    {% set validSongs = playlist.songPlaylists|filter(songPlaylist => songPlaylist.song.linkYoutubeValid) %}
     <div id="back-hover">
         <main class="main-favorite">
             <div class="list-song row col-11 m-0 d-flex justify-content-center mx-auto" id="favoriteContent">
@@ -14,7 +15,7 @@
                     <div class="d-flex align-items-center">
                         <i class="icon-playlist bi bi-music-note-list m-2"></i>
                         <h3 class="m-0">{{ playlist.name }} -&nbsp;</h3>
-                        <h3 id="playlist-length" class="m-0">{{ playlist.songPlaylists|length }}</h3>
+                        <h3 id="playlist-length" class="m-0">{{ validSongs|length }}</h3>
                         <h3 class="m-0">&nbsp;Titres</h3>
                     </div>
                     <div>
@@ -25,51 +26,53 @@
                     <tbody>
                     {% for songPlaylist in playlist.songPlaylists %}
                         {% set song = songPlaylist.song %}
-                        <tr
-                            class="playlist-line link_id song-on-playlist"
-                            data-photo="{{ asset('songs/covers/' ~ song.photoAlbum) }}"
-                            data-youtube="{{ song.linkYoutube }}"
-                            data-title="{{ song.title }}"
-                            data-artist="{{ song.artist }}"
-                        >
-                            <td>
-                                <img class="photo_song_id photo-song-playlist shadow p-2" src="{{ asset('songs/covers/' ~ song.photoAlbum) }}" alt="Photo album"/>
-                            </td>
-                            <td class="d-flex flex-column m-2 d-lg-none">
-                                <h5>{{ song.title }}</h5>
-                                <small>{{ song.artist }} - {{ song.album }}</small>
-                            </td>
-                            <td class="d-none d-lg-table-cell">
-                                {{ song.title }}
-                            </td>
-                            <td class="d-none d-lg-table-cell">
-                                {{ song.artist }}
-                            </td>
-                            <td class="d-none d-lg-table-cell">
-                                {{ song.album }}
-                            </td>
-                            <td class="dropdown-icon">
-                                <div class="dropdown">
-                                    <button class="btn btn-secondary bg-transparent border-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation()">
-                                        <i class="playlist-line-icon bi bi-three-dots"></i>
-                                    </button>
-                                    <ul class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton1">
-                                        <li>
-                                            <a  class="playlist-popup dropdown-item text-white link-dark"
-                                                data-playlist-url="{{ path('playlist_popup', {'songId': song.id}) }}">
-                                                Ajouter à une playlist
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a  class="song-delete dropdown-item text-white link-dark"
-                                                data-remove-song-url="{{ path('playlist_delete_song', {'songId': song.id, 'playlistId': playlist.id}) }}">
-                                                Supprimer de la playlist
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
+                        {% if song.linkYoutubeValid %}
+                            <tr
+                                class="playlist-line link_id song-on-playlist"
+                                data-photo="{{ asset('songs/covers/' ~ song.photoAlbum) }}"
+                                data-youtube="{{ song.linkYoutube }}"
+                                data-title="{{ song.title }}"
+                                data-artist="{{ song.artist }}"
+                            >
+                                <td>
+                                    <img class="photo_song_id photo-song-playlist shadow p-2" src="{{ asset('songs/covers/' ~ song.photoAlbum) }}" alt="Photo album"/>
+                                </td>
+                                <td class="d-flex flex-column m-2 d-lg-none">
+                                    <h5>{{ song.title }}</h5>
+                                    <small>{{ song.artist }} - {{ song.album }}</small>
+                                </td>
+                                <td class="d-none d-lg-table-cell">
+                                    {{ song.title }}
+                                </td>
+                                <td class="d-none d-lg-table-cell">
+                                    {{ song.artist }}
+                                </td>
+                                <td class="d-none d-lg-table-cell">
+                                    {{ song.album }}
+                                </td>
+                                <td class="dropdown-icon">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary bg-transparent border-0" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" onclick="event.stopPropagation()">
+                                            <i class="playlist-line-icon bi bi-three-dots"></i>
+                                        </button>
+                                        <ul class="dropdown-menu bg-dark" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <a  class="playlist-popup dropdown-item text-white link-dark"
+                                                    data-playlist-url="{{ path('playlist_popup', {'songId': song.id}) }}">
+                                                    Ajouter à une playlist
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a  class="song-delete dropdown-item text-white link-dark"
+                                                    data-remove-song-url="{{ path('playlist_delete_song', {'songId': song.id, 'playlistId': playlist.id}) }}">
+                                                    Supprimer de la playlist
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endif %}
                     {% else %}
                         <h3 class="text-center">Aucun titre dans cette playlist</h3>
                     {% endfor %}

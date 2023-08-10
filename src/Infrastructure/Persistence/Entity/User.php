@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Persistence\Entity;
 
+use App\Domain\Model\DomainSongFavoriteModelInterface;
 use App\Domain\Model\DomainSongModelInterface;
 use App\Domain\Model\DomainUserModelInterface;
 use App\Infrastructure\Persistence\Repository\UserRepository;
@@ -223,7 +224,7 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
         return $this->songFavorites;
     }
 
-    public function addSongFavorite(SongFavorite $songFavorite): self
+    public function addSongFavorite(DomainSongFavoriteModelInterface $songFavorite): self
     {
         if (!$this->songFavorites->contains($songFavorite)) {
             $this->songFavorites->add($songFavorite);
@@ -233,7 +234,7 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
         return $this;
     }
 
-    public function removeSongFavorite(SongFavorite $songFavorite): self
+    public function removeSongFavorite(DomainSongFavoriteModelInterface $songFavorite): self
     {
         $this->songFavorites->removeElement($songFavorite);
 

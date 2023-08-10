@@ -12,7 +12,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SongRepository::class)]
@@ -73,9 +72,8 @@ class Song implements DomainSongModelInterface
     #[ORM\Column]
     private ?bool $isApproved = false;
 
-    #[MaxDepth(2)]
     #[ORM\OneToMany(
-        mappedBy: "playlist",
+        mappedBy: "song",
         targetEntity: SongPlaylist::class,
         cascade: ['persist', 'remove'],
         orphanRemoval: true
@@ -209,25 +207,6 @@ class Song implements DomainSongModelInterface
     public function getPlaylists(): Collection
     {
         return $this->songPlaylists;
-    }
-
-    public function addPlaylist(Playlist $playlist): self
-    {
-        if (!$this->songPlaylists->contains($playlist)) {
-            $this->songPlaylists->add($playlist);
-            $playlist->addSong($this);
-        }
-
-        return $this;
-    }
-
-    public function removePlaylist(Playlist $playlist): self
-    {
-        if ($this->songPlaylists->removeElement($playlist)) {
-            $playlist->removeSong($this);
-        }
-
-        return $this;
     }
 
     public function getCreatedAt(): ?DateTimeImmutable

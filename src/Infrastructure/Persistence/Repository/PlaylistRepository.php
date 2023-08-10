@@ -56,7 +56,6 @@ class PlaylistRepository extends ServiceEntityRepository implements DomainPlayli
             ->leftJoin('p.songPlaylists', 'songPlaylist')
             ->leftJoin('songPlaylist.song', 'song')
             ->where('p.slug = :slug')
-            ->andWhere('song.linkYoutubeValid = true')
             ->setParameter('slug', $slug)
             ->getQuery()
             ->getOneOrNullResult();
