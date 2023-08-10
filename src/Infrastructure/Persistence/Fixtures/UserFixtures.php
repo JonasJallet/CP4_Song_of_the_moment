@@ -47,6 +47,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $newUser->setUsername($user['email']);
             $hash = $this->passwordHasher->hashPassword($newUser, $user['password']);
             $newUser->setPassword($hash);
+            $newUser->setBirthDay($faker->numberBetween(1, 31));
+            $newUser->setBirthMonth($faker->numberBetween(1, 12));
+            $newUser->setBirthYear($faker->numberBetween(1950, 2023));
             $newUser->setRoles([$user['role']]);
             $manager->persist($newUser);
             $this->addReference('user_' . $key, $newUser);
