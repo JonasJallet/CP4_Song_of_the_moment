@@ -22,6 +22,22 @@
                     label: 'Mot de passe', 'label_attr': {'class': 'form-label'},
                     'attr': {'class': 'form-control'}
                     }) }}
+                    <p class="mt-2 mb-0">Quel est votre date de naissance ?</p>
+                    {{ form_errors(registrationForm.birthDay) }}
+                    <div class="d-flex flex-row justify-content-around mb-2">
+                        <div class="date-input">
+                            {{ form_label(registrationForm.birthDay, 'Jour', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.birthDay, {'attr': {'class': 'form-control no-spinners'}}) }}
+                        </div>
+                        <div class="date-input">
+                            {{ form_label(registrationForm.birthMonth, 'Mois', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.birthMonth, {'attr': {'class': 'form-control no-spinners'}}) }}
+                        </div>
+                        <div class="date-input">
+                            {{ form_label(registrationForm.birthYear, 'Année', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(registrationForm.birthYear, {'attr': {'class': 'form-control no-spinners'}}) }}
+                        </div>
+                    </div>
                     {{ form_row(registrationForm.agreeTerms, {
                     label: "J\'accepte les conditions d\'utilisations", 'label_attr': {'class': 'form-label'}
                     }) }}

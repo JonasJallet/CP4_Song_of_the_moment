@@ -6,9 +6,11 @@ use App\Domain\Model\DomainSongFavoriteModelInterface;
 use App\Domain\Model\DomainSongModelInterface;
 use App\Domain\Model\DomainUserModelInterface;
 use App\Infrastructure\Persistence\Repository\UserRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -47,6 +49,18 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
     #[Assert\NotNull(message: 'Le mot de passe est obligatoire')]
     private ?string $password = null;
 
+    #[ORM\Column]
+    #[Assert\NotNull(message: 'Le jour est obligatoire')]
+    private int $birthDay;
+
+    #[ORM\Column]
+    #[Assert\NotNull(message: 'Le mois est obligatoire')]
+    private int $birthMonth;
+
+    #[ORM\Column]
+    #[Assert\NotNull(message: 'L\'année est obligatoire')]
+    private int $birthYear;
+
     #[ORM\OneToMany(
         mappedBy: 'user',
         targetEntity: SongFavorite::class,
@@ -72,6 +86,7 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
     public function validate(ExecutionContextInterface $context, $payload): void
     {
         $this->validatePassword($context);
+        $this->validateBirthDate($context);
     }
 
     public function getId(): ?int
@@ -249,5 +264,65 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
             }
         }
         return false;
+    }
+
+    public function getBirthDay(): int
+    {
+        return $this->birthDay;
+    }
+
+    public function setBirthDay(int $birthDay): void
+    {
+        $this->birthDay = $birthDay;
+    }
+
+    public function getBirthMonth(): int
+    {
+        return $this->birthMonth;
+    }
+
+    public function setBirthMonth(int $birthMonth): void
+    {
+        $this->birthMonth = $birthMonth;
+    }
+
+    public function getBirthYear(): int
+    {
+        return $this->birthYear;
+    }
+
+    public function setBirthYear(int $birthYear): void
+    {
+        $this->birthYear = $birthYear;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getBirthDate(): DateTime
+    {
+        return new DateTime(sprintf('%d-%d-%d', $this->getBirthYear(), $this->getBirthMonth(), $this->getBirthDay()));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function validateBirthDate(ExecutionContextInterface $context): void
+    {
+        if (!checkdate($this->birthMonth, $this->birthDay, $this->birthYear)) {
+            $context->buildViolation('La date de naissance fournie est invalide.')
+                ->atPath('birthDay')
+                ->addViolation();
+            return;
+        }
+
+        $birthdate = new DateTime(sprintf('%d-%d-%d', $this->birthYear, $this->birthMonth, $this->birthDay));
+        $dateFrom100YearsAgo = new DateTime('-100 years');
+
+        if ($birthdate <= $dateFrom100YearsAgo) {
+            $context->buildViolation('La date de naissance fournie indique que vous avez plus de 100 ans...')
+                ->atPath('birthDay')
+                ->addViolation();
+        }
     }
 }
