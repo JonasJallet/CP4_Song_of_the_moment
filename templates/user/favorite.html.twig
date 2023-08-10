@@ -13,7 +13,7 @@
                 <div class="d-flex align-items-center">
                     <i class="text-danger heart-favorite bi bi-heart-fill m-2"></i>
                     <h3 class="m-0">Coup de coeur -&nbsp;</h3>
-                    <h3 id="favorite-length" class="m-0">{{ app.user.songFavorites|length }}</h3>
+                    <h3 id="favorite-length" class="m-0">{{ favorites|length }}</h3>
                     <h3 class="m-0">&nbsp;Titres</h3>
                 </div>
                 <table class="col-12">
@@ -69,7 +69,7 @@
                 </table>
             </div>
 
-            {% if app.user.songFavorites is not empty %}
+            {% if favorites is not empty %}
                 <div class="row">
                     {% include 'user/_player.html.twig' %}
                 </div>

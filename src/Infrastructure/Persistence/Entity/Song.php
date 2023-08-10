@@ -75,7 +75,12 @@ class Song implements DomainSongModelInterface
     #[MaxDepth(2)]
     #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'songs')]
     private Collection $playlists;
-    #[ORM\OneToMany(mappedBy: 'song', targetEntity: SongFavorite::class, cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(
+        mappedBy: 'song',
+        targetEntity: SongFavorite::class,
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
     private Collection $songFavorites;
 
     #[ORM\Column(length: 255, unique: true)]

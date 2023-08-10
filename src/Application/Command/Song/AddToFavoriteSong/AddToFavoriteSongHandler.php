@@ -2,15 +2,16 @@
 
 namespace App\Application\Command\Song\AddToFavoriteSong;
 
+use App\Domain\Model\DomainSongFavoriteModelInterface;
 use App\Domain\Repository\DomainSongRepositoryInterface;
 use App\Domain\Repository\DomainUserRepositoryInterface;
-use App\Infrastructure\Persistence\Entity\SongFavorite;
 
 class AddToFavoriteSongHandler
 {
     public function __construct(
         public DomainUserRepositoryInterface $domainUserRepository,
         public DomainSongRepositoryInterface $domainSongRepository,
+        public DomainSongFavoriteModelInterface $songFavorite
     ) {
     }
     public function __invoke(AddToFavoriteSong $addToFavoriteUser): bool
@@ -25,7 +26,7 @@ class AddToFavoriteSongHandler
                 }
             }
         } else {
-            $songFavorite = new SongFavorite();
+            $songFavorite = new $this->songFavorite();
             $songFavorite->setUser($user);
             $songFavorite->setSong($song);
             $user->addSongFavorite($songFavorite);
