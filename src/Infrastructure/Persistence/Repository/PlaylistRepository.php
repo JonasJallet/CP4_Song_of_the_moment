@@ -50,7 +50,16 @@ class PlaylistRepository extends ServiceEntityRepository implements DomainPlayli
 
     public function findOneBySlug(string $slug): ?DomainPlaylistModelInterface
     {
-            return $this->findOneBy(['slug' => $slug]);
+        return $this->createQueryBuilder('p')
+            ->addSelect('songPlaylist')
+            ->addSelect('song')
+            ->leftJoin('p.songPlaylists', 'songPlaylist')
+            ->leftJoin('songPlaylist.song', 'song')
+            ->where('p.slug = :slug')
+            ->andWhere('song.linkYoutubeValid = true')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     public function randomSongsByPlaylistId(string $playlistId): array
