@@ -22,13 +22,12 @@ class GetPlaylistBySlugTest extends TestCase
     {
         $getPlaylistBySlug = new GetPlaylistBySlug();
         $getPlaylistBySlug->slug = 'test';
-
         $playlist = new Playlist();
         $playlist->setSlug('test');
 
         $this->playlistRepository->expects($this->once())
-            ->method('findOneBy')
-            ->with(['slug' => $getPlaylistBySlug->slug])
+            ->method('findOneBySlug')
+            ->with($getPlaylistBySlug->slug)
             ->willReturn($playlist);
 
         $handler = new GetPlaylistBySlugHandler($this->playlistRepository);

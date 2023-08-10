@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Persistence\Entity;
 
 use App\Domain\Model\DomainSongModelInterface;
+use App\Domain\Model\DomainSongPlaylistModelInterface;
 use App\Infrastructure\Persistence\Repository\SongRepository;
 use App\Infrastructure\Service\CustomUuidGenerator;
 use App\Infrastructure\Validator\Constraint\SongConstraint;
@@ -73,8 +74,13 @@ class Song implements DomainSongModelInterface
     private ?bool $isApproved = false;
 
     #[MaxDepth(2)]
-    #[ORM\ManyToMany(targetEntity: Playlist::class, mappedBy: 'songs')]
-    private Collection $playlists;
+    #[ORM\OneToMany(
+        mappedBy: "playlist",
+        targetEntity: SongPlaylist::class,
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
+    private Collection $songPlaylists;
     #[ORM\OneToMany(
         mappedBy: 'song',
         targetEntity: SongFavorite::class,
@@ -98,7 +104,7 @@ class Song implements DomainSongModelInterface
 
     public function __construct()
     {
-        $this->playlists = new ArrayCollection();
+        $this->songPlaylists = new ArrayCollection();
         $this->songFavorites = new ArrayCollection();
     }
 
@@ -198,17 +204,17 @@ class Song implements DomainSongModelInterface
     }
 
     /**
-     * @return Collection<int, Playlist>
+     * @return Collection<int, DomainSongPlaylistModelInterface>
      */
     public function getPlaylists(): Collection
     {
-        return $this->playlists;
+        return $this->songPlaylists;
     }
 
     public function addPlaylist(Playlist $playlist): self
     {
-        if (!$this->playlists->contains($playlist)) {
-            $this->playlists->add($playlist);
+        if (!$this->songPlaylists->contains($playlist)) {
+            $this->songPlaylists->add($playlist);
             $playlist->addSong($this);
         }
 
@@ -217,7 +223,7 @@ class Song implements DomainSongModelInterface
 
     public function removePlaylist(Playlist $playlist): self
     {
-        if ($this->playlists->removeElement($playlist)) {
+        if ($this->songPlaylists->removeElement($playlist)) {
             $playlist->removeSong($this);
         }
 

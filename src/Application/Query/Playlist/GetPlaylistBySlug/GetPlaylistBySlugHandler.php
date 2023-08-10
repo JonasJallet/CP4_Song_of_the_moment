@@ -2,18 +2,25 @@
 
 namespace App\Application\Query\Playlist\GetPlaylistBySlug;
 
-use App\Domain\Model\DomainPlaylistModelInterface;
 use App\Domain\Repository\DomainPlaylistRepositoryInterface;
+use RuntimeException;
 
 class GetPlaylistBySlugHandler
 {
-    public function __construct(
-        public DomainPlaylistRepositoryInterface $playlistRepository,
-    ) {
+    private DomainPlaylistRepositoryInterface $playlistRepository;
+
+    public function __construct(DomainPlaylistRepositoryInterface $playlistRepository)
+    {
+        $this->playlistRepository = $playlistRepository;
     }
 
-    public function __invoke(GetPlaylistBySlug $getPlaylistBySlug): DomainPlaylistModelInterface
+    public function __invoke(GetPlaylistBySlug $getPlaylistBySlug)
     {
-        return $this->playlistRepository->findOneBy(['slug' => $getPlaylistBySlug->slug]);
+        $slug = $getPlaylistBySlug->slug;
+        $playlist = $this->playlistRepository->findOneBySlug($slug);
+        if (!$playlist) {
+            throw new RuntimeException("No playlist found for the given slug: " . $slug);
+        }
+        return $playlist;
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Persistence\Entity;
 
 use App\Domain\Model\DomainPlaylistModelInterface;
-use App\Domain\Model\DomainSongModelInterface;
+use App\Domain\Model\DomainSongPlaylistModelInterface;
 use App\Domain\Model\DomainUserModelInterface;
 use App\Infrastructure\Persistence\Repository\PlaylistRepository;
 use App\Infrastructure\Service\CustomUuidGenerator;
@@ -27,8 +27,14 @@ class Playlist implements DomainPlaylistModelInterface
     #[ORM\ManyToOne(inversedBy: 'playlists')]
     private ?User $user = null;
 
-    #[ORM\ManyToMany(targetEntity: Song::class, inversedBy: 'playlists')]
-    private Collection $songs;
+    #[ORM\OneToMany(
+        mappedBy: "playlist",
+        targetEntity: SongPlaylist::class,
+        cascade: ['persist', 'remove'],
+        orphanRemoval: true
+    )]
+    #[ORM\OrderBy(["createdAt" => "DESC"])]
+    private Collection $songPlaylists;
 
     #[ORM\Column(length: 30)]
     #[Assert\NotBlank(message: 'Le nom ne peut pas être vide.')]
@@ -44,7 +50,7 @@ class Playlist implements DomainPlaylistModelInterface
 
     public function __construct()
     {
-        $this->songs = new ArrayCollection();
+        $this->songPlaylists = new ArrayCollection();
     }
 
     public function getId(): string
@@ -75,25 +81,25 @@ class Playlist implements DomainPlaylistModelInterface
     }
 
     /**
-     * @return Collection<int, Song>
+     * @return Collection<int, SongPlaylist>
      */
-    public function getSongs(): Collection
+    public function getSongPlaylists(): Collection
     {
-        return $this->songs;
+        return $this->songPlaylists;
     }
 
-    public function addSong(DomainSongModelInterface $song): self
+    public function addSong(DomainSongPlaylistModelInterface $songPlaylist): self
     {
-        if (!$this->songs->contains($song)) {
-            $this->songs->add($song);
+        if (!$this->songPlaylists->contains($songPlaylist)) {
+            $this->songPlaylists->add($songPlaylist);
         }
 
         return $this;
     }
 
-    public function removeSong(DomainSongModelInterface $song): self
+    public function removeSong(DomainSongPlaylistModelInterface $songPlaylist): self
     {
-        $this->songs->removeElement($song);
+        $this->songPlaylists->removeElement($songPlaylist);
 
         return $this;
     }

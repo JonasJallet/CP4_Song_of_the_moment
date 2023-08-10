@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Service;
 
 use App\Domain\Model\DomainPlaylistModelInterface;
-use App\Domain\Model\DomainSongModelInterface;
+use App\Domain\Model\DomainSongPlaylistModelInterface;
 use App\Domain\Repository\DomainPlaylistRepositoryInterface;
 use App\Domain\Service\PlaylistServiceInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -26,9 +26,11 @@ class PlaylistService implements PlaylistServiceInterface
         $this->validator = $validator;
     }
 
-    public function addSong(DomainPlaylistModelInterface $playlist, DomainSongModelInterface $song): JsonResponse
-    {
-        $playlist->addSong($song);
+    public function addSong(
+        DomainPlaylistModelInterface $playlist,
+        DomainSongPlaylistModelInterface $songPlaylist
+    ): JsonResponse {
+        $playlist->addSong($songPlaylist);
         $errors = $this->validator->validate($playlist);
         if (count($errors) > 0) {
             $errorMessages = [];

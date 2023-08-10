@@ -48,6 +48,11 @@ class PlaylistRepository extends ServiceEntityRepository implements DomainPlayli
         return parent::findBy($criteria, $orderBy, $limit, $offset);
     }
 
+    public function findOneBySlug(string $slug): ?DomainPlaylistModelInterface
+    {
+            return $this->findOneBy(['slug' => $slug]);
+    }
+
     public function randomSongsByPlaylistId(string $playlistId): array
     {
         $queryBuilder = $this->getEntityManager()->createQueryBuilder()
