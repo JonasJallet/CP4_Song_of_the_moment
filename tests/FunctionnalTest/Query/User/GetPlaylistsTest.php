@@ -5,10 +5,13 @@ namespace App\Tests\FunctionnalTest\Query\User;
 use App\Application\Query\User\GetPlaylists\GetPlaylists;
 use App\Application\Query\User\GetPlaylists\GetPlaylistsHandler;
 use App\Domain\Repository\DomainPlaylistRepositoryInterface;
+use App\Domain\Repository\DomainSongPlaylistRepositoryInterface;
 use App\Domain\Repository\DomainSongRepositoryInterface;
 use App\Domain\Repository\DomainUserRepositoryInterface;
 use App\Infrastructure\Persistence\Entity\Playlist;
+use App\Infrastructure\Persistence\Entity\SongPlaylist;
 use App\Infrastructure\Persistence\Entity\User;
+use App\Infrastructure\Persistence\Entity\Song;
 use PHPUnit\Framework\TestCase;
 
 class GetPlaylistsTest extends TestCase
@@ -25,7 +28,14 @@ class GetPlaylistsTest extends TestCase
 
         $playlists = [$playlistMock1, $playlistMock2];
 
-        $randomSongsPlaylist = ['songA', 'songB'];
+        $songA = $this->createMock(Song::class);
+        $songB = $this->createMock(Song::class);
+
+        $songPlaylistA = $this->createMock(SongPlaylist::class);
+        $songPlaylistA->method('getSong')->willReturn($songA);
+
+        $songPlaylistB = $this->createMock(SongPlaylist::class);
+        $songPlaylistB->method('getSong')->willReturn($songB);
 
         $userMock = $this->createMock(User::class);
 
@@ -41,18 +51,21 @@ class GetPlaylistsTest extends TestCase
             ->with(['user' => $userMock], ['name' => 'ASC'])
             ->willReturn($playlists);
 
-        $playlistRepository->expects($this->exactly(count($playlists)))
-            ->method('randomSongsByPlaylistId')
-            ->willReturn($randomSongsPlaylist);
+        $songPlaylistRepo = $this->createMock(DomainSongPlaylistRepositoryInterface::class);
+        $songPlaylistRepo->expects($this->exactly(count($playlists)))
+            ->method('findBy')
+            ->willReturnOnConsecutiveCalls([$songPlaylistA], [$songPlaylistB]);
 
         $handler = new GetPlaylistsHandler(
             $this->createMock(DomainSongRepositoryInterface::class),
             $userRepository,
-            $playlistRepository
+            $playlistRepository,
+            $songPlaylistRepo
         );
 
         $query = new GetPlaylists($userId);
         $result = $handler($query);
         $this->assertIsArray($result);
+        $this->assertCount(2, $result);
     }
 }

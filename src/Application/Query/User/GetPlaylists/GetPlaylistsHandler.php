@@ -3,6 +3,7 @@
 namespace App\Application\Query\User\GetPlaylists;
 
 use App\Domain\Repository\DomainPlaylistRepositoryInterface;
+use App\Domain\Repository\DomainSongPlaylistRepositoryInterface;
 use App\Domain\Repository\DomainSongRepositoryInterface;
 use App\Domain\Repository\DomainUserRepositoryInterface;
 
@@ -12,6 +13,7 @@ class GetPlaylistsHandler
         public DomainSongRepositoryInterface $songRepository,
         public DomainUserRepositoryInterface $userRepository,
         public DomainPlaylistRepositoryInterface $playlistRepository,
+        public DomainSongPlaylistRepositoryInterface $songPlaylistRepo
     ) {
     }
 
@@ -26,7 +28,12 @@ class GetPlaylistsHandler
         );
         $collection = [];
         foreach ($playlistsByUser as $playlist) {
-            $randomSongs = $this->playlistRepository->randomSongsByPlaylistId($playlist->getId());
+            $songPlaylists = $this->songPlaylistRepo->findBy(['playlist' => $playlist]);
+            $randomSongs = [];
+            foreach ($songPlaylists as $songPlaylist) {
+                $randomSongs[] = $songPlaylist->getSong();
+            }
+
             $collection[$playlist->getId()] = [
                 'playlist' => $playlist,
                 'songs' => $randomSongs,
@@ -35,3 +42,4 @@ class GetPlaylistsHandler
         return $collection;
     }
 }
+

@@ -19,4 +19,7 @@ interface DomainPlaylistRepositoryInterface
     public function findOneBy(array $criteria, array $orderBy = null): ?DomainPlaylistModelInterface;
 
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null): array;
+
+    public function findOneBySlug(string $slug): ?DomainPlaylistModelInterface;
+
 }

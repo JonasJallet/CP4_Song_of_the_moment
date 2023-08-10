@@ -2,6 +2,7 @@
 
 namespace App\Application\Command\Playlist\AddSongNewPlaylist;
 
+use App\Domain\Model\DomainSongPlaylistModelInterface;
 use App\Domain\Repository\DomainPlaylistRepositoryInterface;
 use App\Domain\Repository\DomainSongRepositoryInterface;
 use App\Domain\Repository\DomainUserRepositoryInterface;
@@ -14,7 +15,8 @@ class AddSongNewPlaylistHandler
         public DomainPlaylistRepositoryInterface $playlistRepository,
         public DomainSongRepositoryInterface $songRepository,
         public DomainUserRepositoryInterface $userRepository,
-        public PlaylistServiceInterface $playlistService,
+        public DomainSongPlaylistModelInterface $songPlaylist,
+        public PlaylistServiceInterface $playlistService
     ) {
     }
 
@@ -24,7 +26,13 @@ class AddSongNewPlaylistHandler
         $user = $this->userRepository->findOneBy(['id' => $addSongNewPlaylist->userId]);
         $playlist = $addSongNewPlaylist->playlist;
         $playlist->setUser($user);
-        $message = $this->playlistService->addSong($playlist, $song);
+
+        $songPlaylist = new $this->songPlaylist();
+        $songPlaylist->setSong($song);
+        $songPlaylist->setPlaylist($playlist);
+
+        $message = $this->playlistService->addSong($playlist, $songPlaylist);
+
         return new JsonResponse([
             'message' => $message
         ]);

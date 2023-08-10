@@ -5,7 +5,6 @@ namespace App\Infrastructure\Persistence\Repository;
 use App\Domain\Model\DomainSongFavoriteModelInterface;
 use App\Domain\Model\DomainUserModelInterface;
 use App\Domain\Repository\DomainSongFavoriteRepositoryInterface;
-use App\Infrastructure\Persistence\Entity\Song;
 use App\Infrastructure\Persistence\Entity\SongFavorite;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
