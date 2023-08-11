@@ -25,10 +25,9 @@ class SongDeezerSearch implements SongDeezerSearchInterface
         $response = $httpClient->request('GET', "https://api.deezer.com/search", [
             'query' => [
                 'q' => "track:" . '"' . $query . '"',
-                'limit' => '36',
+                'limit' => '96',
             ],
         ]);
-
         return $response->toArray()['data'];
     }
 }
