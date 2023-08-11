@@ -21,9 +21,11 @@ class LinkYoutubeSearch implements LinkYoutubeSearchInterface
         $youtube = new YouTube($googleClient);
         $searchQuery = $songArtist . ' - ' . $songTitle;
         $youtubeSearch = $youtube->search->listSearch(
-            'snippet',
-            ['q' => $searchQuery,
-                'maxResults' => 1]
+            'id',
+            [
+            'q' => $searchQuery,
+                'maxResults' => 1
+            ]
         );
         return $youtubeSearch['items'][0]['id']['videoId'];
     }
