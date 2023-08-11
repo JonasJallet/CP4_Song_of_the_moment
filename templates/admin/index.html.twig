@@ -21,20 +21,21 @@
             </div>
         </form>
 
-        <div class="d-flex flex-column flex-md-row align-items-center justify-content-center">
-            <a class="button-approved btn border-1" href="{{ path('admin_index') }}">Validation effectué</a>
-
-            <form method="post" action="{{ path('admin_index') }}">
-                <input type="hidden" name="isApproved" value="0" />
-                <button type="submit" class="button-unapproved btn">En attente de validation</button>
-            </form>
-
-            <form method="post" action="{{ path('admin_index') }}">
-                <input type="hidden" name="linkYoutubeValid" value="0" />
-                <button type="submit" class="button-invalid btn">Lien Youtube Invalide</button>
-            </form>
-
-            <a class="button-addSong btn border-1" href="{{ path('app_song_new') }}">Ajouter un son</a>
+        <div class="d-flex flex-row align-items-center justify-content-center">
+            <div class="d-flex flex-column">
+                <a class="button-approved btn border-1" href="{{ path('admin_index') }}">Validation effectué</a>
+                <form method="post" action="{{ path('admin_index') }}">
+                    <input type="hidden" name="isApproved" value="0" />
+                    <button type="submit" class="button-unapproved btn">Attente de validation</button>
+                </form>
+            </div>
+            <div class="d-flex flex-column">
+                <form method="post" action="{{ path('admin_index') }}">
+                    <input type="hidden" name="linkYoutubeValid" value="0" />
+                    <button type="submit" class="button-invalid btn">Lien Youtube Invalide</button>
+                </form>
+                <a class="button-addSong btn border-1" href="{{ path('app_song_new') }}">Ajouter un son</a>
+            </div>
         </div>
 
         <div class="row d-flex flex-row justify-content-center mt-2">
