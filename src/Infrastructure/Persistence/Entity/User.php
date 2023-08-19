@@ -82,6 +82,9 @@ class User implements DomainUserModelInterface, UserInterface, PasswordAuthentic
         $this->playlists = new ArrayCollection();
     }
 
+    /**
+     * @throws Exception
+     */
     #[Assert\Callback]
     public function validate(ExecutionContextInterface $context, $payload): void
     {
