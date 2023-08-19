@@ -29,9 +29,17 @@ class GetPlaylistsHandler
         $collection = [];
         foreach ($playlistsByUser as $playlist) {
             $songPlaylists = $this->songPlaylistRepo->findBy(['playlist' => $playlist]);
-            $randomSongs = [];
-            foreach ($songPlaylists as $songPlaylist) {
-                $randomSongs[] = $songPlaylist->getSong();
+
+            if (count($songPlaylists) > 4) {
+                $randomKeys = array_rand($songPlaylists, 4);
+                $randomSongs = array_map(function ($key) use ($songPlaylists) {
+                    return $songPlaylists[$key]->getSong();
+                }, $randomKeys);
+            } else {
+                $randomSongs = [];
+                foreach ($songPlaylists as $songPlaylist) {
+                    $randomSongs[] = $songPlaylist->getSong();
+                }
             }
 
             $collection[$playlist->getId()] = [
@@ -42,4 +50,3 @@ class GetPlaylistsHandler
         return $collection;
     }
 }
-

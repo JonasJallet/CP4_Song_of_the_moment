@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Persistence\Fixtures;
 
+use App\Infrastructure\Persistence\Entity\SongFavorite;
 use App\Infrastructure\Persistence\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -41,7 +42,12 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             for ($i = 0; $i < 10; $i++) {
                 $songReference = 'song_' . $faker->numberBetween(0, 23);
                 $song = $this->getReference($songReference);
-                $newUser->addSongFavorite($song);
+
+                $songFavorite = new SongFavorite();
+                $songFavorite->setUser($newUser);
+                $songFavorite->setSong($song);
+
+                $newUser->addSongFavorite($songFavorite);
             }
 
             $newUser->setUsername($user['email']);

@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Persistence\Fixtures;
 
+use App\Domain\Service\SongUploadCoverInterface;
 use App\Infrastructure\Persistence\Entity\Song;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -9,6 +10,11 @@ use Faker\Factory;
 
 class SongFixtures extends Fixture
 {
+    public function __construct(
+        public SongUploadCoverInterface $songUploadCover,
+    ) {
+    }
+
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create();
@@ -189,7 +195,11 @@ class SongFixtures extends Fixture
             $newSong->setTitle($song['title']);
             $newSong->setArtist($song['artist']);
             $newSong->setAlbum($song['album']);
-            $newSong->setPhotoAlbum($song['photo_album']);
+
+            $name = $song['artist'] . ' - ' . $song['title'] . '.avif';
+            $newSong->setPhotoAlbum(
+                $this->songUploadCover->upload($song['photo_album'], $name)
+            );
             $newSong->setLinkYoutube($song['link_youtube']);
             $newSong->setIsApproved($faker->boolean());
             $manager->persist($newSong);
