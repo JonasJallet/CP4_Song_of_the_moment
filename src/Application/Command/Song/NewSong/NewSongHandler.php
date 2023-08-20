@@ -22,7 +22,7 @@ class NewSongHandler
         $linkYoutube = $song->getLinkYoutube();
         $linkFormat = $this->linkYoutubeFormat->format($linkYoutube);
         $song->setLinkYoutube($linkFormat);
-        $name = $song->getArtist() . ' - ' . $song->getTitle() . '.avif';
+        $name = $song->getArtist() . ' - ' . $song->getTitle();
         $song->setPhotoAlbum(
             $this->songUploadCover->upload($song->getPhotoAlbum(), $name)
         );
