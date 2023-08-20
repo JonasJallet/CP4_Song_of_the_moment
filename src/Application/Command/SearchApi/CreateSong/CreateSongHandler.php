@@ -34,7 +34,7 @@ class CreateSongHandler implements MessageHandlerInterface
                 $song->setArtist($songData['artist']);
                 $song->setAlbum($songData['album']);
 
-                $name = $songData['artist'] . ' - ' . $songData['album'] . '.avif';
+                $name = $songData['artist'] . ' - ' . $songData['album'];
                 $song->setPhotoAlbum(
                     $this->songUploadCover->upload($songData['cover'], $name)
                 );

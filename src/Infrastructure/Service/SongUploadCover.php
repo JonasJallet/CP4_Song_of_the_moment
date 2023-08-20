@@ -29,7 +29,8 @@ class SongUploadCover implements SongUploadCoverInterface
     {
         $httpClient = HttpClient::create();
         $fileUrl = $httpClient->request('GET', $url);
-        $fileName = str_replace(["'", " ", "*", "/", ".", "?", "!"], "", strtolower($name));
+        $cleanedName = str_replace(["'", " ", "*", "/", ".", "?", "!"], "", strtolower($name));
+        $fileName = $cleanedName . ".avif";
         $fileFolder = $this->kernel->getProjectDir() . '/public/songs/covers/';
         file_put_contents($fileFolder . '/' . $fileName, $fileUrl->getContent());
         return $fileName;
